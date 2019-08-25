@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="cell" type="com.airy.v2plus.bean.custom.PageCell"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:padding="10dp">
+
+        <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/ic_launcher_round"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:contentDescription="@string/avatar"/>
+
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@{cell.title}"
+                android:singleLine="false"
+                app:layout_constraintTop_toBottomOf="@id/avatar"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                tools:text="tittitletitletitltitletitletitltitletitletitlletitletitletitle"/>
+
+        <TextView
+                android:id="@+id/node"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:text="@{cell.node}"
+                android:background="@color/colorAccent"
+                android:textColor="@color/design_default_color_background"
+                android:shadowColor="@color/design_default_color_on_secondary"
+                app:layout_constraintTop_toTopOf="@id/avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="Node"/>
+
+        <TextView
+                android:id="@+id/comment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@{cell.commentCount}"
+                app:layout_constraintTop_toTopOf="@id/avatar"
+                app:layout_constraintEnd_toStartOf="@id/node"
+                app:layout_constraintBottom_toBottomOf="@id/node"
+                tools:text="99"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
