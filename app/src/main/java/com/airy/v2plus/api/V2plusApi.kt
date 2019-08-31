@@ -1,10 +1,6 @@
 package com.airy.v2plus.api
 
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.FieldMap
-import retrofit2.http.POST
-import retrofit2.http.FormUrlEncoded
+import retrofit2.http.*
 
 
 
@@ -20,7 +16,6 @@ interface V2plusApi {
     // 获取登陆页面信息
     @GET("signin")
     suspend fun login(): String
-
 
     // 传入登陆信息进行登陆
     @FormUrlEncoded

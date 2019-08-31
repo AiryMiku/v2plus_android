@@ -12,7 +12,7 @@ import java.io.Serializable
  * Github: AiryMiku
  */
 
-data class Member(
+data class User(
     val id: Long,
     val username: String,
     val website: String,
@@ -73,9 +73,9 @@ data class Member(
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<Member> = object : Parcelable.Creator<Member> {
-            override fun createFromParcel(source: Parcel): Member = Member(source)
-            override fun newArray(size: Int): Array<Member?> = arrayOfNulls(size)
+        val CREATOR: Parcelable.Creator<User> = object : Parcelable.Creator<User> {
+            override fun createFromParcel(source: Parcel): User = User(source)
+            override fun newArray(size: Int): Array<User?> = arrayOfNulls(size)
         }
     }
 }
