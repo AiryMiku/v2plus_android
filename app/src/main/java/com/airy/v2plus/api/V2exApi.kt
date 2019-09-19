@@ -4,7 +4,6 @@ import com.airy.v2plus.bean.official.Node
 import com.airy.v2plus.bean.official.Reply
 import com.airy.v2plus.bean.official.Topic
 import com.airy.v2plus.bean.official.User
-import com.sun.org.apache.xalan.internal.lib.NodeInfo
 import retrofit2.http.GET
 import retrofit2.http.Query
 
