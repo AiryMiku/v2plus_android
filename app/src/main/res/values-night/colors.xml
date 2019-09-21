@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/carolina_blue</color>
+    <color name="colorPrimaryDark">@color/cornflower_blue</color>
+    <color name="colorAccent">@color/carolina_blue</color>
+</resources>

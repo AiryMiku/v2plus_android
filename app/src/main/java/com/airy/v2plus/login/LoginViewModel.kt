@@ -27,7 +27,7 @@ class LoginViewModel: ViewModel() {
     val loginResult: MutableLiveData<String> = MutableLiveData()
 
     init {
-        requestLoginKey()
+//        requestLoginKey()
     }
 
     fun requestLoginKey() {

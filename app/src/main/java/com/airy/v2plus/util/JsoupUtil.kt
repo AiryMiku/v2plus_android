@@ -1,8 +1,11 @@
 package com.airy.v2plus.util
 
+import com.airy.v2plus.bean.custom.LoginResult
 import com.airy.v2plus.bean.custom.PageCell
 import com.airy.v2plus.login.LoginKey
 import org.jsoup.Jsoup
+
+
 
 
 /**
@@ -19,12 +22,6 @@ class JsoupUtil {
             val formTableBody = body.getElementsByAttributeValue("action", "/signin").select("tbody").select("tr")
             val userNameValue = formTableBody[0].getElementsByAttributeValue("type", "text").attr("name")
             val pwValue = formTableBody[1].getElementsByAttributeValue("type", "password").attr("name")
-//            val verifiedCodeInfo = formTableBody[2].select("td")[1].select("div")
-//            val verifyRawUrl = verifiedCodeInfo[0].attr("style")
-//            val pattern = Pattern.compile("url\\(\'(.+?)\'\\)")
-//            val matcher = pattern.matcher(verifyRawUrl)
-//            matcher.find()
-//            val verifyUrl = "https://www.v2ex.com" + matcher.group(1)
             val verifyValue = formTableBody[2].getElementsByAttributeValue("type", "text").attr("name")
             val onceValue = formTableBody[3].getElementsByAttributeValue("type", "hidden").attr("value")
             return LoginKey(userNameValue, pwValue, "/", onceValue, "", verifyValue)
@@ -46,6 +43,15 @@ class JsoupUtil {
                 dataList.add(PageCell(title, node, topicInfo, commentCount))
             }
             return dataList
+        }
+
+        fun getLoginResult(response: String): LoginResult {
+            val doc = Jsoup.parse(response)
+            val problems = doc.getElementsByClass("problem").select("li").eachText()
+            val td = doc.select("div#Rightbar").select("div.box")[0].getElementsByTag("td")[0]
+            val userName = td.getElementsByTag("a")[0].attr("href").replace("/member/", "")
+            val avatarUrl = "http:" + td.getElementsByTag("img")[0].attr("src")
+            return LoginResult(problems, userName, avatarUrl)
         }
     }
 }
