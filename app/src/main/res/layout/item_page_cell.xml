@@ -39,9 +39,10 @@
                 android:id="@+id/node"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="3dp"
+                android:padding="5dp"
                 android:text="@{cell.node}"
-                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:background="@drawable/node_background"
                 android:textColor="@color/design_default_color_background"
                 android:shadowColor="@color/design_default_color_on_secondary"
                 app:layout_constraintTop_toTopOf="@id/avatar"
@@ -49,14 +50,22 @@
                 tools:text="Node"/>
 
         <TextView
+                android:id="@+id/label_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comment"
+                app:layout_constraintStart_toStartOf="@id/title"
+                app:layout_constraintTop_toBottomOf="@id/title"/>
+
+        <TextView
                 android:id="@+id/comment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
                 android:text="@{cell.commentCount}"
-                app:layout_constraintTop_toTopOf="@id/avatar"
-                app:layout_constraintEnd_toStartOf="@id/node"
-                app:layout_constraintBottom_toBottomOf="@id/node"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintTop_toTopOf="@id/label_comment"
+                app:layout_constraintStart_toEndOf="@id/label_comment"
                 tools:text="99"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

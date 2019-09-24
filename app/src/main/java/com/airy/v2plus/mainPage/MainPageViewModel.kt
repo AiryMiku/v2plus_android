@@ -9,7 +9,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 
 /**
@@ -23,10 +22,10 @@ class MainPageViewModel :ViewModel() {
     val mainPageList: MutableLiveData<List<PageCell>> = MutableLiveData()
 
     init {
-        getMainPageData()
+//        getMainPageData()
     }
 
-    fun getMainPageData() {
+    private fun getMainPageData() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val result = MainPageRepository.getInstance().getMainPage()

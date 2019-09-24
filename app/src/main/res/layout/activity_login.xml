@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
@@ -47,7 +47,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                    <AutoCompleteTextView
+                    <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/user_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -63,10 +63,11 @@
                         android:id="@+id/password_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         app:layout_constraintStart_toStartOf="@id/user_name_layout"
                         app:layout_constraintTop_toBottomOf="@id/user_name_layout">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -83,10 +84,11 @@
                         android:id="@+id/verify_code_layout"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         app:layout_constraintStart_toStartOf="@id/password_layout"
                         app:layout_constraintTop_toBottomOf="@id/password_layout">
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/verify_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -108,13 +110,12 @@
                         app:layout_constraintTop_toTopOf="@id/verify_code_layout"
                         app:layout_constraintBottom_toBottomOf="@id/verify_code_layout"/>
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                         android:id="@+id/submit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="150dp"
                         android:layout_marginBottom="20dp"
-                        android:background="@drawable/button_login_background"
                         android:text="Login"
                         android:onClick="@{() -> viewModel.doLogin(userName, password, verifyCode)}"
                         app:layout_constraintTop_toBottomOf="@id/verify_code_layout"
@@ -123,9 +124,9 @@
                         app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
                 android:id="@+id/day_night_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

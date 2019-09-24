@@ -175,6 +175,7 @@ class PersistentCookieStore(context: Context): CookieStore {
      * @return decoded cookie or null if exception occured
      */
     private fun decodeCookie(cookieString: String): HttpCookie? {
+        Log.d(LOG_TAG, "Cookie-> $cookieString\nLength->${cookieString.length}")
         val bytes = hexStringToByteArray(cookieString)
         val byteArrayInputStream = ByteArrayInputStream(bytes)
         var cookie: HttpCookie? = null

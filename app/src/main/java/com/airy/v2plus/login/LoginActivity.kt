@@ -1,15 +1,15 @@
 package com.airy.v2plus.login
 
 import android.util.Log
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.R
 import com.airy.v2plus.base.BaseActivity
 import com.airy.v2plus.databinding.ActivityLoginBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class LoginActivity : BaseActivity(), View.OnClickListener{
+class LoginActivity : BaseActivity(){
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
@@ -22,7 +22,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         binding.viewModel = viewModel
         binding.dayNightSwitch.setOnClickListener {
-
+            MaterialAlertDialogBuilder(this)
+                .setTitle("你好啊")
+                .setMessage("嗯嗯知道了")
+                .setPositiveButton("好的") {
+                        dialog, which ->
+                }.show()
         }
         subscribeUI()
     }
@@ -36,14 +41,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener{
         viewModel.picBitmap.observe(this, Observer {
             binding.verifyCodeImage.setImageBitmap(it)
         })
-    }
-
-    override fun onClick(v: View?) {
-        when(v?.id) {
-            R.id.day_night_switch -> {
-                
-            }
-        }
     }
 
 }

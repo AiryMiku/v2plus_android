@@ -1,26 +1,58 @@
-<resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="actionBarStyle">@style/CustomActionBar</item>
-    </style>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--action bar theme-->
-    <style name="CustomActionBar" parent="Widget.AppCompat.ActionBar.Solid">
+    <style name="CustomActionBar" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
         <item name="titleTextStyle">@style/CustomActionBarTitle</item>
     </style>
     
-    <style name="CustomActionBarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+    <style name="CustomActionBarTitle" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="LightToolbarStyle" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:titleTextColor">@color/black</item>
+    </style>
+
+    <style name="Widget.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:paddingEnd">8dp</item>
+        <item name="titleTextAppearance">@style/TextAppearance.ToolbarTitle</item>
+    </style>
+
+    <style name="TextAppearance.ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
+    </style>
+
+    <style name="AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="buttonBarStyle">@style/AlertDialog.ButtonBar</item>
+        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="dialogPreferredPadding">@dimen/dialogPreferredPadding</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/AlertDialog.TitleText</item>
+        <item name="materialAlertDialogTitlePanelStyle">@style/AlertDialog.TitlePanel</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/AlertDialog.BodyText</item>
+    </style>
+
+    <style name="AlertDialog.TitleText" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:fontFamily">@font/google_sans_medium</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/google_sans_medium</item>
+    </style>
+
+    <style name="AlertDialog.TitlePanel" parent="MaterialAlertDialog.MaterialComponents.Title.Panel">
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingTop">?attr/dialogPreferredPadding</item>
+    </style>
+
+    <style name="AlertDialog.BodyText" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+    </style>
+
+    <style name="AlertDialog.ButtonBar" parent ="@style/Widget.AppCompat.ButtonBar.AlertDialog">
+        <item name="android:paddingBottom">@dimen/margin_small</item>
+        <item name="android:paddingTop">@dimen/margin_small</item>
     </style>
 
 </resources>
