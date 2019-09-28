@@ -33,6 +33,8 @@ class V2plusRetrofitService {
                 val original = chain.request()
 
                 val request = original.newBuilder()
+                    .addHeader("Origin", "https://www.v2ex.com")
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
                     .header("Host", "www.v2ex.com")
                     .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36")
                     .build()
@@ -46,16 +48,10 @@ class V2plusRetrofitService {
             this.level = HttpLoggingInterceptor.Level.BODY
         }
 
+
         @JvmField
         val loginClient: OkHttpClient = OkHttpClient.Builder()
-            .cookieJar(
-                CustomCookieJar(
-                    CookieManager(
-                        persistentCookieStore,
-                        CookiePolicy.ACCEPT_ALL
-                    )
-                )
-            )
+            .cookieJar(CustomCookieJar(CookieManager(persistentCookieStore, CookiePolicy.ACCEPT_ALL)))
             .addInterceptor(headersInterceptor)
             .addInterceptor(loggingInterceptor)
             .build()

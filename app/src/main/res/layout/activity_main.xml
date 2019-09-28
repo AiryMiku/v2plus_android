@@ -7,6 +7,7 @@
     <data/>
 
     <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -18,27 +19,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
-                <include layout="@layout/toolbar"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/list"
+                <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_page_cell"/>
+                        android:layout_height="match_parent">
 
-            </LinearLayout>
+                    <include layout="@layout/toolbar"/>
+
+                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                            android:id="@+id/refresh"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/list"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                tools:listitem="@layout/item_page_cell"/>
+
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                </LinearLayout>
+
 
         </FrameLayout>
 
 
 
         <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navigation_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"

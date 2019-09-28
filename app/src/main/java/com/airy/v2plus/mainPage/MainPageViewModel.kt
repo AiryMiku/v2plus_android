@@ -22,10 +22,10 @@ class MainPageViewModel :ViewModel() {
     val mainPageList: MutableLiveData<List<PageCell>> = MutableLiveData()
 
     init {
-//        getMainPageData()
+        getMainPageData()
     }
 
-    private fun getMainPageData() {
+    fun getMainPageData() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val result = MainPageRepository.getInstance().getMainPage()

@@ -7,7 +7,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.R
 import com.airy.v2plus.base.BaseActivity
 import com.airy.v2plus.databinding.ActivityLoginBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.airy.v2plus.util.showLong
+import com.airy.v2plus.util.showShort
 
 class LoginActivity : BaseActivity(){
 
@@ -21,14 +22,6 @@ class LoginActivity : BaseActivity(){
     override fun initViews() {
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         binding.viewModel = viewModel
-        binding.dayNightSwitch.setOnClickListener {
-            MaterialAlertDialogBuilder(this)
-                .setTitle("你好啊")
-                .setMessage("嗯嗯知道了")
-                .setPositiveButton("好的") {
-                        dialog, which ->
-                }.show()
-        }
         subscribeUI()
     }
 
@@ -40,6 +33,15 @@ class LoginActivity : BaseActivity(){
 
         viewModel.picBitmap.observe(this, Observer {
             binding.verifyCodeImage.setImageBitmap(it)
+        })
+
+        viewModel.loginResult.observe(this, Observer {
+            if (it.problems.isNotEmpty()) {
+                showLong(it.problems.toString())
+            } else {
+                showShort("Login Success")
+                finish()
+            }
         })
     }
 

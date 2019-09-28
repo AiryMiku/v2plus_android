@@ -3,6 +3,7 @@ package com.airy.v2plus.repository
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.airy.v2plus.api.V2plusRetrofitService
+import com.airy.v2plus.bean.custom.LoginResult
 import com.airy.v2plus.login.LoginKey
 import com.airy.v2plus.util.JsoupUtil
 
@@ -34,7 +35,8 @@ class LoginRepository {
         return BitmapFactory.decodeStream(response)
     }
 
-    suspend fun login(params: HashMap<String, String>): String {
-        return V2plusRetrofitService.getV2plusApi().postLogin(params)
+    suspend fun login(params: HashMap<String, String>): LoginResult {
+        val response = V2plusRetrofitService.getV2plusApi().postLogin(params)
+        return JsoupUtil.getLoginResult(response)
     }
 }

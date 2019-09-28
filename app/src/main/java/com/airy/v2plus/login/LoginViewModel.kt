@@ -3,6 +3,7 @@ package com.airy.v2plus.login
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.airy.v2plus.bean.custom.LoginResult
 import com.airy.v2plus.repository.LoginRepository
 import com.airy.v2plus.util.isBlankOrEmpty
 import com.airy.v2plus.util.showLong
@@ -24,10 +25,10 @@ class LoginViewModel: ViewModel() {
 
     val loginKey: MutableLiveData<LoginKey> = MutableLiveData()
     val picBitmap: MutableLiveData<Bitmap> = MutableLiveData()
-    val loginResult: MutableLiveData<String> = MutableLiveData()
+    val loginResult: MutableLiveData<LoginResult> = MutableLiveData()
 
     init {
-//        requestLoginKey()
+        requestLoginKey()
     }
 
     fun requestLoginKey() {

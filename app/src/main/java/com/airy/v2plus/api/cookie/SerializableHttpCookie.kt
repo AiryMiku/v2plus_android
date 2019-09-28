@@ -13,14 +13,17 @@ import java.net.HttpCookie
  * Github: AiryMiku
  */
 
-class SerializableHttpCookie(@Transient private val mCookie: HttpCookie): Serializable {
-    private val SERIAL_VERSION_UID = 6374381323722046732L
+class SerializableHttpCookie(@Transient private val cookie: HttpCookie): Serializable {
+
+    companion object {
+        private const val serialVersionUID = 6374381323722046732L
+    }
 
     @Transient
     private var mClientCookie: HttpCookie? = null
 
-    fun  getmCookie(): HttpCookie {
-        var bestCookie: HttpCookie = mCookie
+    fun  getCookies(): HttpCookie {
+        var bestCookie: HttpCookie = cookie
         if (mClientCookie != null) {
             bestCookie = mClientCookie as HttpCookie
         }
@@ -29,17 +32,17 @@ class SerializableHttpCookie(@Transient private val mCookie: HttpCookie): Serial
 
     @Throws(IOException::class)
     private fun writeObject(out: ObjectOutputStream) {
-        out.writeObject(mCookie.name)
-        out.writeObject(mCookie.value)
-        out.writeObject(mCookie.comment)
-        out.writeObject(mCookie.commentURL)
-        out.writeObject(mCookie.domain)
-        out.writeLong(mCookie.maxAge)
-        out.writeObject(mCookie.path)
-        out.writeObject(mCookie.portlist)
-        out.writeInt(mCookie.version)
-        out.writeBoolean(mCookie.secure)
-        out.writeBoolean(mCookie.discard)
+        out.writeObject(cookie.name)
+        out.writeObject(cookie.value)
+        out.writeObject(cookie.comment)
+        out.writeObject(cookie.commentURL)
+        out.writeObject(cookie.domain)
+        out.writeLong(cookie.maxAge)
+        out.writeObject(cookie.path)
+        out.writeObject(cookie.portlist)
+        out.writeInt(cookie.version)
+        out.writeBoolean(cookie.secure)
+        out.writeBoolean(cookie.discard)
     }
 
     @Throws(IOException::class, ClassNotFoundException::class)
@@ -56,5 +59,9 @@ class SerializableHttpCookie(@Transient private val mCookie: HttpCookie): Serial
         mClientCookie!!.version = inputStream.readInt()
         mClientCookie!!.secure = inputStream.readBoolean()
         mClientCookie!!.discard = inputStream.readBoolean()
+    }
+
+    override fun toString(): String {
+        return mClientCookie.toString()
     }
 }

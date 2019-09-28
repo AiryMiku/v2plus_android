@@ -1,5 +1,6 @@
 package com.airy.v2plus.api.cookie
 
+import android.util.Log
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
@@ -21,6 +22,10 @@ import kotlin.collections.ArrayList
  */
 
 class CustomCookieJar(private val cookieHandler: CookieHandler): CookieJar {
+
+    companion object{
+        const val TAG = "CustomCookieJar"
+    }
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
         val headers: Map<String, List<String>> = Collections.emptyMap()
@@ -49,6 +54,7 @@ class CustomCookieJar(private val cookieHandler: CookieHandler): CookieJar {
         val cookieStrings = ArrayList<String>()
         for (cookie in cookies) {
             cookieStrings.add(cookie.toString())
+            Log.d(TAG, "cookie save from response->$cookie")
         }
         val multimap = singletonMap("Set-Cookie", cookieStrings)
         try {

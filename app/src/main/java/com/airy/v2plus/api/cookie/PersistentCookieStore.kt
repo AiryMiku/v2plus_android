@@ -22,16 +22,18 @@ import kotlin.experimental.and
  * Github: AiryMiku
  */
 
-class PersistentCookieStore(context: Context): CookieStore {
+class PersistentCookieStore(context: Context) : CookieStore {
 
     private val LOG_TAG = "PersistentCookieStore"
     private val COOKIE_PREFS = "CookiePrefsFile"
     private val COOKIE_NAME_PREFIX = "cookie_"
-    private val mCookiePrefs: SharedPreferences = context.getSharedPreferences(COOKIE_PREFS, Context.MODE_PRIVATE)
-    private var mCookies: HashMap<String, ConcurrentHashMap<String, HttpCookie>> = HashMap()
+    private val mCookiePrefs: SharedPreferences
+    private var mCookies: HashMap<String, ConcurrentHashMap<String, HttpCookie>>
+
 
     init {
-        // Load any previously stored mCookies into the store
+        mCookiePrefs = context.getSharedPreferences(COOKIE_PREFS, Context.MODE_PRIVATE)
+        mCookies = HashMap()
         val prefsMap = mCookiePrefs.all
         for ((key, value) in prefsMap) {
             if (value != null && !(value as String).startsWith(COOKIE_NAME_PREFIX)) {
@@ -66,14 +68,11 @@ class PersistentCookieStore(context: Context): CookieStore {
         TokenCache.saveToken(cookie.value)
         // Save cookie into persistent store
         val prefsWriter = mCookiePrefs.edit()
-        prefsWriter.putString(
-            cookie.domain,
-            TextUtils.join(",", mCookies.get(cookie.domain)?.keys)
-        )
-        prefsWriter.putString(
-            COOKIE_NAME_PREFIX + cookie.name,
-            encodeCookie(SerializableHttpCookie(cookie))
-        )
+        prefsWriter.putString(cookie.domain, TextUtils.join(",", mCookies[cookie.domain]?.keys))
+        Log.d(LOG_TAG, "cookie keys->${mCookies[cookie.domain]?.keys}")
+        val encodeCookie = encodeCookie(SerializableHttpCookie(cookie))
+        prefsWriter.putString(COOKIE_NAME_PREFIX + cookie.name, encodeCookie)
+        Log.d(LOG_TAG, "encodeCookie-> $encodeCookie")
         prefsWriter.apply()
     }
 
@@ -117,7 +116,6 @@ class PersistentCookieStore(context: Context): CookieStore {
                 TextUtils.join(",", mCookies[uri.host]?.keys)
             )
             prefsWriter.apply()
-
             return true
         } else {
             return false
@@ -143,7 +141,6 @@ class PersistentCookieStore(context: Context): CookieStore {
             } catch (e: URISyntaxException) {
                 e.printStackTrace()
             }
-
         return ret
     }
 
@@ -175,19 +172,26 @@ class PersistentCookieStore(context: Context): CookieStore {
      * @return decoded cookie or null if exception occured
      */
     private fun decodeCookie(cookieString: String): HttpCookie? {
-        Log.d(LOG_TAG, "Cookie-> $cookieString\nLength->${cookieString.length}")
         val bytes = hexStringToByteArray(cookieString)
         val byteArrayInputStream = ByteArrayInputStream(bytes)
         var cookie: HttpCookie? = null
+        var objectInputStream: ObjectInputStream? = null
         try {
-            val objectInputStream = ObjectInputStream(byteArrayInputStream)
-            cookie = (objectInputStream.readObject() as SerializableHttpCookie).getmCookie()
+            objectInputStream = ObjectInputStream(byteArrayInputStream)
+            cookie = (objectInputStream.readObject() as SerializableHttpCookie).getCookies()
         } catch (e: IOException) {
             Log.d(LOG_TAG, "IOException in decodeCookie", e)
         } catch (e: ClassNotFoundException) {
             Log.d(LOG_TAG, "ClassNotFoundException in decodeCookie", e)
+        } finally {
+            if (objectInputStream != null) {
+                try {
+                    objectInputStream.close()
+                } catch (e: Exception) {
+                    Log.d(LOG_TAG, "Stream not closed in decodeCookie", e);
+                }
+            }
         }
-
         return cookie
     }
 
@@ -217,6 +221,8 @@ class PersistentCookieStore(context: Context): CookieStore {
      * @return decoded byte array
      */
     private fun hexStringToByteArray(hexString: String): ByteArray {
+        Log.d(LOG_TAG, "hexString->$hexString\n" +
+                "Length->${hexString.length}")
         var len = hexString.length
         var inHex = hexString
         if (len % 2 == 1) {
