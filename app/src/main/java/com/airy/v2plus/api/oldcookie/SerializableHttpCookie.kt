@@ -1,4 +1,4 @@
-package com.airy.v2plus.api.cookie
+package com.airy.v2plus.api.oldcookie
 
 import java.io.IOException
 import java.io.ObjectInputStream
@@ -64,4 +64,12 @@ class SerializableHttpCookie(@Transient private val cookie: HttpCookie): Seriali
     override fun toString(): String {
         return mClientCookie.toString()
     }
+
+
+//    override fun hashCode(): Int {
+//        val result = host != null ? host.hashCode() : 0;
+//        result = 31 * result   (name != null ? name.hashCode() : 0);
+//        result = 31 * result   (domain != null ? domain.hashCode() : 0);
+//        return result
+//    }
 }

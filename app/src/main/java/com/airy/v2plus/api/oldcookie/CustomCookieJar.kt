@@ -1,4 +1,4 @@
-package com.airy.v2plus.api.cookie
+package com.airy.v2plus.api.oldcookie
 
 import android.util.Log
 import okhttp3.Cookie
@@ -29,7 +29,7 @@ class CustomCookieJar(private val cookieHandler: CookieHandler): CookieJar {
 
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
         val headers: Map<String, List<String>> = Collections.emptyMap()
-        var cookieHeaders: Map<String, List<String>>? = null
+        val cookieHeaders: Map<String, List<String>>
         try {
             cookieHeaders = cookieHandler.get(url.toUri(), headers)
         } catch (e: IOException) {

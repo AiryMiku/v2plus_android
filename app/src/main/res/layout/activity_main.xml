@@ -11,8 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            tools:context=".mainPage.MainActivity"
-            tools:openDrawer="start">
+            tools:context=".mainPage.MainActivity">
 
         <FrameLayout
                 android:id="@+id/main"
@@ -21,6 +20,7 @@
 
 
                 <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
@@ -40,11 +40,7 @@
 
                     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
                 </LinearLayout>
-
-
         </FrameLayout>
-
-
 
         <com.google.android.material.navigation.NavigationView
                 android:id="@+id/navigation_view"

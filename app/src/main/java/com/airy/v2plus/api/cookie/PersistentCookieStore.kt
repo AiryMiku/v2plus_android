@@ -4,153 +4,196 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextUtils
 import android.util.Log
+import okhttp3.Cookie
+import okhttp3.HttpUrl
+import okhttp3.internal.and
 import java.io.*
-import java.net.CookieStore
-import java.net.HttpCookie
-import java.net.URI
-import java.net.URISyntaxException
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.experimental.and
 
 
 /**
- * Created by Airy on 2019-09-16
+ * Created by Airy on 2019-10-10
  * Mail: a532710813@gmail.com
  * Github: AiryMiku
  */
+@JvmSuppressWildcards
+class PersistentCookieStore(context: Context): CookieStore {
 
-class PersistentCookieStore(context: Context) : CookieStore {
-
-    private val LOG_TAG = "PersistentCookieStore"
+    private val TAG = "PersistentCookieStore"
     private val COOKIE_PREFS = "CookiePrefsFile"
+    private val HOST_NAME_PREFIX = "host_"
     private val COOKIE_NAME_PREFIX = "cookie_"
-    private val mCookiePrefs: SharedPreferences
-    private var mCookies: HashMap<String, ConcurrentHashMap<String, HttpCookie>>
-
+    private var cookies: HashMap<String, ConcurrentHashMap<String, Cookie>>
+    private var  cookiePrefs: SharedPreferences
+    private var omitNonPersistentCookies: Boolean = false
 
     init {
-        mCookiePrefs = context.getSharedPreferences(COOKIE_PREFS, Context.MODE_PRIVATE)
-        mCookies = HashMap()
-        val prefsMap = mCookiePrefs.all
-        for ((key, value) in prefsMap) {
-            if (value != null && !(value as String).startsWith(COOKIE_NAME_PREFIX)) {
-                val cookieNames = TextUtils.split(value, ",")
-                for (name in cookieNames) {
-                    val encodedCookie = mCookiePrefs.getString(COOKIE_NAME_PREFIX + name, null)
-                    if (encodedCookie != null) {
-                        val decodedCookie = decodeCookie(encodedCookie)
-                        if (decodedCookie != null) {
-                            if (!mCookies.containsKey(key))
-                                mCookies[key] = ConcurrentHashMap()
-                            mCookies[key]?.put(name, decodedCookie)
-                        }
-                    }
-                }
+        cookiePrefs = context.getSharedPreferences(COOKIE_PREFS, Context.MODE_PRIVATE)
+        cookies = HashMap()
 
+        val tempCookieMap = HashMap<Any, Any>(cookiePrefs.all)
+        for (key in tempCookieMap.keys) {
+            if (key !is String || !key.contains(HOST_NAME_PREFIX)) {
+                continue
+            }
+            val cookieNames = tempCookieMap[key] as String
+            if (TextUtils.isEmpty(cookieNames)) {
+                continue
+            }
+            if (!cookies.containsKey(key)) {
+                cookies[key] = ConcurrentHashMap()
+            }
+
+            val cookieNameArray = cookieNames.split(",")
+            for (name in cookieNameArray) {
+                val encodeCookie = cookiePrefs.getString(COOKIE_NAME_PREFIX + name, null)
+                    ?: continue
+
+                val decodeCookie = decodeCookie(encodeCookie)
+                if (decodeCookie != null) {
+                    cookies[key]?.put(name, decodeCookie)
+                }
             }
         }
-    }
+        tempCookieMap.clear()
 
-    override fun add(uri: URI, cookie: HttpCookie) {
-        // Save cookie into local store, or remove if expired
-        if (!cookie.hasExpired()) {
-            if (!mCookies.containsKey(cookie.domain))
-                mCookies[cookie.domain] = ConcurrentHashMap()
-            mCookies[cookie.domain]?.put(cookie.name, cookie)
-        } else {
-            if (mCookies.containsKey(cookie.domain))
-                mCookies[cookie.domain]?.remove(cookie.domain)
+        clearExpired()
+    }
+    override fun add(httpUrl: HttpUrl, cookie: Cookie) {
+        if (omitNonPersistentCookies && !cookie.persistent) {
+            return
         }
 
-        TokenCache.saveToken(cookie.value)
-        // Save cookie into persistent store
-        val prefsWriter = mCookiePrefs.edit()
-        prefsWriter.putString(cookie.domain, TextUtils.join(",", mCookies[cookie.domain]?.keys))
-        Log.d(LOG_TAG, "cookie keys->${mCookies[cookie.domain]?.keys}")
-        val encodeCookie = encodeCookie(SerializableHttpCookie(cookie))
-        prefsWriter.putString(COOKIE_NAME_PREFIX + cookie.name, encodeCookie)
-        Log.d(LOG_TAG, "encodeCookie-> $encodeCookie")
+        val name = cookieName(cookie)
+        val hostKey = hostName(httpUrl)
+
+        if (!cookies.containsKey(hostKey)) {
+            cookies[hostKey] = ConcurrentHashMap()
+        }
+        cookies[hostKey]?.put(name, cookie)
+
+        // save into persistent store
+        val prefsWriter = cookiePrefs.edit()
+        prefsWriter.putString(hostKey, TextUtils.join(",", cookies[hostKey]!!.keys))
+        prefsWriter.putString(COOKIE_NAME_PREFIX + name, encodeCookie(SerializableCookie(cookie)))
         prefsWriter.apply()
     }
 
-    private fun getCookieToken(cookie: HttpCookie): String {
-        return cookie.name + cookie.domain
+    override fun add(httpUrl: HttpUrl, cookies: List<Cookie>) {
+        for (cookie in cookies) {
+            if (isCookieExpired(cookie)) {
+                continue
+            }
+            add(httpUrl, cookie)
+        }
     }
 
-    override operator fun get(uri: URI): List<HttpCookie> {
-        val ret = ArrayList<HttpCookie>()
-        for (key in mCookies.keys) {
-            if (uri.host.contains(key)) {
-                mCookies[key]?.values?.let {
-                    ret.addAll(it.toList())
-                }
-            }
+    override fun getCookies(httpUrl: HttpUrl): List<Cookie> {
+        return get(hostName(httpUrl))
+    }
+
+    override fun getAllCookies(): List<Cookie> {
+        val result = ArrayList<Cookie>()
+        for (hostKey in cookies.keys) {
+            result.addAll(get(hostKey))
         }
-        return ret
+        return result
+    }
+
+    override fun remove(httpUrl: HttpUrl, cookie: Cookie): Boolean {
+        return remove(hostName(httpUrl), cookie)
     }
 
     override fun removeAll(): Boolean {
-        val prefsWriter = mCookiePrefs.edit()
+        val prefsWriter = cookiePrefs.edit()
         prefsWriter.clear()
         prefsWriter.apply()
-        mCookies.clear()
+        cookies.clear()
         return true
     }
 
+    private fun remove(hostKey: String, cookie: Cookie): Boolean {
+        val name = cookieName(cookie)
+        if (cookies.containsKey(hostKey) && cookies[hostKey]?.containsKey(name)!!) {
+            cookies[hostKey]?.remove(name)
 
-    override fun remove(uri: URI, cookie: HttpCookie): Boolean {
-        val name = getCookieToken(cookie)
-
-        if (mCookies.containsKey(uri.host) && mCookies[uri.host]!!.containsKey(name)) {
-            mCookies[uri.host]?.remove(name)
-
-            val prefsWriter = mCookiePrefs.edit()
-            if (mCookiePrefs.contains(COOKIE_NAME_PREFIX + name)) {
-                prefsWriter.remove(COOKIE_NAME_PREFIX + name)
-            }
-            prefsWriter.putString(
-                uri.host,
-                TextUtils.join(",", mCookies[uri.host]?.keys)
-            )
+            val prefsWriter = cookiePrefs.edit()
+            prefsWriter.remove(COOKIE_NAME_PREFIX + name)
+            prefsWriter.putString(hostKey, TextUtils.join(",", cookies[hostKey]?.keys))
             prefsWriter.apply()
             return true
+        }
+        return false
+    }
+
+    // get cookies
+    private fun get(hostKey: String): List<Cookie> {
+        val result = ArrayList<Cookie>()
+
+        if (cookies.containsKey(hostKey)) {
+            val tempCookies = cookies[hostKey]?.values
+
+            if (tempCookies != null) {
+                for (cookie in tempCookies) {
+                    if (isCookieExpired(cookie)) {
+                        remove(hostKey, cookie)
+                    } else {
+                        result.add(cookie)
+                    }
+                }
+            }
+
+        }
+        return result
+    }
+
+    private fun clearExpired() {
+        val prefsWriter = cookiePrefs.edit()
+
+        for (key in cookies.keys) {
+            var changeFlag = false
+
+            for (entry in cookies[key]!!.entries) {
+                val name = entry.key
+                val cookie = entry.value
+                if (isCookieExpired(cookie)) {
+                    cookies[key]?.remove(name)
+                    prefsWriter.remove(COOKIE_NAME_PREFIX + name)
+                    changeFlag = true
+                }
+            }
+
+            if (changeFlag) {
+                prefsWriter.putString(key, TextUtils.join(",", cookies.keys))
+            }
+        }
+        prefsWriter.apply()
+    }
+
+    private fun setOmitNonPersistentCookies(omitNonPersistentCookies: Boolean) {
+        this.omitNonPersistentCookies = omitNonPersistentCookies
+    }
+
+    private fun isCookieExpired(cookie: Cookie): Boolean {
+        return cookie.expiresAt < System.currentTimeMillis()
+    }
+
+    private fun hostName(httpUrl: HttpUrl): String {
+        return if (httpUrl.host.startsWith(HOST_NAME_PREFIX)) {
+            httpUrl.host
         } else {
-            return false
+            HOST_NAME_PREFIX + httpUrl.host
         }
     }
 
-    override fun getCookies(): List<HttpCookie> {
-        val ret = ArrayList<HttpCookie>()
-        for (key in mCookies.keys) {
-            mCookies[key]?.let {
-                ret.addAll(it.values)
-                Log.d(LOG_TAG, key + " : " + mCookies.keys)
-            }
-        }
-        return ret
+    private fun cookieName(cookie: Cookie): String {
+        return cookie.name + cookie.domain
     }
 
-    override fun getURIs(): List<URI> {
-        val ret = ArrayList<URI>()
-        for (key in mCookies.keys)
-            try {
-                ret.add(URI(key))
-            } catch (e: URISyntaxException) {
-                e.printStackTrace()
-            }
-        return ret
-    }
-
-    /**
-     * Serializes Cookie object into String
-     *
-     * @param cookie cookie to be encoded, can be null
-     * @return cookie encoded as String
-     */
-    private fun encodeCookie(cookie: SerializableHttpCookie?): String? {
+    private fun encodeCookie(cookie: SerializableCookie?): String? {
         if (cookie == null)
             return null
         val os = ByteArrayOutputStream()
@@ -158,83 +201,49 @@ class PersistentCookieStore(context: Context) : CookieStore {
             val outputStream = ObjectOutputStream(os)
             outputStream.writeObject(cookie)
         } catch (e: IOException) {
-            Log.d(LOG_TAG, "IOException in encodeCookie", e)
+            Log.d(TAG, "IOException in encodeCookie", e)
             return null
         }
 
         return byteArrayToHexString(os.toByteArray())
     }
 
-    /**
-     * Returns cookie decoded from cookie string
-     *
-     * @param cookieString string of cookie as returned from http request
-     * @return decoded cookie or null if exception occured
-     */
-    private fun decodeCookie(cookieString: String): HttpCookie? {
+    private fun decodeCookie(cookieString: String): Cookie? {
         val bytes = hexStringToByteArray(cookieString)
         val byteArrayInputStream = ByteArrayInputStream(bytes)
-        var cookie: HttpCookie? = null
-        var objectInputStream: ObjectInputStream? = null
+        var cookie: Cookie? = null
         try {
-            objectInputStream = ObjectInputStream(byteArrayInputStream)
-            cookie = (objectInputStream.readObject() as SerializableHttpCookie).getCookies()
+            val objectInputStream = ObjectInputStream(byteArrayInputStream)
+            cookie = (objectInputStream.readObject() as SerializableCookie).getCookie()
         } catch (e: IOException) {
-            Log.d(LOG_TAG, "IOException in decodeCookie", e)
+            Log.d(TAG, "IOException in decodeCookie", e)
         } catch (e: ClassNotFoundException) {
-            Log.d(LOG_TAG, "ClassNotFoundException in decodeCookie", e)
-        } finally {
-            if (objectInputStream != null) {
-                try {
-                    objectInputStream.close()
-                } catch (e: Exception) {
-                    Log.d(LOG_TAG, "Stream not closed in decodeCookie", e);
-                }
-            }
+            Log.d(TAG, "ClassNotFoundException in decodeCookie", e);
         }
         return cookie
     }
 
-    /**
-     * Using some super basic byte array <-> hex conversions so we don't have to rely on any
-     * large Base64 libraries. Can be overridden if you like!
-     *
-     * @param bytes byte array to be converted
-     * @return string containing hex values
-     */
     private fun byteArrayToHexString(bytes: ByteArray): String {
         val sb = StringBuilder(bytes.size * 2)
-        for (element in bytes) {
-            val v = element.and(0xff.toByte())
+        for (b in bytes) {
+            val v = b.and(0xff)
             if (v < 16) {
                 sb.append('0')
             }
-            sb.append(Integer.toHexString(v.toInt()))
+            sb.append(Integer.toHexString(v))
         }
         return sb.toString().toUpperCase(Locale.US)
     }
 
-    /**
-     * Converts hex values from strings to byte array
-     *
-     * @param hexString string of hex-encoded values
-     * @return decoded byte array
-     */
     private fun hexStringToByteArray(hexString: String): ByteArray {
-        Log.d(LOG_TAG, "hexString->$hexString\n" +
-                "Length->${hexString.length}")
-        var len = hexString.length
-        var inHex = hexString
-        if (len % 2 == 1) {
-            inHex = "0$hexString"
-            len = inHex.length
-        }
-        val b = ByteArray(len / 2)
+        val len = hexString.length
+        val bytes = ByteArray(len.shr(1))
         var i = 0
-        while (i < len) {
-            b[i / 2] = ((Character.digit(inHex[i], 16) shl 4) + Character.digit(inHex[i + 1], 16)).toByte()
-            i += 2
+        while (i<len) {
+            bytes[i.shr(1)] = (Character.digit(hexString[i], 16).shl(4) +
+                        Character.digit(hexString[i + 1], 16)).toByte()
+            i+=2
         }
-        return b
+        return bytes
     }
 }

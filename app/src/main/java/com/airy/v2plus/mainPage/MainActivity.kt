@@ -30,8 +30,8 @@ class MainActivity :BaseActivity() {
 
         binding.refresh.let {
             it.setOnRefreshListener {
-                mViewModel.getMainPageData()
                 it.isRefreshing = true
+                mViewModel.getMainPageData()
             }
         }
 
