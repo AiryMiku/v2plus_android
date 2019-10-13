@@ -22,6 +22,7 @@ import kotlin.experimental.and
  * Github: AiryMiku
  */
 
+@JvmSuppressWildcards
 class PersistentCookieStore(context: Context) : CookieStore {
 
     private val LOG_TAG = "PersistentCookieStore"

@@ -48,9 +48,17 @@ class JsoupUtil {
         fun getLoginResult(response: String): LoginResult {
             val doc = Jsoup.parse(response)
             val problems = doc.getElementsByClass("problem").select("li").eachText()
-            val td = doc.select("div#Rightbar").select("div.box")[0].getElementsByTag("td")[0]
-            val userName = td.getElementsByTag("a")[0].attr("href").replace("/member/", "")
-            val avatarUrl = "http:" + td.getElementsByTag("img")[0].attr("src")
+            val td = doc.select("div#Rightbar").select("div.box")[0].getElementsByTag("td").first()
+            val userName = if (td != null ) {
+                td.getElementsByTag("a")[0].attr("href").replace("/member/", "")
+            } else {
+                ""
+            }
+            val avatarUrl = if (td != null) {
+                "http:" + td.getElementsByTag("img")[0].attr("src")
+            } else {
+                ""
+            }
             return LoginResult(problems, userName, avatarUrl)
         }
     }
