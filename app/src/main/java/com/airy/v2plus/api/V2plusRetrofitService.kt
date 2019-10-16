@@ -2,16 +2,14 @@ package com.airy.v2plus.api
 
 import com.airy.v2plus.AppConfigurations
 import com.airy.v2plus.V2plusApp.Companion.getAppContext
-import com.airy.v2plus.api.oldcookie.CustomCookieJar
-import com.airy.v2plus.api.oldcookie.PersistentCookieStore
+import com.airy.v2plus.api.cookie.CookieJarImpl
+import com.airy.v2plus.api.cookie.PersistentCookieStore
 import com.airy.v2plus.util.StringConverter
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import java.net.CookieManager
-import java.net.CookiePolicy
 
 
 /**
@@ -50,7 +48,7 @@ class V2plusRetrofitService {
 
         @JvmField
         val loginClient: OkHttpClient = OkHttpClient.Builder()
-            .cookieJar(CustomCookieJar(CookieManager(persistentCookieStore, CookiePolicy.ACCEPT_ALL)))
+            .cookieJar(CookieJarImpl(persistentCookieStore))
             .addInterceptor(headersInterceptor)
             .addInterceptor(loggingInterceptor)
             .build()

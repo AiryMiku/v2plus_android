@@ -27,12 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="10dp">
+        <include layout="@layout/toolbar"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout"
@@ -41,6 +36,7 @@
                     android:layout_margin="20dp">
 
                 <com.google.android.material.textfield.TextInputLayout
+                        style="@style/CustomInputLayoutStyle"
                         android:id="@+id/user_name_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -60,10 +56,12 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                        style="@style/CustomInputLayoutStyle"
                         android:id="@+id/password_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        app:counterTextColor="@color/colorAccent"
                         app:layout_constraintStart_toStartOf="@id/user_name_layout"
                         app:layout_constraintTop_toBottomOf="@id/user_name_layout">
 
@@ -81,10 +79,13 @@
 
 
                 <com.google.android.material.textfield.TextInputLayout
+                        style="@style/CustomInputLayoutStyle"
                         android:id="@+id/verify_code_layout"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        app:boxStrokeColor="@color/colorAccent"
+                        app:hintTextColor="@color/colorAccent"
                         app:layout_constraintStart_toStartOf="@id/password_layout"
                         app:layout_constraintTop_toBottomOf="@id/password_layout">
 
@@ -111,12 +112,14 @@
                         app:layout_constraintBottom_toBottomOf="@id/verify_code_layout"/>
 
                 <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:id="@+id/submit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="150dp"
                         android:layout_marginBottom="20dp"
                         android:text="Login"
+                        android:textColor="@color/colorAccent"
                         android:onClick="@{() -> viewModel.doLogin(userName, password, verifyCode)}"
                         app:layout_constraintTop_toBottomOf="@id/verify_code_layout"
                         app:layout_constraintStart_toStartOf="parent"
@@ -124,6 +127,5 @@
                         app:layout_constraintBottom_toBottomOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </layout>

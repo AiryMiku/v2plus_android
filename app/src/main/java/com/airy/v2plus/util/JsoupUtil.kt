@@ -1,5 +1,6 @@
 package com.airy.v2plus.util
 
+import android.util.Log
 import com.airy.v2plus.bean.custom.LoginResult
 import com.airy.v2plus.bean.custom.PageCell
 import com.airy.v2plus.login.LoginKey
@@ -15,7 +16,10 @@ import org.jsoup.Jsoup
  */
 
 class JsoupUtil {
+
     companion object {
+
+        private const val TAG = "JsoupUtil"
 
         fun getLoginValue(response: String): LoginKey {
             val body = Jsoup.parse(response)
@@ -35,6 +39,7 @@ class JsoupUtil {
                 val title = item.getElementsByClass("item_title").select("a[href]").text()
                 val node = item.getElementsByClass("node").text()
                 val topicInfo = item.getElementsByClass("topic_info").select("span").text().split(" • ")
+                Log.d(TAG, "TopicInfo: $topicInfo")
                 val commentCount = if (item.getElementsByClass("count_livid").select("a[href]").text().isNullOrBlank()) {
                     "0"
                 } else {

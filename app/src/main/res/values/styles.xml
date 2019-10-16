@@ -55,4 +55,10 @@
         <item name="android:paddingTop">@dimen/margin_small</item>
     </style>
 
+    <!--Material Input Layout Style-->
+    <style name="CustomInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/colorAccent</item>
+        <item name="hintTextColor">@color/colorAccent</item>
+    </style>
+
 </resources>
