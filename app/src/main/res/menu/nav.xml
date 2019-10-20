@@ -3,11 +3,11 @@
 
     <group>
         <item
-                android:id="@+id/one"
-                android:title="one" />
+                android:id="@+id/latest"
+                android:title="Latest" />
         <item
-                android:id="@+id/two"
-                android:title="two" />
+                android:id="@+id/Hottest"
+                android:title="Hottest" />
         <item
                 android:id="@+id/three"
                 android:title="three" />
