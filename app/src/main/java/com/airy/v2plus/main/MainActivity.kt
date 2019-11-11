@@ -1,4 +1,4 @@
-package com.airy.v2plus.mainPage
+package com.airy.v2plus.main
 
 import android.content.Intent
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -20,6 +20,7 @@ class MainActivity :BaseActivity() {
     private lateinit var avatarImageView: CircleImageView
     private lateinit var viewPage: ViewPager2
     private lateinit var navigation: BottomNavigationView
+    private lateinit var toolbar: Toolbar
 
     override fun setContentView() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -29,7 +30,7 @@ class MainActivity :BaseActivity() {
         viewModel = ViewModelProviders.of(this).get(MainPageViewModel::class.java)
 
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar = findViewById(R.id.toolbar)
         val actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         binding.drawer.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
@@ -38,21 +39,35 @@ class MainActivity :BaseActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
         }
 
-        viewPage = binding.viewPage
-//        viewPage.adapter =
+        viewPage = binding.viewPager
+        viewPage.adapter = FragmentViewPagerAdapter(this)
+        viewPage.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when(position) {
+                    0 -> toolbar.title = "Home"
+                    1 -> toolbar.title = "Message"
+                    2 -> toolbar.title = "Node"
+                }
+            }
+        })
+
         navigation = binding.bottomNavigation
         navigation.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.Home -> {
                     viewPage.currentItem = 0
+                    toolbar.title = "Home"
                     true
                 }
                 R.id.Message -> {
                     viewPage.currentItem = 1
+                    toolbar.title = "Message"
                     true
                 }
                 R.id.Node -> {
                     viewPage.currentItem = 2
+                    toolbar.title = "Node"
                     true
                 }
                 else -> false

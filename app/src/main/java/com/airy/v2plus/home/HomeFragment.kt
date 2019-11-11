@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.airy.v2plus.databinding.HomeFragmentBinding
-import com.airy.v2plus.mainPage.PageCellsAdapter
+import com.airy.v2plus.main.PageCellsAdapter
 
-class HomeFragment : Fragment() {
+class HomeFragment: Fragment() {
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -31,7 +32,6 @@ class HomeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        // TODO: Use the ViewModel
 
         mAdapter = PageCellsAdapter {}
         binding.list.adapter = mAdapter
@@ -39,10 +39,19 @@ class HomeFragment : Fragment() {
 
         binding.refresh.let {
             it.setOnRefreshListener {
-                it.isRefreshing = true
                 viewModel.getMainPageData()
+                binding.refresh.isRefreshing = true
             }
         }
+
+        subscribeUI()
+    }
+
+    private fun subscribeUI() {
+        viewModel.mainPageList.observe(this, Observer {
+            mAdapter.submitList(it)
+            binding.refresh.isRefreshing = false
+        })
     }
 
 }

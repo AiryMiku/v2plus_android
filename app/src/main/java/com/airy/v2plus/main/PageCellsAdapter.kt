@@ -1,12 +1,12 @@
-package com.airy.v2plus.mainPage
+package com.airy.v2plus.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.airy.v2plus.databinding.ItemPageCellBinding
 import com.airy.v2plus.bean.custom.PageCell
+import com.airy.v2plus.databinding.ItemPageCellBinding
 
 
 /**

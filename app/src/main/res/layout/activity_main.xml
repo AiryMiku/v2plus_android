@@ -11,8 +11,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                tools:openDrawer="start"
-                tools:context=".mainPage.MainActivity">
+                tools:context=".main.MainActivity">
 
             <LinearLayout
                     android:id="@+id/main"
@@ -23,10 +22,11 @@
                 <include layout="@layout/toolbar"/>
 
                     <androidx.viewpager2.widget.ViewPager2
-                            android:id="@+id/view_page"
+                            android:id="@+id/view_pager"
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
 
                     <com.google.android.material.bottomnavigation.BottomNavigationView
                             android:id="@+id/bottom_navigation"

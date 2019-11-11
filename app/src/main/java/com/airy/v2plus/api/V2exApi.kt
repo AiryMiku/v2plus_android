@@ -20,27 +20,27 @@ import retrofit2.http.Query
 interface V2exApi {
 
     @GET("topics/hot.json")     //每天热门
-    fun getTopicHot(): List<Topic>
+    suspend fun getTopicHot(): List<Topic>
 
     @GET("topics/latest.json")     //每天最新
-    fun getTopicLatest(): List<Topic>
+    suspend fun getTopicLatest(): List<Topic>
 
     @GET("nodes/show.json")     //节点详情
-    fun getNodeDetial(@Query("name") name: String): Node
+    suspend fun getNodeDetial(@Query("name") name: String): Node
 
     @GET("nodes/all.json")     //获取所有节点
-    fun getAllNode(): List<Node>
+    suspend fun getAllNode(): List<Node>
 
     @GET("topics/show.json")       //根据节点名获取所有帖子
-    fun getTopicsByNodeName(@Query("node_name") node_name: String): List<Topic>
+    suspend fun getTopicsByNodeName(@Query("node_name") node_name: String): List<Topic>
 
     @GET("replies/show.json")      //帖子回复
-    fun getReplise(@Query("topic_id") topic_id: Int): List<Reply>
+    suspend fun getReplise(@Query("topic_id") topic_id: Int): List<Reply>
 
     @GET("members/show.json")     //获取用户详情
-    fun getUserInfo(@Query("username") username: String): User
+    suspend fun getUserInfo(@Query("username") username: String): User
 
     @GET("topics/show.json")   //用户发的帖子
-    fun getTopicsByUserName(@Query("username") username: String): List<Topic>
+    suspend fun getTopicsByUserName(@Query("username") username: String): List<Topic>
 
 }

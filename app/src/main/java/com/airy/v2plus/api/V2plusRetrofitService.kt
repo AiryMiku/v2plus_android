@@ -5,6 +5,7 @@ import com.airy.v2plus.V2plusApp.Companion.getAppContext
 import com.airy.v2plus.api.cookie.CookieJarImpl
 import com.airy.v2plus.api.cookie.PersistentCookieStore
 import com.airy.v2plus.util.StringConverter
+import com.airy.v2plus.util.showLong
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -45,11 +46,23 @@ class V2plusRetrofitService {
             this.level = HttpLoggingInterceptor.Level.BODY
         }
 
+        @JvmField
+        val errorInterceptor = object :Interceptor {
+            override fun intercept(chain: Interceptor.Chain): Response {
+                val response = chain.proceed(chain.request())
+                if (response.code != 200) {
+                    showLong(response.message)
+                }
+                return response
+            }
+        }
+
 
         @JvmField
         val loginClient: OkHttpClient = OkHttpClient.Builder()
             .cookieJar(CookieJarImpl(persistentCookieStore))
             .addInterceptor(headersInterceptor)
+            .addInterceptor(errorInterceptor)
             .addInterceptor(loggingInterceptor)
             .build()
 
