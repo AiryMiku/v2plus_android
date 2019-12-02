@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="cell" type="com.airy.v2plus.bean.custom.PageCell"/>
+        <variable name="cell" type="com.airy.v2plus.bean.custom.CellItem"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,12 +17,24 @@
 
         <ImageView
                 android:id="@+id/avatar"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@mipmap/ic_launcher_round"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:contentDescription="@string/avatar"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp"
+                android:text="@{cell.topicInfoList[1]}"
+                app:layout_constraintStart_toEndOf="@id/avatar"
+                app:layout_constraintTop_toTopOf="@id/avatar"
+                app:layout_constraintBottom_toBottomOf="@id/avatar"
+                tools:text="Airy"/>
 
         <TextView
                 android:id="@+id/title"

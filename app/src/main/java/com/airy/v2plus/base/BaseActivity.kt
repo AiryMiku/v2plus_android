@@ -3,7 +3,13 @@ package com.airy.v2plus.base
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.airy.v2plus.R
+import com.google.android.material.snackbar.Snackbar
 
 
 /**
@@ -14,9 +20,15 @@ import androidx.appcompat.app.AppCompatActivity
 
 abstract class BaseActivity: AppCompatActivity() {
 
+    protected var mToolbar: Toolbar? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView()
+        mToolbar = findViewById(R.id.toolbar)
+        mToolbar?.let {
+            setSupportActionBar(it)
+        }
         initViews()
     }
 
@@ -26,5 +38,28 @@ abstract class BaseActivity: AppCompatActivity() {
 
     fun navToActivity(context: Context, clazz: Class<*>) {
         startActivity(Intent(context, clazz))
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            android.R.id.home -> finish()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    fun makeToastShort(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun makeToastLong(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    fun makeSnackarShort(layout: View, message: String) {
+        Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    fun makeSnackarLong(layout: View, message: String) {
+        Snackbar.make(layout, message, Snackbar.LENGTH_LONG).show()
     }
 }

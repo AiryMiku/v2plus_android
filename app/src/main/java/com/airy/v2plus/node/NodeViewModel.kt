@@ -14,10 +14,6 @@ class NodeViewModel : ViewModel() {
 
     val nodes: MutableLiveData<List<Node>> = MutableLiveData()
 
-    init {
-        getAllNode()
-    }
-
     fun getAllNode() {
         CoroutineScope(Dispatchers.IO).launch {
             try {

@@ -2,7 +2,7 @@ package com.airy.v2plus.util
 
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.airy.v2plus.V2plusApp.Companion.getAppContext
+import com.airy.v2plus.App.Companion.getAppContext
 
 
 /**

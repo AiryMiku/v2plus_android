@@ -1,7 +1,7 @@
 package com.airy.v2plus.util
 
 import android.widget.Toast
-import com.airy.v2plus.V2plusApp.Companion.getAppContext
+import com.airy.v2plus.App.Companion.getAppContext
 
 
 /**

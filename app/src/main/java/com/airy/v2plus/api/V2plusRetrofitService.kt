@@ -1,7 +1,8 @@
 package com.airy.v2plus.api
 
-import com.airy.v2plus.AppConfigurations
-import com.airy.v2plus.V2plusApp.Companion.getAppContext
+import com.airy.v2plus.App.Companion.getAppContext
+import com.airy.v2plus.BuildConfig
+import com.airy.v2plus.Config
 import com.airy.v2plus.api.cookie.CookieJarImpl
 import com.airy.v2plus.api.cookie.PersistentCookieStore
 import com.airy.v2plus.util.StringConverter
@@ -42,11 +43,6 @@ class V2plusRetrofitService {
         }
 
         @JvmField
-        val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-            this.level = HttpLoggingInterceptor.Level.BODY
-        }
-
-        @JvmField
         val errorInterceptor = object :Interceptor {
             override fun intercept(chain: Interceptor.Chain): Response {
                 val response = chain.proceed(chain.request())
@@ -59,18 +55,26 @@ class V2plusRetrofitService {
 
 
         @JvmField
-        val loginClient: OkHttpClient = OkHttpClient.Builder()
-            .cookieJar(CookieJarImpl(persistentCookieStore))
-            .addInterceptor(headersInterceptor)
-            .addInterceptor(errorInterceptor)
-            .addInterceptor(loggingInterceptor)
-            .build()
+        val client: OkHttpClient = OkHttpClient.Builder().let {
+            if (BuildConfig.DEBUG) {
+                val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+                    this.level = HttpLoggingInterceptor.Level.BODY
+                }
+                it.addInterceptor(loggingInterceptor)
+            }
+            it.cookieJar(CookieJarImpl(persistentCookieStore))
+            it.addInterceptor(headersInterceptor)
+            it.addInterceptor(errorInterceptor)
+            it.build()
+        }
+
+
 
         @JvmField
         val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(AppConfigurations.BASE_URL)
+            .baseUrl(Config.BASE_URL)
             .addConverterFactory(StringConverter())
-            .client(loginClient)    // add log
+            .client(client)
             .build()
 
         @JvmField

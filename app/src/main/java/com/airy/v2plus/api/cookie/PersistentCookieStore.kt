@@ -27,7 +27,7 @@ class PersistentCookieStore(context: Context): CookieStore {
     private val HOST_NAME_PREFIX = "host_"
     private val COOKIE_NAME_PREFIX = "cookie_"
     private var cookies: HashMap<String, ConcurrentHashMap<String, Cookie>>
-    private var  cookiePrefs: SharedPreferences
+    private var cookiePrefs: SharedPreferences
     private var omitNonPersistentCookies: Boolean = false
 
     init {
@@ -62,6 +62,7 @@ class PersistentCookieStore(context: Context): CookieStore {
 
         clearExpired()
     }
+
     override fun add(httpUrl: HttpUrl, cookie: Cookie) {
         if (omitNonPersistentCookies && !cookie.persistent) {
             return
@@ -218,7 +219,7 @@ class PersistentCookieStore(context: Context): CookieStore {
         } catch (e: IOException) {
             Log.d(TAG, "IOException in decodeCookie", e)
         } catch (e: ClassNotFoundException) {
-            Log.d(TAG, "ClassNotFoundException in decodeCookie", e);
+            Log.d(TAG, "ClassNotFoundException in decodeCookie", e)
         }
         return cookie
     }

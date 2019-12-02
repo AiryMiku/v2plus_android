@@ -16,7 +16,7 @@ interface V2plusApi {
 
     // 获取登陆页面信息
     @GET("signin")
-    suspend fun login(): String
+    suspend fun getLoginResponse(): String
 
     // 获取验证码图片
     @GET("https://www.v2ex.com/_captcha")
@@ -37,5 +37,9 @@ interface V2plusApi {
 
 
     @GET("/")
-    suspend fun getMainPage(): String
+    suspend fun getMainPageResponse(): String
+
+    // 签到奖励,查看财富值
+    @GET("/mission/daily")
+    suspend fun getBalanceResponse(): String
 }

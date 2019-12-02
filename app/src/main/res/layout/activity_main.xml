@@ -13,29 +13,28 @@
                 android:fitsSystemWindows="true"
                 tools:context=".main.MainActivity">
 
-            <LinearLayout
-                    android:id="@+id/main"
-                    android:orientation="vertical"
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                 <include layout="@layout/toolbar"/>
 
-                    <androidx.viewpager2.widget.ViewPager2
-                            android:id="@+id/view_pager"
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"/>
+                <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-                    <com.google.android.material.bottomnavigation.BottomNavigationView
-                            android:id="@+id/bottom_navigation"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            app:menu="@menu/bottom_tab" />
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                        android:id="@+id/bottom_navigation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        app:menu="@menu/bottom_tab"
+                        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
 
-            </LinearLayout>
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
             <com.google.android.material.navigation.NavigationView
                     android:id="@+id/navigation_view"

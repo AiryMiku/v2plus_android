@@ -1,12 +1,14 @@
 package com.airy.v2plus.main
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.airy.v2plus.bean.custom.PageCell
+import com.airy.v2plus.bean.custom.CellItem
 import com.airy.v2plus.databinding.ItemPageCellBinding
+import com.bumptech.glide.Glide
 
 
 /**
@@ -15,15 +17,15 @@ import com.airy.v2plus.databinding.ItemPageCellBinding
  * Github: AiryMiku
  */
 
-class PageCellsAdapter(private val onClickCallback: (PageCell) -> Unit)
-    : ListAdapter<PageCell, PageCellsAdapter.ViewHolder>(TaskDiffCallback()){
+class CellItemsAdapter(private val context: Context?, private val onClickCallback: (CellItem) -> Unit = {})
+    : ListAdapter<CellItem, CellItemsAdapter.ViewHolder>(TaskDiffCallback()){
 
-    class TaskDiffCallback: DiffUtil.ItemCallback<PageCell>() {
-        override fun areItemsTheSame(oldItem: PageCell, newItem: PageCell): Boolean {
-            return oldItem == newItem
+    class TaskDiffCallback: DiffUtil.ItemCallback<CellItem>() {
+        override fun areItemsTheSame(oldItem: CellItem, newItem: CellItem): Boolean {
+            return oldItem.title == newItem.title
         }
 
-        override fun areContentsTheSame(oldItem: PageCell, newItem: PageCell): Boolean {
+        override fun areContentsTheSame(oldItem: CellItem, newItem: CellItem): Boolean {
             return oldItem == newItem
         }
     }
@@ -35,6 +37,9 @@ class PageCellsAdapter(private val onClickCallback: (PageCell) -> Unit)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cell = getItem(position)
         holder.binding.cell = cell
+        context?.let {
+            Glide.with(it).load("https:" + cell.avatarUrl).into(holder.binding.avatar)
+        }
         holder.binding.root.setOnClickListener {
             onClickCallback(cell)
         }

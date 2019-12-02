@@ -1,8 +1,7 @@
 package com.airy.v2plus.util
 
-import android.util.Log
+import com.airy.v2plus.bean.custom.CellItem
 import com.airy.v2plus.bean.custom.LoginResult
-import com.airy.v2plus.bean.custom.PageCell
 import com.airy.v2plus.login.LoginKey
 import org.jsoup.Jsoup
 
@@ -31,23 +30,42 @@ class JsoupUtil {
             return LoginKey(userNameValue, pwValue, "/", onceValue, "", verifyValue)
         }
 
-        fun getMainPage(response: String): List<PageCell> {
-            val dataList = ArrayList<PageCell>()
+        fun getMainPageItems(response: String): List<CellItem> {
+            val dataList = ArrayList<CellItem>()
             val doc = Jsoup.parse(response)
             val content = doc.getElementsByClass("cell item")
             for (item in content) {
+                val avatar = item.getElementsByClass("avatar").select("img").attr("src")
                 val title = item.getElementsByClass("item_title").select("a[href]").text()
                 val node = item.getElementsByClass("node").text()
                 val topicInfo = item.getElementsByClass("topic_info").select("span").text().split(" • ")
-                Log.d(TAG, "TopicInfo: $topicInfo")
                 val commentCount = if (item.getElementsByClass("count_livid").select("a[href]").text().isNullOrBlank()) {
                     "0"
                 } else {
                     item.getElementsByClass("count_livid").select("a[href]").text()
                 }
-                dataList.add(PageCell(title, node, topicInfo, commentCount))
+                dataList.add(CellItem(avatar, title, node, topicInfo, commentCount))
             }
             return dataList
+        }
+
+        /**
+         * @return if success, return a list contains like [Airy,6,节点收藏,2,主题收藏,2,特别关注]
+         */
+        fun getHomePageUserInfo(response: String): List<String> {
+            val doc = Jsoup.parse(response)
+            val rightBar = doc.getElementById("Rightbar")
+            if (rightBar.select("a").eachAttr("href").contains("/signin")) {
+                return emptyList()
+            }
+            val info = rightBar.getElementsByClass("cell").eachText()
+            return info.let {
+                if (it.size > 6) {
+                    it.subList(0, 6)
+                } else {
+                    emptyList()
+                }
+            }
         }
 
         fun getLoginResult(response: String): LoginResult {
@@ -65,6 +83,23 @@ class JsoupUtil {
                 ""
             }
             return LoginResult(problems, userName, avatarUrl)
+        }
+
+        /**
+         * @return like location.href = '/mission/daily/redeem?once=44064';
+         * and pick the once out if not contain, return empty string
+         */
+        fun getDailyMissionParam(response: String): String {
+            val doc = Jsoup.parse(response)
+            val main = doc.getElementById("Main")
+            val button = main.getElementsByAttributeValueMatching("onclick", "location.href = '/mission/daily/redeem\\?once=[0-9]+';")
+            val attr = button.attr("onclick")
+            val m = Regex("[0-9]+").find(attr)
+            return if (m == null) {
+                ""
+            } else {
+                return m.groupValues.first()
+            }
         }
     }
 }

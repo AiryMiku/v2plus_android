@@ -26,13 +26,17 @@ class LoginRepository {
     }
 
     suspend fun getLoginKey(): LoginKey {
-        val response = V2plusRetrofitService.getV2plusApi().login()
+        val response = V2plusRetrofitService.getV2plusApi().getLoginResponse()
         return JsoupUtil.getLoginValue(response)
     }
 
     suspend fun getVerifyPic(key: String): Bitmap {
         val response = V2plusRetrofitService.getV2plusApi().getVerifyPic(key).byteStream()
         return BitmapFactory.decodeStream(response)
+    }
+
+    suspend fun getLoginResponse(params: HashMap<String, String>): String {
+        return V2plusRetrofitService.getV2plusApi().postLogin(params)
     }
 
     suspend fun login(params: HashMap<String, String>): LoginResult {

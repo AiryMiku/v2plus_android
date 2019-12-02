@@ -11,10 +11,10 @@ import kotlin.properties.Delegates
  * Github: AiryMiku
  */
 
-class V2plusApp: Application() {
+class App: Application() {
 
     companion object {
-        private var instance: V2plusApp by Delegates.notNull()
+        private var instance: App by Delegates.notNull()
 
         fun getAppContext(): Context = instance
     }

@@ -34,11 +34,13 @@ class NodeFragment : Fragment() {
         binding.list.adapter = adapter
 
         binding.refresh.let {
+            it.isRefreshing = true
             it.setOnRefreshListener {
                 viewModel.getAllNode()
                 it.isRefreshing = true
             }
         }
+        viewModel.getAllNode()
 
         viewModel.nodes.observe(this, Observer {
             adapter.submitList(it)

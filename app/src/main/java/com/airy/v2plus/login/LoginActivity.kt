@@ -1,14 +1,11 @@
 package com.airy.v2plus.login
 
-import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.R
 import com.airy.v2plus.base.BaseActivity
 import com.airy.v2plus.databinding.ActivityLoginBinding
-import com.airy.v2plus.util.showLong
-import com.airy.v2plus.util.showShort
 
 class LoginActivity : BaseActivity(){
 
@@ -22,14 +19,17 @@ class LoginActivity : BaseActivity(){
     override fun initViews() {
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         binding.viewModel = viewModel
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Login"
+        binding.verifyCodeImage.setOnClickListener {
+            viewModel.requestLoginKey()
+            makeToastShort("Please try it again~")
+        }
         subscribeUI()
+
     }
 
     private fun subscribeUI() {
-        viewModel.loginKey.observe(this, Observer {
-            Log.d(this::class.java.simpleName, it.toString())
-            viewModel.requestVerifyBitmap(it.once)
-        })
 
         viewModel.picBitmap.observe(this, Observer {
             binding.verifyCodeImage.setImageBitmap(it)
@@ -37,9 +37,9 @@ class LoginActivity : BaseActivity(){
 
         viewModel.loginResult.observe(this, Observer {
             if (it.problems.isNotEmpty()) {
-                showLong(it.problems.toString())
+                makeToastLong(it.problems.toString())
             } else {
-                showShort("Login Success")
+                makeToastShort("Login Success")
                 finish()
             }
         })

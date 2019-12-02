@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.airy.v2plus.bean.custom.LoginResult
 import com.airy.v2plus.repository.LoginRepository
-import com.airy.v2plus.util.isBlankOrEmpty
-import com.airy.v2plus.util.showLong
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +35,7 @@ class LoginViewModel: ViewModel() {
                 val r = repository.getLoginKey()
                 withContext(Dispatchers.Main) {
                     loginKey.value = r
+                    requestVerifyBitmap(r.once)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -60,24 +59,15 @@ class LoginViewModel: ViewModel() {
     fun doLogin(userName: String, password: String, verifyCode: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                if (isBlankOrEmpty(userName, password, verifyCode)) {
-                    showLong("Args must not be blank or empty")
-                    return@launch
-                }
-                if (loginKey.value == null) {
-                    showLong("Login key is null")
-                    return@launch
-                } else {
-                    val params = HashMap<String, String>()
-                    params[loginKey.value!!.userName] = userName
-                    params[loginKey.value!!.password] = password
-                    params[loginKey.value!!.verifyCode] = verifyCode
-                    params["once"] = loginKey.value!!.once
-                    params["next"] = loginKey.value!!.next
-                    val r = repository.login(params)
-                    withContext(Dispatchers.Main) {
-                        loginResult.value = r
-                    }
+                val params = HashMap<String, String>()
+                params[loginKey.value!!.userName] = userName
+                params[loginKey.value!!.password] = password
+                params[loginKey.value!!.verifyCode] = verifyCode
+                params["once"] = loginKey.value!!.once
+                params["next"] = loginKey.value!!.next
+                val r = repository.login(params)
+                withContext(Dispatchers.Main) {
+                    loginResult.value = r
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
