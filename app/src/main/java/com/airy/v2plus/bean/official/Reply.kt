@@ -15,10 +15,10 @@ import java.io.Serializable
 data class Reply(
     val id: Int,
     val thanks: Int,
-    val content: String,
+    val content: String?,
     @SerializedName("content_render")
-    val contentHtml: String,
-    val publishTime: String,
+    val contentHtml: String?,
+    val publishTime: String?,
     val created: Long,
     @SerializedName("last_modified")
     val last_modified: Int,
@@ -27,14 +27,14 @@ data class Reply(
     data class MemberInReply(
         val id: Int,
         @SerializedName("user_name")
-        val userName: String,
-        val tagLine: String,
+        val userName: String?,
+        val tagLine: String?,
         @SerializedName("avatar_mini")
-        val avatarMiniUrl: String,
+        val avatarMiniUrl: String?,
         @SerializedName("avatar_normal")
-        val avatarNormalUrl: String,
+        val avatarNormalUrl: String?,
         @SerializedName("avatar_large")
-        val avatarLargeUrl: String
+        val avatarLargeUrl: String?
     ) : Serializable, Parcelable {
         constructor(source: Parcel) : this(
             source.readInt(),

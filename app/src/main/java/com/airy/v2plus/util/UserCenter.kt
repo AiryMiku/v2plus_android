@@ -12,7 +12,9 @@ import com.airy.v2plus.util.SharedPreferencesUtil.getSp
 class UserCenter {
 
     companion object {
-        const val KEY_USER_COOKIE_EXPIRED = "KEY_USER_COOKIE_EXPIRED"
+        private const val KEY_USER_COOKIE_EXPIRED = "KEY_USER_COOKIE_EXPIRED"
+        private const val KEY_USER_ID = "KEY_USER_ID"
+        private const val KEY_USER_NAME = "KEY_USER_NAME"
 
         fun isUserCookieExpired(): Boolean {
             return getSp().getBoolean(KEY_USER_COOKIE_EXPIRED, true)
@@ -20,6 +22,18 @@ class UserCenter {
 
         fun setUserCookieExpires(boolean: Boolean) {
             getSp().edit().putBoolean(KEY_USER_COOKIE_EXPIRED, boolean).apply()
+        }
+
+        fun getUserId(): String = getSp().getString(KEY_USER_ID, "") ?: ""
+
+        fun setUserId(userId: String) {
+            getSp().edit().putString(KEY_USER_ID, userId).apply()
+        }
+
+        fun getUserName(): String = getSp().getString(KEY_USER_NAME, "") ?: ""
+
+        fun setUserName(name: String) {
+            getSp().edit().putString(KEY_USER_NAME, name).apply()
         }
     }
 

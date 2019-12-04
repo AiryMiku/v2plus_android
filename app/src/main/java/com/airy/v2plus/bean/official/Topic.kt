@@ -14,16 +14,16 @@ import java.io.Serializable
 
 data class Topic(
     val id: Long,
-    val title: String,
-    val content: String,
+    val title: String?,
+    val content: String?,
     @SerializedName("content_rendered")
-    val contentHtml: String,
+    val contentHtml: String?,
     val created: Long,
-    val url: String,
+    val url: String?,
     @SerializedName("last_touched")
     val lastTouchedMemberId: Long,
     @SerializedName("last_reply_by")
-    val lastReplyMemberName: String,
+    val lastReplyMemberName: String?,
     @SerializedName("last_modified")
     val lastModifiedMemberId: Long,
     val replies: Long

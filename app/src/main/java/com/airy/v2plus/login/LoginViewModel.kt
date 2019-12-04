@@ -43,7 +43,7 @@ class LoginViewModel: ViewModel() {
         }
     }
 
-    fun requestVerifyBitmap(key: String) {
+    private fun requestVerifyBitmap(key: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val r = repository.getVerifyPic(key)

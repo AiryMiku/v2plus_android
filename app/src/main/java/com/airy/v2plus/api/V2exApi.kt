@@ -28,6 +28,13 @@ interface V2exApi {
     @GET("nodes/show.json")     //节点详情
     suspend fun getNodeDetial(@Query("name") name: String): Node
 
+    @GET("members/show.json")     //获取用户详情
+    suspend fun getUserById(@Query("id") id: String): User
+
+    @GET("members/show.json")     //获取用户详情
+    suspend fun getUserByName(@Query("username") username: String): User
+
+    // somebody found hide api
     @GET("nodes/all.json")     //获取所有节点
     suspend fun getAllNode(): List<Node>
 
@@ -35,10 +42,7 @@ interface V2exApi {
     suspend fun getTopicsByNodeName(@Query("node_name") node_name: String): List<Topic>
 
     @GET("replies/show.json")      //帖子回复
-    suspend fun getReplise(@Query("topic_id") topic_id: Int): List<Reply>
-
-    @GET("members/show.json")     //获取用户详情
-    suspend fun getUserInfo(@Query("username") username: String): User
+    suspend fun getReplise(@Query("topic_id") topic_id: String): List<Reply>
 
     @GET("topics/show.json")   //用户发的帖子
     suspend fun getTopicsByUserName(@Query("username") username: String): List<Topic>

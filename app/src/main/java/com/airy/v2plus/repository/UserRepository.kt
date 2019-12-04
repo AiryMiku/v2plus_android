@@ -21,7 +21,11 @@ class UserRepository {
         }
     }
 
-    suspend fun getUserInfo(userName: String): User {
-        return V2exRetrofitService.getV2exApi().getUserInfo(userName)
+    suspend fun getUserInfoByName(userName: String): User {
+        return V2exRetrofitService.getV2exApi().getUserByName(userName)
+    }
+
+    suspend fun getUserInfoById(userId: String): User {
+        return  V2exRetrofitService.getV2exApi().getUserById(userId)
     }
 }

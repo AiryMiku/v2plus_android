@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.airy.v2plus.databinding.HomeFragmentBinding
-import com.airy.v2plus.main.CellItemsAdapter
 import com.airy.v2plus.main.MainViewModel
 
 class HomeFragment: Fragment() {
@@ -22,7 +21,7 @@ class HomeFragment: Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: HomeFragmentBinding
-    private lateinit var mAdapter: CellItemsAdapter
+    private lateinit var adapter: CellItemsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,16 +34,15 @@ class HomeFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-
-        mAdapter = CellItemsAdapter(activity)
-        binding.list.adapter = mAdapter
+        adapter = CellItemsAdapter(activity)
+        binding.list.adapter = adapter
         binding.list.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
 
-        viewModel.getMainPageList()
+        viewModel.getMainPageResponse()
         binding.refresh.let {
             it.isRefreshing = true
             it.setOnRefreshListener {
-                viewModel.getMainPageList()
+                viewModel.getMainPageResponse()
                 binding.refresh.isRefreshing = true
             }
         }
@@ -54,7 +52,7 @@ class HomeFragment: Fragment() {
 
     private fun subscribeUI() {
         viewModel.mainListItem.observe(this, Observer {
-            mAdapter.submitList(it)
+            adapter.submitList(it)
             binding.refresh.isRefreshing = false
         })
     }

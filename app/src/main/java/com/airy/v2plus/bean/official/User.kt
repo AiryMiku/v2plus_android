@@ -14,24 +14,24 @@ import java.io.Serializable
 
 data class User(
     val id: Long,
-    val username: String,
-    val website: String,
-    val github: String,
-    val psn: String,
-    val btc: String,
-    val bio: String,
+    val username: String?,
+    val website: String?,
+    val github: String?,
+    val psn: String?,
+    val btc: String?,
+    val bio: String?,
     @SerializedName("tagline")
-    val tagLine: String,
-    val twitter: String,
-    val location: String,
+    val tagLine: String?,
+    val twitter: String?,
+    val location: String?,
     val created: Long,
     @SerializedName("avatar_mini")
-    val avatarMiniUrl: String,
+    val avatarMiniUrl: String?,
     @SerializedName("avatar_normal")
-    val avatarNormalUrl: String,
+    val avatarNormalUrl: String?,
     @SerializedName("avatar_large")
-    val avatarLargeUrl: String,
-    val url: String
+    val avatarLargeUrl: String?,
+    val url: String?
 ) : Serializable, Parcelable {
     constructor(source: Parcel) : this(
         source.readLong(),

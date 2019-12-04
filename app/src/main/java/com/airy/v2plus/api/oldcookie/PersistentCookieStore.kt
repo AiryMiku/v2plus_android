@@ -69,7 +69,7 @@ class PersistentCookieStore(context: Context) : CookieStore {
         TokenCache.saveToken(cookie.value)
         // Save cookie into persistent store
         val prefsWriter = mCookiePrefs.edit()
-        prefsWriter.putString(cookie.domain, TextUtils.join(",", mCookies[cookie.domain]?.keys))
+        prefsWriter.putString(cookie.domain, TextUtils.join(",", mCookies[cookie.domain]?.keys!!))
         Log.d(LOG_TAG, "cookie keys->${mCookies[cookie.domain]?.keys}")
         val encodeCookie = encodeCookie(SerializableHttpCookie(cookie))
         prefsWriter.putString(COOKIE_NAME_PREFIX + cookie.name, encodeCookie)
@@ -114,7 +114,7 @@ class PersistentCookieStore(context: Context) : CookieStore {
             }
             prefsWriter.putString(
                 uri.host,
-                TextUtils.join(",", mCookies[uri.host]?.keys)
+                TextUtils.join(",", mCookies[uri.host]?.keys!!)
             )
             prefsWriter.apply()
             return true

@@ -4,23 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:context=".login.LoginActivity">
 
-    <data>
-        <variable
-                name="viewModel"
-                type="com.airy.v2plus.login.LoginViewModel" />
-        
-        <variable
-                name="userName"
-                type="String" />
-        
-        <variable
-                name="password"
-                type="String" />
-
-        <variable
-                name="verifyCode"
-                type="String" />
-    </data>
+    <data/>
 
     <LinearLayout
             android:orientation="vertical"
@@ -29,11 +13,21 @@
 
         <include layout="@layout/toolbar"/>
 
+            <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/progress_bar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:indeterminate="true" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="20dp">
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                         style="@style/CustomInputLayoutStyle"
@@ -50,8 +44,7 @@
                             android:inputType="textEmailAddress"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:hint="User Name"
-                            android:text="@={userName}"/>
+                            android:hint="User Name"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,8 +65,7 @@
                             android:inputType="textPassword"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:hint="Password"
-                            android:text="@={password}"/>
+                            android:hint="Password"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,35 +88,31 @@
                             android:inputType="text"
                             android:maxLines="1"
                             android:singleLine="true"
-                            android:hint="Verfiy Code"
-                            android:text="@={verifyCode}"/>
+                            android:hint="Verfiy Code"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
 
                 <ImageView
                         android:id="@+id/verify_code_image"
-                        android:layout_width="160dp"
-                        android:layout_height="40dp"
+                        android:layout_width="180dp"
+                        android:layout_height="50dp"
                         android:layout_marginStart="10dp"
                         app:layout_constraintStart_toEndOf="@id/verify_code_layout"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/verify_code_layout"
                         app:layout_constraintBottom_toBottomOf="@id/verify_code_layout"/>
 
                 <com.google.android.material.button.MaterialButton
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:id="@+id/submit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="150dp"
-                        android:layout_marginBottom="20dp"
-                        android:text="Login"
-                        android:textColor="@color/colorAccent"
-                        android:onClick="@{() -> viewModel.doLogin(userName, password, verifyCode)}"
+                        android:layout_marginTop="100dp"
+                        android:text="Rock it~"
                         app:layout_constraintTop_toBottomOf="@id/verify_code_layout"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintEnd_toEndOf="parent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

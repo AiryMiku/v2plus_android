@@ -1,4 +1,4 @@
-package com.airy.v2plus.main
+package com.airy.v2plus.home
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -18,7 +18,9 @@ import com.bumptech.glide.Glide
  */
 
 class CellItemsAdapter(private val context: Context?, private val onClickCallback: (CellItem) -> Unit = {})
-    : ListAdapter<CellItem, CellItemsAdapter.ViewHolder>(TaskDiffCallback()){
+    : ListAdapter<CellItem, CellItemsAdapter.ViewHolder>(
+    TaskDiffCallback()
+){
 
     class TaskDiffCallback: DiffUtil.ItemCallback<CellItem>() {
         override fun areItemsTheSame(oldItem: CellItem, newItem: CellItem): Boolean {
@@ -31,7 +33,9 @@ class CellItemsAdapter(private val context: Context?, private val onClickCallbac
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemPageCellBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ViewHolder(
+            ItemPageCellBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

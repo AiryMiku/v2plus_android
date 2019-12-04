@@ -20,7 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseActivity: AppCompatActivity() {
 
-    protected var mToolbar: Toolbar? = null
+    private var mToolbar: Toolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +30,12 @@ abstract class BaseActivity: AppCompatActivity() {
             setSupportActionBar(it)
         }
         initViews()
+        loadData()
     }
 
     open fun initViews() {}
+
+    open fun loadData() {}
 
     abstract fun setContentView()
 

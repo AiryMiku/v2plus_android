@@ -123,7 +123,7 @@ class PersistentCookieStore(context: Context): CookieStore {
 
             val prefsWriter = cookiePrefs.edit()
             prefsWriter.remove(COOKIE_NAME_PREFIX + name)
-            prefsWriter.putString(hostKey, TextUtils.join(",", cookies[hostKey]?.keys))
+            prefsWriter.putString(hostKey, cookies[hostKey]?.keys?.let { TextUtils.join(",", it) })
             prefsWriter.apply()
             return true
         }

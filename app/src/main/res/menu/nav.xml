@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:showIn="navigation_view">
 
-    <group>
+    <group android:id="@+id/function" android:checkableBehavior="none">
         <item
-                android:id="@+id/latest"
+                android:id="@+id/Latest"
                 android:title="Latest" />
         <item
                 android:id="@+id/Hottest"
@@ -12,4 +14,20 @@
                 android:id="@+id/three"
                 android:title="three" />
     </group>
+
+    <group android:id="@+id/preference">
+        <item android:title="Preference">
+            <menu>
+                <item
+                        android:id="@+id/Setting"
+                        android:title="Setting" />
+            </menu>
+        </item>
+    </group>
+
+    <group android:id="@+id/about">
+        <item android:title="About"/>
+    </group>
+
+
 </menu>

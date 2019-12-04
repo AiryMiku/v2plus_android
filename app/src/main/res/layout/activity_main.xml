@@ -11,7 +11,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                tools:context=".main.MainActivity">
+                tools:context=".main.MainActivity"
+                tools:openDrawer="start">
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:layout_width="match_parent"
@@ -42,7 +43,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="start"
                     app:headerLayout="@layout/nav_head"
-                    app:menu="@menu/nav" />
+                    app:menu="@menu/nav"/>
 
         </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

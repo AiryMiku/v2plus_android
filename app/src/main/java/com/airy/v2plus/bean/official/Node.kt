@@ -15,23 +15,23 @@ import java.io.Serializable
 data class Node(
     val id: Long,
     val topics: Long,
-    val title: String,
-    val name: String,
-    val header: String,
+    val title: String?,
+    val name: String?,
+    val header: String?,
     @SerializedName("parent_node_name")
-    val parentNodeName: String,
+    val parentNodeName: String?,
     @SerializedName("title_alternative")
-    val titleAlternative: String,
+    val titleAlternative: String?,
     @SerializedName("avatar_mini")
-    val avatarMiniUrl: String,
+    val avatarMiniUrl: String?,
     @SerializedName("avatar_normal")
-    val avatarNormalUrl: String,
+    val avatarNormalUrl: String?,
     @SerializedName("avatar_large")
-    val avatarLargeUrl: String,
+    val avatarLargeUrl: String?,
     val starts: Long,
     val root: Boolean,
-    val url: String,
-    val footer: String
+    val url: String?,
+    val footer: String?
 ) : Serializable, Parcelable {
     constructor(source: Parcel) : this(
     source.readLong(),
