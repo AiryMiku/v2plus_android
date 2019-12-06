@@ -11,4 +11,5 @@ object Config {
 
     const val BASE_URL = "https://www.v2ex.com"
     const val BASE_API_URL = "$BASE_URL/api/"
+
 }

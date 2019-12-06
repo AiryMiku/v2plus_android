@@ -20,13 +20,13 @@ import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseActivity: AppCompatActivity() {
 
-    private var mToolbar: Toolbar? = null
+    private var toolbar: Toolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView()
-        mToolbar = findViewById(R.id.toolbar)
-        mToolbar?.let {
+        toolbar = findViewById(R.id.toolbar)
+        toolbar?.let {
             setSupportActionBar(it)
         }
         initViews()

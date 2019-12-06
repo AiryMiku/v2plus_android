@@ -24,10 +24,10 @@ class UserCenter {
             getSp().edit().putBoolean(KEY_USER_COOKIE_EXPIRED, boolean).apply()
         }
 
-        fun getUserId(): String = getSp().getString(KEY_USER_ID, "") ?: ""
+        fun getUserId(): Long = getSp().getLong(KEY_USER_ID, 0L)
 
-        fun setUserId(userId: String) {
-            getSp().edit().putString(KEY_USER_ID, userId).apply()
+        fun setUserId(userId: Long) {
+            getSp().edit().putLong(KEY_USER_ID, userId).apply()
         }
 
         fun getUserName(): String = getSp().getString(KEY_USER_NAME, "") ?: ""

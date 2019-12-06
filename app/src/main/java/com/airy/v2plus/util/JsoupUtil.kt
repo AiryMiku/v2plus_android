@@ -1,5 +1,6 @@
 package com.airy.v2plus.util
 
+import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.bean.custom.CellItem
 import com.airy.v2plus.bean.custom.LoginResult
 import com.airy.v2plus.login.LoginKey
@@ -100,6 +101,31 @@ class JsoupUtil {
             } else {
                 return m.groupValues.first()
             }
+        }
+
+        fun getDailyMissionRedeemResult(response: String) {
+
+        }
+
+        /**
+         * @return return a balance object
+         */
+        fun getBalance(response: String): Balance {
+            val doc = Jsoup.parse(response)
+            val money = doc.getElementById("money")
+            val balances = money.select("a[href]").first().text().split(" ")
+            when(balances.size) {
+                3 -> {
+                    return Balance(balances[0], balances[1], balances[2])
+                }
+                2 -> {
+                    return Balance(silver = balances[0], bronze =  balances[1])
+                }
+                1 -> {
+                    return Balance(bronze =  balances[0])
+                }
+            }
+            return Balance()
         }
     }
 }

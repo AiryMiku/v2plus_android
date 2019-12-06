@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.airy.v2plus.bean.custom.LoginResult
-import com.airy.v2plus.repository.LoginRepository
+import com.airy.v2plus.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 
 class LoginViewModel: ViewModel() {
 
-    private val repository = LoginRepository.getInstance()
+    private val userRepository = UserRepository.getInstance()
 
     val loginKey: MutableLiveData<LoginKey> = MutableLiveData()
     val picBitmap: MutableLiveData<Bitmap> = MutableLiveData()
@@ -32,7 +32,7 @@ class LoginViewModel: ViewModel() {
     fun requestLoginKey() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val r = repository.getLoginKey()
+                val r = userRepository.getLoginKey()
                 withContext(Dispatchers.Main) {
                     loginKey.value = r
                     requestVerifyBitmap(r.once)
@@ -46,7 +46,7 @@ class LoginViewModel: ViewModel() {
     private fun requestVerifyBitmap(key: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val r = repository.getVerifyPic(key)
+                val r = userRepository.getVerifyPic(key)
                 withContext(Dispatchers.Main) {
                     picBitmap.value = r
                 }
@@ -65,7 +65,7 @@ class LoginViewModel: ViewModel() {
                 params[loginKey.value!!.verifyCode] = verifyCode
                 params["once"] = loginKey.value!!.once
                 params["next"] = loginKey.value!!.next
-                val r = repository.login(params)
+                val r = userRepository.login(params)
                 withContext(Dispatchers.Main) {
                     loginResult.value = r
                 }

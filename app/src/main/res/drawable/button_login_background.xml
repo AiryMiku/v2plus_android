@@ -3,8 +3,8 @@
     <item android:bottom="8dp" android:right="8dp" android:top="8dp" android:left="8dp">
         <selector >
             <item android:state_pressed="false">
-                <shape android:shape="oval">
-<!--                    <corners android:radius="100dp"/>-->
+                <shape android:shape="rectangle">
+                    <corners android:radius="5dp"/>
                     <gradient
                             android:startColor="@color/mindPink"
                             android:endColor="@color/littlePurple"
@@ -15,8 +15,8 @@
             </item>
 
             <item android:state_pressed="true" android:useLevel="false">
-                <shape android:shape="oval">
-<!--                    <corners android:radius="100dp"/>-->
+                <shape android:shape="rectangle">
+                    <corners android:radius="5dp"/>
                     <gradient
                             android:startColor="@color/littlePurple"
                             android:endColor="@color/mindPink"

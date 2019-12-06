@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:showIn="navigation_view">
 
     <group android:id="@+id/function" android:checkableBehavior="none">
         <item
-                android:id="@+id/Latest"
+                android:id="@+id/latest"
                 android:title="Latest" />
         <item
-                android:id="@+id/Hottest"
+                android:id="@+id/hottest"
                 android:title="Hottest" />
-        <item
-                android:id="@+id/three"
-                android:title="three" />
     </group>
 
     <group android:id="@+id/preference">
         <item android:title="Preference">
             <menu>
                 <item
-                        android:id="@+id/Setting"
+                        android:id="@+id/setting"
                         android:title="Setting" />
+                <item android:id="@+id/night_mode"
+                        android:title="Night mode"
+                        app:actionViewClass="com.google.android.material.switchmaterial.SwitchMaterial"/>
             </menu>
         </item>
     </group>

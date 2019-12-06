@@ -4,8 +4,6 @@ import okhttp3.ResponseBody
 import retrofit2.http.*
 
 
-
-
 /**
  * Created by Airy on 2019-08-21
  * Mail: a532710813@gmail.com
@@ -15,11 +13,17 @@ import retrofit2.http.*
 interface V2plusApi {
 
     // 获取登陆页面信息
-    @GET("signin")
+    @GET("/signin")
     suspend fun getLoginResponse(): String
 
+    // 传入登陆信息进行登陆
+    @FormUrlEncoded
+    @Headers("Referer: https://www.v2ex.com/signin")
+    @POST("/signin")
+    suspend fun postLogin(@FieldMap hashMap: HashMap<String, String>): String
+
     // 获取验证码图片
-    @GET("https://www.v2ex.com/_captcha")
+    @GET("/_captcha")
     @Headers("referer: https://www.v2ex.com/signin",
         "accept: image/webp,image/apng,image/*,*/*;q=0.8",
         "accept-encoding: gzip, deflate, br",
@@ -29,17 +33,30 @@ interface V2plusApi {
         "sec-fetch-site: same-origin")
     suspend fun getVerifyPic(@Query("once") key: String): ResponseBody
 
-    // 传入登陆信息进行登陆
-    @FormUrlEncoded
-    @Headers("Referer: https://www.v2ex.com/signin")
-    @POST("signin")
-    suspend fun postLogin(@FieldMap hashMap: HashMap<String, String>): String
-
-
+    // 就是想拿个主页
     @GET("/")
     suspend fun getMainPageResponse(): String
 
-    // 签到奖励,查看财富值
+    @GET("/")
+    suspend fun getMainPageResponseByTab(@Query("tab") tab: String): String
+
+    // 默认第一页的page
+    @GET("/notifications")
+    suspend fun getNotificationsResponse(@Query("p") page: Int = 1): String
+
+    // 查看每日签到奖励页面
     @GET("/mission/daily")
+    suspend fun getDailyMissionResponse(): String
+
+    // 领取每日奖励
+    @GET("/mission/daily/redeem")
+    suspend fun getDailyMissionResponse(@Query("once") once: String): String
+
+    // 查看余额
+    @GET("/balance")
     suspend fun getBalanceResponse(): String
+
+    // 节点面板
+    @GET("/planes")
+    suspend fun getPlanesResponse(): String
 }

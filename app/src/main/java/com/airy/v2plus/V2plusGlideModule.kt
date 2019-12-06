@@ -11,5 +11,5 @@ import com.bumptech.glide.module.AppGlideModule
  */
 
 @GlideModule
-class v2plusGlideModule: AppGlideModule() {
+class V2plusGlideModule: AppGlideModule() {
 }

@@ -1,6 +1,7 @@
 package com.airy.v2plus.main
 
-import android.widget.TextView
+import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -10,27 +11,29 @@ import androidx.viewpager2.widget.ViewPager2
 import com.airy.v2plus.R
 import com.airy.v2plus.base.BaseActivity
 import com.airy.v2plus.databinding.ActivityMainBinding
+import com.airy.v2plus.databinding.NavHeaderBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
 import com.airy.v2plus.login.LoginActivity
 import com.airy.v2plus.util.UserCenter
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import de.hdodenhof.circleimageview.CircleImageView
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.switchmaterial.SwitchMaterial
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class MainActivity :BaseActivity() {
+class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val TAG = "MainActivity"
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var avatarImageView: CircleImageView
-    private lateinit var userNameTextView: TextView
+    private lateinit var contentBinding: ActivityMainBinding
     private lateinit var viewPage: ViewPager2
     private lateinit var navigation: BottomNavigationView
     private lateinit var toolbar: Toolbar
+    private var navHeaderBinding: NavHeaderBinding? = null
+    private lateinit var nightModeSwitch: SwitchMaterial
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onRequestUserInfoFromLoginEvent(e: RequestUserInfoFromLoginEvent) {
@@ -38,27 +41,49 @@ class MainActivity :BaseActivity() {
     }
 
     override fun setContentView() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        contentBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
     }
 
     override fun initViews() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
+        // action bar
         toolbar = findViewById(R.id.toolbar)
-        val actionBarDrawerToggle = ActionBarDrawerToggle(this, binding.drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
-        binding.drawer.addDrawerListener(actionBarDrawerToggle)
+        val actionBarDrawerToggle = ActionBarDrawerToggle(this, contentBinding.drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        contentBinding.drawer.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
-        avatarImageView = binding.navigationView.getHeaderView(0).findViewById(R.id.avatar)
-        userNameTextView = binding.navigationView.getHeaderView(0).findViewById(R.id.user_name)
-        avatarImageView.setOnClickListener {
-            navToActivity(this, LoginActivity::class.java)
+        // nav head
+        contentBinding.navigationView.getHeaderView(0).run {
+            DataBindingUtil.bind<NavHeaderBinding>(this)
+            navHeaderBinding = DataBindingUtil.getBinding(this)
         }
-        userNameTextView.setOnClickListener {
-            navToActivity(this, LoginActivity::class.java)
+        navHeaderBinding?.let {
+            it.avatar.setOnClickListener {
+                navToActivity(this, LoginActivity::class.java)
+            }
+            it.userName.setOnClickListener {
+                navToActivity(this, LoginActivity::class.java)
+            }
+            it.redeem.setOnClickListener {
+//                viewModel.getDailyMissionRedeem()
+            }
         }
 
-        viewPage = binding.viewPager
+        contentBinding.navigationView.setNavigationItemSelectedListener(this)
+
+        // night switch
+        nightModeSwitch = contentBinding.navigationView.menu.findItem(R.id.night_mode).actionView as SwitchMaterial
+        nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                makeToastShort("now is on")
+            } else {
+                makeToastShort("now is off")
+            }
+        }
+
+        // view page
+        viewPage = contentBinding.viewPager
         viewPage.adapter = FragmentViewPagerAdapter(this)
         viewPage.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
@@ -80,7 +105,8 @@ class MainActivity :BaseActivity() {
             }
         })
 
-        navigation = binding.bottomNavigation
+        // bottom navigation
+        navigation = contentBinding.bottomNavigation
         navigation.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.Home -> {
@@ -100,6 +126,7 @@ class MainActivity :BaseActivity() {
         }
 
         subscribeUI()
+
         EventBus.getDefault().register(this)
     }
 
@@ -114,14 +141,36 @@ class MainActivity :BaseActivity() {
 
     private fun subscribeUI() {
         viewModel.user.observe(this, Observer { u->
-            Glide.with(this).load("https:${u.avatarNormalUrl}").into(avatarImageView)
-            userNameTextView.text = u.username
-            avatarImageView.setOnClickListener {
-                makeToastShort("Hello ${u.username}~")
-            }
-            if (UserCenter.getUserName().isNotBlank()) {
-                UserCenter.setUserId(u.id.toString())
+            navHeaderBinding?.let {
+                Glide.with(this).load("https:${u.avatarNormalUrl}").into(it.avatar)
+                it.userName.text = u.username
+                it.avatar.setOnClickListener {
+                    makeToastShort("Hello ${u.username}~")
+                }
+                if (UserCenter.getUserName().isNotBlank()) {
+                    UserCenter.setUserId(u.id)
+                }
             }
         })
+        viewModel.balance.observe(this, Observer {
+            makeToastShort(it.toString())
+            Log.d(TAG, "onChanged")
+            navHeaderBinding?.balance = it
+        })
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.hottest -> {
+                makeToastShort("Developing~")
+            }
+            R.id.setting -> {
+                makeToastShort("Developing~")
+            }
+            R.id.about -> {
+                makeToastShort("Developing~")
+            }
+        }
+        return true
     }
 }

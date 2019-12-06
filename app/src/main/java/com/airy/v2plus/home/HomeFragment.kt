@@ -33,7 +33,7 @@ class HomeFragment: Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this.activity!!).get(MainViewModel::class.java)
         adapter = CellItemsAdapter(activity)
         binding.list.adapter = adapter
         binding.list.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))

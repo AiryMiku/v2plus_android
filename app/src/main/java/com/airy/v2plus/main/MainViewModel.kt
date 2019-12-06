@@ -3,6 +3,7 @@ package com.airy.v2plus.main
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.bean.custom.CellItem
 import com.airy.v2plus.bean.official.User
 import com.airy.v2plus.repository.MainRepository
@@ -23,11 +24,17 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel :ViewModel() {
 
-    private val mainPageResponse: MutableLiveData<String> = MutableLiveData()
+    private val userRepository = UserRepository.getInstance()
+
+    val mainPageResponse: MutableLiveData<String> = MutableLiveData()
 
     val user: MutableLiveData<User> = MutableLiveData()
 
     val mainListItem: MutableLiveData<List<CellItem>> = MutableLiveData()
+
+    val balance: MutableLiveData<Balance> = MutableLiveData()
+
+    val isRedeem: MutableLiveData<Boolean> = MutableLiveData()
 
 //    val pageUserInfo: MutableLiveData<List<String>> = MutableLiveData()
 
@@ -35,9 +42,11 @@ class MainViewModel :ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val r = MainRepository.getInstance().getMainPageResponse()
+                getMainPageList(r)
+                val br = JsoupUtil.getBalance(r)
                 withContext(Dispatchers.Main) {
                     mainPageResponse.value = r
-                    getMainPageList(r)
+                    balance.value = br
                 }
             } catch (e: Exception) {
                 Log.e("MainViewModel", e.message, e)
@@ -66,7 +75,7 @@ class MainViewModel :ViewModel() {
                 if (userName.isEmpty()) {
                     throw Exception("User name has not been saved!!!")
                 }
-                val result = UserRepository.getInstance().getUserInfoByName(userName)
+                val result = userRepository.getUserInfoByName(userName)
                 withContext(Dispatchers.Main) {
                     user.value = result
                 }
@@ -80,12 +89,43 @@ class MainViewModel :ViewModel() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val userId = UserCenter.getUserId()
-                if (userId.isEmpty()) {
+                if (userId == 0L) {
                     return@launch
                 }
-                val result = UserRepository.getInstance().getUserInfoById(userId)
+                val result = userRepository.getUserInfoById(userId)
                 withContext(Dispatchers.Main) {
                     user.value = result
+                }
+            } catch (e: Exception) {
+                Log.e("MainViewModel", e.message, e)
+            }
+        }
+    }
+
+    fun getDailyMissionRedeem() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = userRepository.getDailyMissionResponse()
+                val param = JsoupUtil.getDailyMissionParam(response)
+                if (param != "") {
+                    val result = userRepository.getDailyMissionRedeemResponse(param)
+                }
+
+                withContext(Dispatchers.Main) {
+
+                }
+            } catch (e: Exception) {
+                Log.e("MainViewModel", e.message, e)
+            }
+        }
+    }
+
+    fun getBalance(response: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val result = JsoupUtil.getBalance(response)
+                withContext(Dispatchers.Main) {
+                    balance.value = result
                 }
             } catch (e: Exception) {
                 Log.e("MainViewModel", e.message, e)

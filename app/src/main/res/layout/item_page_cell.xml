@@ -54,7 +54,7 @@
                 android:padding="5dp"
                 android:text="@{cell.node}"
                 android:gravity="center"
-                android:background="@drawable/node_background"
+                android:background="@drawable/borderless_round_rectangle"
                 android:textColor="@color/design_default_color_background"
                 android:shadowColor="@color/design_default_color_on_secondary"
                 app:layout_constraintTop_toTopOf="@id/avatar"
