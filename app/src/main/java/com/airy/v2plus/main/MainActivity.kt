@@ -1,6 +1,5 @@
 package com.airy.v2plus.main
 
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -153,8 +152,6 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             }
         })
         viewModel.balance.observe(this, Observer {
-            makeToastShort(it.toString())
-            Log.d(TAG, "onChanged")
             navHeaderBinding?.balance = it
         })
     }
