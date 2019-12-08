@@ -20,12 +20,18 @@
 
                 <include layout="@layout/toolbar"/>
 
-                <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/view_pager"
+                <FrameLayout
+                        android:id="@+id/main_container"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+                        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" >
+
+                    <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                </FrameLayout>
 
                 <com.google.android.material.bottomnavigation.BottomNavigationView
                         android:id="@+id/bottom_navigation"

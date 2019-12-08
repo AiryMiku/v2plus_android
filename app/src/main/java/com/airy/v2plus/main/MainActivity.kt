@@ -6,7 +6,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager.widget.ViewPager
 import com.airy.v2plus.R
 import com.airy.v2plus.base.BaseActivity
 import com.airy.v2plus.databinding.ActivityMainBinding
@@ -28,7 +28,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
     private lateinit var viewModel: MainViewModel
     private lateinit var contentBinding: ActivityMainBinding
-    private lateinit var viewPage: ViewPager2
+    private lateinit var viewPage: ViewPager
     private lateinit var navigation: BottomNavigationView
     private lateinit var toolbar: Toolbar
     private var navHeaderBinding: NavHeaderBinding? = null
@@ -83,13 +83,12 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
         // view page
         viewPage = contentBinding.viewPager
-        viewPage.adapter = FragmentViewPagerAdapter(this)
-        viewPage.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+        viewPage.adapter = FragmentViewPagerAdapter(supportFragmentManager)
+        viewPage.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                when(position) {
+                when (position) {
                     0 -> {
-                        toolbar.title = "Home"
+
                         navigation.selectedItemId = R.id.Home
                     }
                     1 -> {
@@ -103,12 +102,14 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 }
             }
         })
+        toolbar.title = "Home"
 
         // bottom navigation
         navigation = contentBinding.bottomNavigation
         navigation.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.Home -> {
+                    toolbar.title = "Home"
                     viewPage.currentItem = 0
                     true
                 }

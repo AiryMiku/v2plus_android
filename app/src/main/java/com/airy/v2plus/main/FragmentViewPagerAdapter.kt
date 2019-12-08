@@ -1,9 +1,10 @@
 package com.airy.v2plus.main
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import com.airy.v2plus.home.HomeFragment
+import com.airy.v2plus.message.MessageFragment
 import com.airy.v2plus.node.NodeFragment
 
 
@@ -13,19 +14,19 @@ import com.airy.v2plus.node.NodeFragment
  * Github: AiryMiku
  */
 
-class FragmentViewPagerAdapter(fa: FragmentActivity): FragmentStateAdapter(fa) {
+class FragmentViewPagerAdapter(fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    override fun getItemCount(): Int {
-        return 3
-    }
-
-    override fun createFragment(position: Int): Fragment {
+    override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> HomeFragment.newInstance()
-            1 -> HomeFragment.newInstance()
+            1 -> MessageFragment.newInstance()
             2 -> NodeFragment.newInstance()
             else -> HomeFragment.newInstance()
         }
+    }
+
+    override fun getCount(): Int {
+        return 3
     }
 
 
