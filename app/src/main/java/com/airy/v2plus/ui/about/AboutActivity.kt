@@ -1,7 +1,7 @@
-package com.airy.v2plus.about
+package com.airy.v2plus.ui.about
 
 import com.airy.v2plus.R
-import com.airy.v2plus.base.BaseActivity
+import com.airy.v2plus.ui.base.BaseActivity
 
 class AboutActivity : BaseActivity() {
 

@@ -1,4 +1,4 @@
-package com.airy.v2plus.base
+package com.airy.v2plus.ui.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

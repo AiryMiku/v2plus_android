@@ -1,4 +1,4 @@
-package com.airy.v2plus.main
+package com.airy.v2plus.ui.main
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -35,6 +35,8 @@ class MainViewModel :ViewModel() {
     val balance: MutableLiveData<Balance> = MutableLiveData()
 
     val isRedeem: MutableLiveData<Boolean> = MutableLiveData()
+
+    val redeemMessages: MutableLiveData<List<String>> = MutableLiveData()
 
 //    val pageUserInfo: MutableLiveData<List<String>> = MutableLiveData()
 
@@ -105,14 +107,18 @@ class MainViewModel :ViewModel() {
     fun getDailyMissionRedeem() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                val redeemResponse: String
                 val response = userRepository.getDailyMissionResponse()
                 val param = JsoupUtil.getDailyMissionParam(response)
-                if (param != "") {
-                    val result = userRepository.getDailyMissionRedeemResponse(param)
+                redeemResponse = if (param != "") {
+                    userRepository.getDailyMissionRedeemResponse(param)
+                } else {
+                    response
                 }
-
+                val redeemMessages = JsoupUtil.getDailyMissionRedeemResult(redeemResponse)
+                getBalance(redeemResponse)
                 withContext(Dispatchers.Main) {
-
+                    this@MainViewModel.redeemMessages.value = redeemMessages
                 }
             } catch (e: Exception) {
                 Log.e("MainViewModel", e.message, e)

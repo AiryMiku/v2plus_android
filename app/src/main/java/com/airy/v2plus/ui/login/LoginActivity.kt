@@ -1,13 +1,13 @@
-package com.airy.v2plus.login
+package com.airy.v2plus.ui.login
 
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.R
-import com.airy.v2plus.base.BaseActivity
 import com.airy.v2plus.databinding.ActivityLoginBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
+import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.util.UserCenter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.greenrobot.eventbus.EventBus

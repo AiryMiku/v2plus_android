@@ -1,4 +1,4 @@
-package com.airy.v2plus.home
+package com.airy.v2plus.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.airy.v2plus.databinding.HomeFragmentBinding
-import com.airy.v2plus.main.MainViewModel
+import com.airy.v2plus.ui.main.MainViewModel
 
 class HomeFragment: Fragment() {
 

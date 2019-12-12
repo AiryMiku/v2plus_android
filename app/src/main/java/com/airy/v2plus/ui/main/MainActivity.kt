@@ -1,4 +1,4 @@
-package com.airy.v2plus.main
+package com.airy.v2plus.ui.main
 
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -8,11 +8,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.airy.v2plus.R
-import com.airy.v2plus.base.BaseActivity
 import com.airy.v2plus.databinding.ActivityMainBinding
 import com.airy.v2plus.databinding.NavHeaderBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
-import com.airy.v2plus.login.LoginActivity
+import com.airy.v2plus.ui.base.BaseActivity
+import com.airy.v2plus.ui.login.LoginActivity
 import com.airy.v2plus.util.UserCenter
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -38,6 +38,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     fun onRequestUserInfoFromLoginEvent(e: RequestUserInfoFromLoginEvent) {
         viewModel.getUserInfoByName()
     }
+
 
     override fun setContentView() {
         contentBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -65,7 +66,8 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 navToActivity(this, LoginActivity::class.java)
             }
             it.redeem.setOnClickListener {
-//                viewModel.getDailyMissionRedeem()
+                makeToastShort("Processing...")
+                viewModel.getDailyMissionRedeem()
             }
         }
 
@@ -154,6 +156,9 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         })
         viewModel.balance.observe(this, Observer {
             navHeaderBinding?.balance = it
+        })
+        viewModel.redeemMessages.observe(this, Observer {
+            makeToastLong(it.toString())
         })
     }
 

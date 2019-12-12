@@ -1,4 +1,4 @@
-package com.airy.v2plus.node
+package com.airy.v2plus.ui.node
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

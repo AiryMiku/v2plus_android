@@ -1,4 +1,4 @@
-package com.airy.v2plus.message
+package com.airy.v2plus.ui.message
 
 import android.os.Bundle
 import android.view.LayoutInflater

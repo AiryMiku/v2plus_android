@@ -1,4 +1,4 @@
-package com.airy.v2plus.home
+package com.airy.v2plus.ui.home
 
 import androidx.lifecycle.ViewModel
 

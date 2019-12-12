@@ -42,4 +42,8 @@
 
     <style name="AppTheme" parent="Base.AppTheme"/>
 
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
 </resources>

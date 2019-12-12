@@ -1,4 +1,4 @@
-package com.airy.v2plus.node
+package com.airy.v2plus.ui.node
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

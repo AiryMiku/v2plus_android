@@ -1,4 +1,4 @@
-package com.airy.v2plus.login
+package com.airy.v2plus.ui.login
 
 import androidx.lifecycle.LiveData
 

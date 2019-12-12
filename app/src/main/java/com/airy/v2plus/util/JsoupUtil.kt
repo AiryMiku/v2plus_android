@@ -3,7 +3,7 @@ package com.airy.v2plus.util
 import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.bean.custom.CellItem
 import com.airy.v2plus.bean.custom.LoginResult
-import com.airy.v2plus.login.LoginKey
+import com.airy.v2plus.ui.login.LoginKey
 import org.jsoup.Jsoup
 
 
@@ -103,8 +103,23 @@ class JsoupUtil {
             }
         }
 
-        fun getDailyMissionRedeemResult(response: String) {
-
+        /**
+         * like this
+         * 请重新点击一次以领取每日登录奖励 message
+         * V2EX › 日常任务
+         * 每日登录奖励已领取
+         * 已连续登录 58 天
+         */
+        fun getDailyMissionRedeemResult(response: String): List<String> {
+            val doc = Jsoup.parse(response)
+            val main = doc.getElementById("Main")
+            val list = ArrayList<String>()
+//            val message = main.getElementsByClass("message").first().text()
+//            list.add(message)
+            main.getElementsByClass("cell").forEach {
+                list.add(it.text())
+            }
+            return list
         }
 
         /**
@@ -113,19 +128,45 @@ class JsoupUtil {
         fun getBalance(response: String): Balance {
             val doc = Jsoup.parse(response)
             val money = doc.getElementById("money")
-            val balances = money.select("a[href]").first().text().split(" ")
-            when(balances.size) {
+            val balanceArea = money.getElementsByClass("balance_area")
+            val balanceImgList = balanceArea.select("img[src]").eachAttr("src")
+            val balanceStrings = balanceArea.text().split(" ")
+            var gold = "0"
+            var silver = "0"
+            var bronze = "0"
+            when (balanceImgList.size) {
                 3 -> {
-                    return Balance(balances[0], balances[1], balances[2])
+                    gold = balanceStrings[0]
+                    silver = balanceStrings[1]
+                    bronze = balanceStrings[2]
                 }
                 2 -> {
-                    return Balance(silver = balances[0], bronze =  balances[1])
+                    if (balanceImgList[0].contains("golden") && balanceImgList[1].contains("silver")) {
+                        gold = balanceStrings[0]
+                        silver = balanceStrings[1]
+                    }
+                    if (balanceImgList[0].contains("golden") && balanceImgList[1].contains("bronze")) {
+                        gold = balanceStrings[0]
+                        bronze = balanceStrings[1]
+                    }
+                    if (balanceImgList[0].contains("silver") && balanceImgList[1].contains("bronze")) {
+                        silver = balanceStrings[0]
+                        bronze = balanceStrings[1]
+                    }
                 }
                 1 -> {
-                    return Balance(bronze =  balances[0])
+                    if (balanceImgList[0].contains("golden")) {
+                        gold = balanceStrings.first()
+                    }
+                    if (balanceImgList[0].contains("silver")) {
+                        silver = balanceStrings.first()
+                    }
+                    if (balanceImgList[0].contains("bronze")) {
+                        silver = balanceStrings.first()
+                    }
                 }
             }
-            return Balance()
+            return Balance(gold, silver, bronze)
         }
     }
 }

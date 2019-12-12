@@ -6,7 +6,7 @@ import com.airy.v2plus.api.V2exRetrofitService
 import com.airy.v2plus.api.V2plusRetrofitService
 import com.airy.v2plus.bean.custom.LoginResult
 import com.airy.v2plus.bean.official.User
-import com.airy.v2plus.login.LoginKey
+import com.airy.v2plus.ui.login.LoginKey
 import com.airy.v2plus.util.JsoupUtil
 
 
