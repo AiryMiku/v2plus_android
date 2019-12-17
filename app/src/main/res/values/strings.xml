@@ -3,4 +3,6 @@
     <string name="avatar">avatar</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="working">Working</string>
+    <string name="redeem_done">👌Redeem</string>
 </resources>

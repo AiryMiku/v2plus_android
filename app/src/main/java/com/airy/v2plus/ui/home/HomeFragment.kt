@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.airy.v2plus.databinding.HomeFragmentBinding
 import com.airy.v2plus.ui.main.MainViewModel
 
@@ -36,7 +35,6 @@ class HomeFragment: Fragment() {
         viewModel = ViewModelProviders.of(this.activity!!).get(MainViewModel::class.java)
         adapter = CellItemsAdapter(activity)
         binding.list.adapter = adapter
-        binding.list.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
 
         viewModel.getMainPageResponse()
         binding.refresh.let {

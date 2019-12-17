@@ -58,15 +58,16 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             DataBindingUtil.bind<NavHeaderBinding>(this)
             navHeaderBinding = DataBindingUtil.getBinding(this)
         }
-        navHeaderBinding?.let {
-            it.avatar.setOnClickListener {
+        navHeaderBinding?.let { header->
+            header.avatar.setOnClickListener {
                 navToActivity(this, LoginActivity::class.java)
             }
-            it.userName.setOnClickListener {
+            header.userName.setOnClickListener {
                 navToActivity(this, LoginActivity::class.java)
             }
-            it.redeem.setOnClickListener {
-                makeToastShort("Processing...")
+            header.redeem.setOnClickListener {
+//                makeToastShort("Processing...")
+                header.redeem.text = getString(R.string.working)
                 viewModel.getDailyMissionRedeem()
             }
         }
@@ -158,6 +159,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             navHeaderBinding?.balance = it
         })
         viewModel.redeemMessages.observe(this, Observer {
+            navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
             makeToastLong(it.toString())
         })
     }

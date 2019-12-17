@@ -13,7 +13,7 @@ import java.io.Serializable
  */
 
 data class Reply(
-    val id: Int,
+    val id: Long,
     val thanks: Int,
     val content: String?,
     @SerializedName("content_render")
@@ -21,11 +21,11 @@ data class Reply(
     val publishTime: String?,
     val created: Long,
     @SerializedName("last_modified")
-    val last_modified: Int,
+    val last_modified: Long,
     val member: MemberInReply
 ) : Serializable, Parcelable {
     data class MemberInReply(
-        val id: Int,
+        val id: Long,
         @SerializedName("user_name")
         val userName: String?,
         val tagLine: String?,
@@ -37,7 +37,7 @@ data class Reply(
         val avatarLargeUrl: String?
     ) : Serializable, Parcelable {
         constructor(source: Parcel) : this(
-            source.readInt(),
+            source.readLong(),
             source.readString(),
             source.readString(),
             source.readString(),
@@ -48,7 +48,7 @@ data class Reply(
         override fun describeContents() = 0
 
         override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-            writeInt(id)
+            writeLong(id)
             writeString(userName)
             writeString(tagLine)
             writeString(avatarMiniUrl)
@@ -69,26 +69,26 @@ data class Reply(
     }
 
     constructor(source: Parcel) : this(
-        source.readInt(),
+        source.readLong(),
         source.readInt(),
         source.readString(),
         source.readString(),
         source.readString(),
         source.readLong(),
-        source.readInt(),
+        source.readLong(),
         source.readSerializable() as MemberInReply
     )
 
     override fun describeContents() = 0
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
-        writeInt(id)
+        writeLong(id)
         writeInt(thanks)
         writeString(content)
         writeString(contentHtml)
         writeString(publishTime)
         writeLong(created)
-        writeInt(last_modified)
+        writeLong(last_modified)
         writeSerializable(member)
     }
 
