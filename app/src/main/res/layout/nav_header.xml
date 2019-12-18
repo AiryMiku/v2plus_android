@@ -31,83 +31,107 @@
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="15dp"
                 android:text="Click the circle to Login"
-                app:layout_constraintTop_toBottomOf="@id/avatar"
-                app:layout_constraintStart_toStartOf="@id/avatar"/>
+                app:layout_constraintTop_toTopOf="@id/avatar"
+                app
+                app:layout_constraintStart_toEndOf="@id/avatar"/>
 
-        <TextView
-                android:id="@+id/balance_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Balance"
-                android:layout_marginTop="25dp"
-                app:layout_constraintTop_toBottomOf="@id/user_name"
-                app:layout_constraintStart_toStartOf="@id/avatar"/>
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
                 android:id="@+id/balance_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="5dp"
-                app:layout_constraintStart_toEndOf="@id/balance_label"
-                app:layout_constraintTop_toTopOf="@id/balance_label"
-                app:layout_constraintBottom_toBottomOf="@id/balance_label">
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@id/avatar"
+                app:layout_constraintStart_toStartOf="@id/avatar"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:focusable="true"
+                app:cardElevation="10dp">
 
-            <TextView
-                    android:id="@+id/gold_num"
-                    android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{balance.gold}"
-                    tools:text="99"/>
+                    android:padding="10dp">
 
-            <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@mipmap/gold2x"/>
+                <TextView
+                        android:id="@+id/balance_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Balance"
+                        android:layout_marginStart="5dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
-            <TextView
-                    android:id="@+id/silver_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{balance.silver}"
-                    tools:text="99"/>
+                <LinearLayout
+                        android:id="@+id/balance_area"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        app:layout_constraintTop_toBottomOf="@id/balance_label"
+                        app:layout_constraintStart_toStartOf="@id/balance_label">
 
-            <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@mipmap/silver2x"/>
+                    <TextView
+                            android:id="@+id/gold_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{balance.gold}"
+                            tools:text="99"/>
 
-            <TextView
-                    android:id="@+id/bronze_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{balance.bronze}"
-                    tools:text="99"/>
+                    <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@mipmap/gold2x"/>
 
-            <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@mipmap/bronze2x"/>
+                    <TextView
+                            android:id="@+id/silver_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{balance.silver}"
+                            tools:text="99"/>
 
-        </LinearLayout>
+                    <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@mipmap/silver2x"/>
 
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/redeem"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="Redeem"
-                app:layout_constraintTop_toTopOf="@id/balance_layout"
-                app:layout_constraintBottom_toBottomOf="@id/balance_layout"
-                app:layout_constraintStart_toEndOf="@id/balance_layout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.6"/>
+                    <TextView
+                            android:id="@+id/bronze_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{balance.bronze}"
+                            tools:text="99"/>
+
+                    <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@mipmap/bronze2x"/>
+
+                </LinearLayout>
+
+
+                <com.google.android.material.button.MaterialButton
+                        android:id="@+id/redeem"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"
+                        android:text="Redeem"
+                        android:textColor="@color/white"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/balance_area"
+                        app:layout_constraintHorizontal_bias="0.9"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>

@@ -26,9 +26,11 @@ data class Topic(
     val lastReplyMemberName: String?,
     @SerializedName("last_modified")
     val lastModifiedMemberId: Long,
-    val replies: Long
+    val replies: Long,
+    val node: Node?,
+    val member: User?
 ) : Serializable, Parcelable {
-    constructor(source: Parcel) : this(
+        constructor(source: Parcel) : this(
         source.readLong(),
         source.readString(),
         source.readString(),
@@ -38,7 +40,9 @@ data class Topic(
         source.readLong(),
         source.readString(),
         source.readLong(),
-        source.readLong()
+        source.readLong(),
+        source.readSerializable() as Node?,
+        source.readSerializable() as User?
     )
 
     override fun describeContents() = 0
@@ -54,6 +58,8 @@ data class Topic(
         writeString(lastReplyMemberName)
         writeLong(lastModifiedMemberId)
         writeLong(replies)
+        writeSerializable(node)
+        writeSerializable(member)
     }
 
     companion object {
