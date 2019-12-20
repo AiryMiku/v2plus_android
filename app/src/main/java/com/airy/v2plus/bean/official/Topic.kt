@@ -27,8 +27,8 @@ data class Topic(
     @SerializedName("last_modified")
     val lastModifiedMemberId: Long,
     val replies: Long,
-    val node: Node?,
-    val member: User?
+    val node: Node,
+    val member: User
 ) : Serializable, Parcelable {
         constructor(source: Parcel) : this(
         source.readLong(),
@@ -41,8 +41,8 @@ data class Topic(
         source.readString(),
         source.readLong(),
         source.readLong(),
-        source.readSerializable() as Node?,
-        source.readSerializable() as User?
+        source.readSerializable() as Node,
+        source.readSerializable() as User
     )
 
     override fun describeContents() = 0

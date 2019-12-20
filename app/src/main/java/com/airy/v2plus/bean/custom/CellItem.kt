@@ -10,6 +10,7 @@ package com.airy.v2plus.bean.custom
 data class CellItem(
     val avatarUrl: String,
     val title: String,
+    val topicId: Long,
     val node: String,
     val topicInfoList: List<String>,
     val commentCount: String

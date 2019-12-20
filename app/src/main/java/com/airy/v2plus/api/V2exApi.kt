@@ -42,13 +42,13 @@ interface V2exApi {
     suspend fun getTopicsByNodeName(@Query("node_name") node_name: String): List<Topic>
 
     @GET("replies/show.json")      // 帖子回复,所有的
-    suspend fun getReplise(@Query("topic_id") topic_id: Long): List<Reply>
+    suspend fun getRepliesByTopicId(@Query("topic_id") topicId: Long): List<Reply>
 
     @GET("topics/show.json")   // 用户发的帖子
     suspend fun getTopicsByUserName(@Query("username") username: String): List<Topic>
 
     // i found one
-    @GET("topics/show.json")   // 用户发的帖子
-    suspend fun getTopicsById(@Query("id") id: Long): List<Topic>
+    @GET("topics/show.json")   // 指定id的帖子
+    suspend fun getTopicById(@Query("id") id: Long): List<Topic>    // 注意这里只有一个,返回的json是特么的列表
 
 }

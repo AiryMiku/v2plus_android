@@ -1,5 +1,6 @@
 package com.airy.v2plus.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.airy.v2plus.Common
 import com.airy.v2plus.databinding.HomeFragmentBinding
 import com.airy.v2plus.ui.main.MainViewModel
+import com.airy.v2plus.ui.topic.TopicDetailActivity
 
 class HomeFragment: Fragment() {
 
@@ -33,7 +36,11 @@ class HomeFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this.activity!!).get(MainViewModel::class.java)
-        adapter = CellItemsAdapter(activity)
+        adapter = CellItemsAdapter(activity) {
+            val intent = Intent(activity, TopicDetailActivity::class.java)
+            intent.putExtra(Common.KEY_ID.TOPIC, it.topicId)
+            startActivity(intent)
+        }
         binding.list.adapter = adapter
 
         viewModel.getMainPageResponse()

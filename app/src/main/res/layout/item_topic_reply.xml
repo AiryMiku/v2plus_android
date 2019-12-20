@@ -12,25 +12,17 @@
     <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_margin="4dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:clickable="true"
-            android:foreground="?attr/selectableItemBackground"
-            android:focusable="true"
-            app:cardElevation="8dp">
+            style="@style/MaterialCardView.Base">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp">
+                android:padding="5dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/avatar"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
@@ -42,6 +34,7 @@
                     app:layout_constraintTop_toTopOf="@id/avatar"
                     app:layout_constraintStart_toEndOf="@id/avatar"
                     android:textColor="@color/colorPrimary"
+                    android:text="@{reply.member.userName}"
                     tools:text="Airy"/>
 
             <TextView
@@ -61,8 +54,9 @@
                     android:textColor="@color/colorPrimary"
                     app:layout_constraintTop_toBottomOf="@id/avatar"
                     app:layout_constraintStart_toStartOf="@id/user_name"
+                    app:layout_constraintHorizontal_bias="0"
+                    android:singleLine="false"
                     tools:text="This is a reply content~"/>
-
 
             <TextView
                     android:id="@+id/thank_num"
@@ -76,11 +70,10 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:drawableEnd="@drawable/ic_thank_black_24dp"
+                    android:text="0"
                     tools:text="99"/>
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.google.android.material.card.MaterialCardView>
 
 </layout>

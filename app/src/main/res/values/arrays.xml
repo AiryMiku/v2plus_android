@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="reply_items">
+        <item>@string/reply</item>
+        <item>@string/copy_reply_content</item>
+        <item>@string/egg</item>
+    </string-array>
+</resources>

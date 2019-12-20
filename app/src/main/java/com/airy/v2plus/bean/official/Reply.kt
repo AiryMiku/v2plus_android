@@ -14,9 +14,9 @@ import java.io.Serializable
 
 data class Reply(
     val id: Long,
-    val thanks: Int,
+    val thanks: Int = 0,
     val content: String?,
-    @SerializedName("content_render")
+    @SerializedName("content_rendered")
     val contentHtml: String?,
     val publishTime: String?,
     val created: Long,
@@ -26,7 +26,7 @@ data class Reply(
 ) : Serializable, Parcelable {
     data class MemberInReply(
         val id: Long,
-        @SerializedName("user_name")
+        @SerializedName("username")
         val userName: String?,
         val tagLine: String?,
         @SerializedName("avatar_mini")

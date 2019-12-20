@@ -1,16 +1,19 @@
 package com.airy.v2plus.ui.topic
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.airy.v2plus.GlideApp
 import com.airy.v2plus.R
 import com.airy.v2plus.bean.official.Reply
 import com.airy.v2plus.bean.official.Topic
-import com.airy.v2plus.databinding.ItemTopicHeaderBinding
+import com.airy.v2plus.databinding.ItemTopicDetailBinding
 import com.airy.v2plus.databinding.ItemTopicReplyBinding
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.HeaderItemHolder
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.ReplyItemHolder
@@ -23,14 +26,15 @@ import com.airy.v2plus.ui.topic.TopicDetailViewHolder.ReplyItemHolder
  * Github: AiryMiku
  */
 
-internal class TopicDetailAdapter(private val viewOnClickListener: ViewOfItemOnClickListener):
+internal class TopicDetailAdapter(private val context: Context,
+                                  private val viewOnClickListener: ViewOfItemOnClickListener):
     ListAdapter<Any, TopicDetailViewHolder>(TopicDetailDiffCallback) {
 
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
         return when (item) {
             is Reply -> R.layout.item_topic_reply
-            is Topic -> R.layout.item_topic_header
+            is Topic -> R.layout.item_topic_detail
             else -> throw IllegalStateException("Unknown type: ${item::class.java.simpleName}")
         }
     }
@@ -44,8 +48,8 @@ internal class TopicDetailAdapter(private val viewOnClickListener: ViewOfItemOnC
                     parent,
                     false)
             )
-            R.layout.item_topic_header -> HeaderItemHolder(
-                ItemTopicHeaderBinding.inflate(
+            R.layout.item_topic_detail -> HeaderItemHolder(
+                ItemTopicDetailBinding.inflate(
                     inflater,
                     parent,
                     false)
@@ -58,9 +62,11 @@ internal class TopicDetailAdapter(private val viewOnClickListener: ViewOfItemOnC
         when (holder) {
             is ReplyItemHolder -> {
                 val reply = getItem(position) as Reply
+                GlideApp.with(context).load("https:" + reply.member.avatarMiniUrl).into(holder.binding.avatar)
+                holder.binding.reply = reply
+                holder.binding.replyContent.text = Html.fromHtml(reply.contentHtml)
                 holder.binding.thankNum.let { tv ->
                     tv.setOnClickListener {
-                        tv.text = (reply.thanks + 1).toString()
                         viewOnClickListener.onThankClickListener(reply)
                     }
                 }
@@ -70,7 +76,9 @@ internal class TopicDetailAdapter(private val viewOnClickListener: ViewOfItemOnC
             }
             is HeaderItemHolder -> {
                 val topic = getItem(position) as Topic
+                GlideApp.with(context).load("https:" + topic.member.avatarMiniUrl).into(holder.binding.avatar)
                 holder.binding.topic = topic
+                holder.binding.contentText.text = Html.fromHtml(topic.contentHtml)
             }
         }
     }
@@ -85,7 +93,7 @@ internal sealed class TopicDetailViewHolder(itemView: View): RecyclerView.ViewHo
 
     class ReplyItemHolder(val binding: ItemTopicReplyBinding): TopicDetailViewHolder(binding.root)
 
-    class HeaderItemHolder(val binding: ItemTopicHeaderBinding): TopicDetailViewHolder(binding.root)
+    class HeaderItemHolder(val binding: ItemTopicDetailBinding): TopicDetailViewHolder(binding.root)
 }
 
 internal object TopicDetailDiffCallback : DiffUtil.ItemCallback<Any>() {
@@ -101,6 +109,7 @@ internal object TopicDetailDiffCallback : DiffUtil.ItemCallback<Any>() {
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when {
+            oldItem is Topic && newItem is Topic -> Topic == newItem
             oldItem is Reply && newItem is Reply -> Reply == newItem
             else -> true
         }

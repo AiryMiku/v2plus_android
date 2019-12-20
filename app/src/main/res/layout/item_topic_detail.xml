@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="topic"
+                type="com.airy.v2plus.bean.official.Topic" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/MaterialCardView.Base">
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
+
+            <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/MaterialCardView.Base">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/avatar"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
+                            android:id="@+id/user_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:text="@{topic.member.username}"
+                            app:layout_constraintTop_toTopOf="@id/avatar"
+                            app:layout_constraintBottom_toBottomOf="@id/avatar"
+                            app:layout_constraintStart_toEndOf="@id/avatar"
+                            tools:text="Airy"/>
+
+                    <TextView
+                            android:id="@+id/node"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@{topic.node.title}"
+                            android:gravity="center"
+                            android:background="@drawable/borderless_round_rectangle"
+                            android:textColor="@color/design_default_color_background"
+                            android:shadowColor="@color/design_default_color_on_secondary"
+                            app:layout_constraintTop_toTopOf="@id/avatar"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:text="Node"/>
+
+                    <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:textColor="@color/colorPrimary"
+                            app:layout_constraintTop_toBottomOf="@id/avatar"
+                            app:layout_constraintStart_toStartOf="@id/avatar"
+                            app:layout_constraintHorizontal_bias="0"
+                            android:singleLine="false"
+                            android:textSize="16sp"
+                            android:text="@{topic.title}"
+                            tools:text="This is a topic title~"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp">
+
+                <TextView
+                        android:id="@+id/content_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textIsSelectable="true"
+                        tools:text="公司主页：  \n公司坐标：北京市朝阳区大望路  \n简历投递邮箱： \n\n##"/>
+
+            </FrameLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

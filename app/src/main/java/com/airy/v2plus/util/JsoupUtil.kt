@@ -19,8 +19,6 @@ class JsoupUtil {
 
     companion object {
 
-        private const val TAG = "JsoupUtil"
-
         fun getLoginValue(response: String): LoginKey {
             val body = Jsoup.parse(response)
             val formTableBody = body.getElementsByAttributeValue("action", "/signin").select("tbody").select("tr")
@@ -37,7 +35,11 @@ class JsoupUtil {
             val content = doc.getElementsByClass("cell item")
             for (item in content) {
                 val avatar = item.getElementsByClass("avatar").select("img").attr("src")
-                val title = item.getElementsByClass("item_title").select("a[href]").text()
+                val titleLink = item.getElementsByClass("item_title").select("a[href]")
+                val title = titleLink.text()
+                var topicId = 0L
+                val m = Regex("[0-9]+").find(titleLink.attr("href"))
+                m?.let { topicId = m.groupValues.first().toLong() }
                 val node = item.getElementsByClass("node").text()
                 val topicInfo = item.getElementsByClass("topic_info").select("span").text().split(" • ")
                 val commentCount = if (item.getElementsByClass("count_livid").select("a[href]").text().isNullOrBlank()) {
@@ -45,7 +47,7 @@ class JsoupUtil {
                 } else {
                     item.getElementsByClass("count_livid").select("a[href]").text()
                 }
-                dataList.add(CellItem(avatar, title, node, topicInfo, commentCount))
+                dataList.add(CellItem(avatar, title, topicId, node, topicInfo, commentCount))
             }
             return dataList
         }
