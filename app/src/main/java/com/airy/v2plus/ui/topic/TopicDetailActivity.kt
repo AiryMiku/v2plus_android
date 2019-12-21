@@ -65,6 +65,7 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
                 2 -> makeToastShort("HoHoHo~")
             }
         }
+        listDialog.show()
         return true
     }
 

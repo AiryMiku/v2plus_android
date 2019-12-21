@@ -162,6 +162,9 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
             makeToastLong(it.toString())
         })
+        viewModel.error.observe(this, Observer {
+            makeToastLong(it.toString())
+        })
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

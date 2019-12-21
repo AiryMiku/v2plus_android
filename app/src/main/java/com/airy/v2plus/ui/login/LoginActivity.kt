@@ -67,7 +67,6 @@ class LoginActivity : BaseActivity(){
     private fun subscribeUI() {
 
         viewModel.loginKey.observe(this, Observer {
-            progressBar.hide()
             if (hasRequestLoginKey) {
                 makeToastShort("Well, please try again~")
             } else {
@@ -91,7 +90,10 @@ class LoginActivity : BaseActivity(){
                             problems += "$s\n"
                         }
                         problems })
-                    .setPositiveButton("OK") { _, _->}
+                    .setPositiveButton("OK") { _, _->
+                        viewModel.requestLoginKey()
+                        progressBar.show()
+                    }
                     .show()
             } else {
                 UserCenter.setUserName(it.userName)
@@ -99,6 +101,10 @@ class LoginActivity : BaseActivity(){
                 EventBus.getDefault().post(RequestUserInfoFromLoginEvent())
                 finish()
             }
+        })
+
+        viewModel.error.observe(this, Observer {
+            makeToastLong(it.toString())
         })
     }
 

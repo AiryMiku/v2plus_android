@@ -60,6 +60,9 @@ class HomeFragment: Fragment() {
             adapter.submitList(it)
             binding.refresh.isRefreshing = false
         })
+        viewModel.error.observe(this, Observer {
+            binding.refresh.isRefreshing = false
+        })
     }
 
 }

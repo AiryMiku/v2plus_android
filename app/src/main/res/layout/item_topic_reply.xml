@@ -54,9 +54,9 @@
                     android:textColor="@color/colorPrimary"
                     app:layout_constraintTop_toBottomOf="@id/avatar"
                     app:layout_constraintStart_toStartOf="@id/user_name"
-                    app:layout_constraintHorizontal_bias="0"
+                    android:maxWidth="325dp"
                     android:singleLine="false"
-                    tools:text="This is a reply content~"/>
+                    tools:text="This is a reply content~This is a reply content~This is a reply content~"/>
 
             <TextView
                     android:id="@+id/thank_num"
