@@ -13,6 +13,7 @@ import com.airy.v2plus.databinding.NavHeaderBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
 import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.ui.login.LoginActivity
+import com.airy.v2plus.ui.settings.SettingsActivity
 import com.airy.v2plus.util.UserCenter
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -172,8 +173,8 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             R.id.hottest -> {
                 makeToastShort("Developing~")
             }
-            R.id.setting -> {
-                makeToastShort("Developing~")
+            R.id.settings -> {
+                navToActivity(this, SettingsActivity::class.java)
             }
             R.id.about -> {
                 makeToastShort("Developing~")

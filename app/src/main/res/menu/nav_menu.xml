@@ -17,8 +17,8 @@
         <item android:title="Preference">
             <menu>
                 <item
-                        android:id="@+id/setting"
-                        android:title="Setting" />
+                        android:id="@+id/settings"
+                        android:title="Settings" />
                 <item android:id="@+id/night_mode"
                         android:title="Night mode"
                         app:actionViewClass="com.google.android.material.switchmaterial.SwitchMaterial"/>
