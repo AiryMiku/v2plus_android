@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/black</color>
-    <color name="colorPrimaryDark">@color/white</color>
-    <color name="colorAccent">@color/black</color>
+    <color name="color_primary">@color/white</color>
+    <color name="color_primary_dark">@color/white</color>
+    <color name="color_accent">@color/black</color>
+    <color name="color_on_secondary">@color/black</color>
+    <color name="color_surface">@color/white</color>
+    <color name="color_control_light">#39000000</color> <!-- Same as textColorPrimary disabled -->
+
+    <!-- Scrim colors -->
+    <color name="system_ui_scrim_light">#B3FFFFFF</color> <!-- 70% white -->
+    <color name="system_ui_scrim_black">#40000000</color> <!-- 25% black -->
+
+    <!-- We use a dark scrim by default since light status is API 23+ -->
+    <color name="status_bar_scrim">@color/system_ui_scrim_black</color>
+    <!-- We use a dark scrim by default since light nav bar is API 27+ -->
+    <color name="nav_bar_scrim">@color/system_ui_scrim_black</color>
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
@@ -26,10 +38,11 @@
     <color name="transparent">#0fff</color>
 
     <integer-array name="swipe_refresh">
-        <item>@color/deep_sky_blue</item>
-        <item>@color/teal</item>
-        <item>@color/bright_light_blue</item>
-        <item>@color/sun_yellow</item>
-        <item>@color/bright_orange</item>
+        <item>@color/littleYellow</item>
+        <item>@color/littlePink</item>
+        <item>@color/suchPink</item>
+        <item>@color/mindPink</item>
+        <item>@color/littlePurple</item>
+        <item>@color/suchPurple</item>
     </integer-array>
 </resources>

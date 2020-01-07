@@ -22,7 +22,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:background="@null">
 
             <ImageView
                     android:id="@+id/avatar"
@@ -37,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/color_accent"
                     android:textSize="16sp"
                     android:text="@{cell.topicInfoList[1]}"
                     app:layout_constraintStart_toEndOf="@id/avatar"
@@ -85,12 +86,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text="@{cell.commentCount}"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/color_accent"
                     app:layout_constraintTop_toTopOf="@id/label_comment"
                     app:layout_constraintStart_toEndOf="@id/label_comment"
                     tools:text="99"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </com.google.android.material.card.MaterialCardView>
 </layout>

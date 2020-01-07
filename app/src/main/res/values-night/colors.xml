@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/carolina_blue</color>
-    <color name="colorPrimaryDark">@color/cornflower_blue</color>
-    <color name="colorAccent">@color/carolina_blue</color>
+    <color name="color_primary">@color/carolina_blue</color>
+    <color name="color_primary_dark">@color/system_ui_scrim_black</color>
+    <color name="color_accent">@color/white</color>
+    <color name="color_on_secondary">@color/black</color>
+    <color name="color_surface">@color/black</color>
+
+    <!-- Scrim colors -->
+<!--    <color name="system_ui_scrim_light">#2EFFFFFF</color> &lt;!&ndash; 18% white &ndash;&gt;-->
+<!--    <color name="system_ui_scrim_black">#B3000000</color> &lt;!&ndash; 70% black &ndash;&gt;-->
+
+    <!-- In dark mode without light status bar we can use transparent -->
+<!--    <color name="status_bar_scrim">@color/transparent</color>-->
 </resources>

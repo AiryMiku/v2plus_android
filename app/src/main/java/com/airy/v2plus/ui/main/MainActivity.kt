@@ -2,6 +2,7 @@ package com.airy.v2plus.ui.main
 
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -79,9 +80,11 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         nightModeSwitch = contentBinding.navigationView.menu.findItem(R.id.night_mode).actionView as SwitchMaterial
         nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                makeToastShort("now is on")
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+                makeToastShort("night mode on")
             } else {
-                makeToastShort("now is off")
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+                makeToastShort("night mode off")
             }
         }
 

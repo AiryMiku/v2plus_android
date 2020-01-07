@@ -22,7 +22,7 @@
                 android:layout_marginStart="20dp"
                 android:src="@color/white"
                 app:civ_border_overlay="true"
-                app:civ_border_color="@color/colorAccent"
+                app:civ_border_color="@color/color_accent"
                 app:civ_border_width="2dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -62,7 +62,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Balance"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/color_accent"
                         android:textSize="15sp"
                         android:layout_marginStart="5dp"
                         app:layout_constraintTop_toTopOf="parent"
@@ -122,11 +122,10 @@
 
                 <com.google.android.material.button.MaterialButton
                         android:id="@+id/redeem"
-                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        style="@style/CustomMaterialUnelevatedButton"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
                         android:text="Redeem"
-                        android:textColor="@color/white"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

@@ -10,7 +10,7 @@
     </style>
 
     <style name="LightToolbarStyle" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/color_primary</item>
         <item name="android:titleTextColor">@color/black</item>
     </style>
 
@@ -22,6 +22,16 @@
     <style name="TextAppearance.ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
+    </style>
+    
+    <style name="CustomBottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemIconTint">@color/color_accent</item>
+        <item name="itemTextColor">@drawable/bottom_navigation_colors</item>
+    </style>
+
+    <style name="CustomMaterialUnelevatedButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="backgroundTint">@color/color_accent</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="AlertDialog.Theme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
@@ -57,8 +67,8 @@
 
     <!--Material Input Layout Style-->
     <style name="CustomInputLayoutStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/colorAccent</item>
-        <item name="hintTextColor">@color/colorAccent</item>
+        <item name="boxStrokeColor">@color/color_accent</item>
+        <item name="hintTextColor">@color/color_accent</item>
     </style>
 
     <style name="MaterialCardView.Base" parent="Widget.MaterialComponents.CardView">
