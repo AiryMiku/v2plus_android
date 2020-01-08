@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_primary">@color/carolina_blue</color>
-    <color name="color_primary_dark">@color/system_ui_scrim_black</color>
+    <color name="color_primary_dark">@color/black</color>
     <color name="color_accent">@color/carolina_blue</color>
     <color name="color_on_secondary">@color/black</color>
     <color name="color_surface">@color/black</color>

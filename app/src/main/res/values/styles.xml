@@ -23,11 +23,6 @@
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textSize" tools:ignore="SpUsage">20dp</item>
     </style>
-    
-    <style name="CustomBottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemIconTint">@color/color_accent</item>
-        <item name="itemTextColor">@drawable/bottom_navigation_colors</item>
-    </style>
 
     <style name="CustomMaterialUnelevatedButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="backgroundTint">@color/color_accent</item>

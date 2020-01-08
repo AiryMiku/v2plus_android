@@ -5,12 +5,10 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.Html
 import android.util.Log
-import android.widget.TextView
 import com.airy.v2plus.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import java.lang.ref.WeakReference
 
 
 /**
@@ -19,9 +17,8 @@ import java.lang.ref.WeakReference
  * Github: AiryMiku
  */
 
-class TopicImageGetter(private val context: Context,
-                       private val textViewReference: WeakReference<TextView>): Html.ImageGetter {
-
+class TopicImageGetter(private val context: Context): Html.ImageGetter {
+//    private val textViewReference: WeakReference<TextView>
     override fun getDrawable(source: String?): Drawable {
         Log.d("TopicImageGetter", "source -> $source")
         val imageDrawable = BitmapDrawable()
