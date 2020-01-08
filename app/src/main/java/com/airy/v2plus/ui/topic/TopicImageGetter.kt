@@ -25,6 +25,7 @@ class TopicImageGetter(private val context: Context,
     override fun getDrawable(source: String?): Drawable {
         Log.d("TopicImageGetter", "source -> $source")
         val imageDrawable = BitmapDrawable()
+        // todo
         val urlDrawable = Glide.with(context).load(source).placeholder(R.color.color_control_light).submit()
         return urlDrawable.get()
     }
