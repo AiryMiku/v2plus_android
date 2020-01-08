@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.airy.v2plus.R
 import com.airy.v2plus.bean.custom.CellItem
 import com.airy.v2plus.databinding.ItemPageCellBinding
 import com.bumptech.glide.Glide
@@ -42,7 +43,7 @@ class CellItemsAdapter(private val context: Context?, private val onClickCallbac
         val cell = getItem(position)
         holder.binding.cell = cell
         context?.let {
-            Glide.with(it).load("https:" + cell.avatarUrl).into(holder.binding.avatar)
+            Glide.with(it).load("https:" + cell.avatarUrl).placeholder(R.color.color_control_light).into(holder.binding.avatar)
         }
         holder.binding.root.setOnClickListener {
             onClickCallback(cell)

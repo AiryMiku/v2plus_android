@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_primary">@color/white</color>
+    <color name="color_primary">@color/black</color>
     <color name="color_primary_dark">@color/white</color>
     <color name="color_accent">@color/black</color>
+    <color name="color_secondary">@color/black</color>
     <color name="color_on_secondary">@color/black</color>
     <color name="color_surface">@color/white</color>
     <color name="color_control_light">#39000000</color> <!-- Same as textColorPrimary disabled -->

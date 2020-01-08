@@ -111,8 +111,9 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         })
         toolbar.title = "Home"
 
-        // bottom navigation
+        // bottom navigation view
         navigation = contentBinding.bottomNavigation
+//        navigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
         navigation.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.Home -> {

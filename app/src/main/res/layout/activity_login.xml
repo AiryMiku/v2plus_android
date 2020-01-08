@@ -35,7 +35,7 @@
                         android:layout_marginEnd="20dp">
 
                     <com.google.android.material.textfield.TextInputLayout
-                            style="@style/CustomInputLayoutStyle"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:id="@+id/user_name_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -49,8 +49,7 @@
                                 android:inputType="textEmailAddress"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:hint="User Name"
-                                android:textCursorDrawable="@color/color_accent"/>
+                                android:hint="User Name" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,8 +69,7 @@
                                 android:inputType="textPassword"
                                 android:maxLines="1"
                                 android:singleLine="true"
-                                android:hint="Password"
-                                android:textCursorDrawable="@color/color_accent"/>
+                                android:hint="Password"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 

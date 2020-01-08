@@ -15,9 +15,9 @@
 <!--        <item name="colorControlNormal">@color/color_control_light</item>-->
 
         <!-- Window decor -->
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">@bool/use_light_status</item>
         <item name="android:statusBarColor">@color/transparent</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">@bool/use_light_navigation</item>
         <item name="android:navigationBarColor">@color/transparent</item>
 
         <!-- Dialogs -->

@@ -2,7 +2,9 @@ package com.airy.v2plus.ui.topic
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.text.Html
+import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +19,6 @@ import com.airy.v2plus.databinding.ItemTopicDetailBinding
 import com.airy.v2plus.databinding.ItemTopicReplyBinding
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.HeaderItemHolder
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.ReplyItemHolder
-
 
 
 /**
@@ -64,7 +65,13 @@ internal class TopicDetailAdapter(private val context: Context,
                 val reply = getItem(position) as Reply
                 GlideApp.with(context).load("https:" + reply.member.avatarMiniUrl).into(holder.binding.avatar)
                 holder.binding.reply = reply
-                holder.binding.replyContent.text = Html.fromHtml(reply.contentHtml)
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
+                    holder.binding.replyContent.text = Html.fromHtml(reply.contentHtml, FROM_HTML_MODE_LEGACY,
+                        TopicImageGetter(context), TopicImageTagHandler(context))
+                } else {
+                    holder.binding.replyContent.text = Html.fromHtml(reply.contentHtml,
+                        TopicImageGetter(context), TopicImageTagHandler(context))
+                }
                 holder.binding.thankNum.let { tv ->
                     tv.setOnClickListener {
                         viewOnClickListener.onThankClickListener(reply)
@@ -78,7 +85,13 @@ internal class TopicDetailAdapter(private val context: Context,
                 val topic = getItem(position) as Topic
                 GlideApp.with(context).load("https:" + topic.member.avatarMiniUrl).into(holder.binding.avatar)
                 holder.binding.topic = topic
-                holder.binding.contentText.text = Html.fromHtml(topic.contentHtml)
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
+                    holder.binding.contentText.text = Html.fromHtml(topic.contentHtml, FROM_HTML_MODE_LEGACY,
+                        TopicImageGetter(context), TopicImageTagHandler(context))
+                } else {
+                    holder.binding.contentText.text = Html.fromHtml(topic.contentHtml,
+                        TopicImageGetter(context), TopicImageTagHandler(context))
+                }
             }
         }
     }
