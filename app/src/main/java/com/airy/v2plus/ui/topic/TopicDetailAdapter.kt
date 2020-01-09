@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,9 @@ import com.airy.v2plus.databinding.ItemTopicDetailBinding
 import com.airy.v2plus.databinding.ItemTopicReplyBinding
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.HeaderItemHolder
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.ReplyItemHolder
+import com.airy.v2plus.util.GlideImageGetter
+import com.airy.v2plus.util.TextViewTagHandler
+import java.lang.ref.WeakReference
 
 
 /**
@@ -66,12 +70,19 @@ internal class TopicDetailAdapter(private val context: Context,
                 GlideApp.with(context).load("https:" + reply.member.avatarMiniUrl).into(holder.binding.avatar)
                 holder.binding.reply = reply
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
-                    holder.binding.replyContent.text = Html.fromHtml(reply.contentHtml, FROM_HTML_MODE_LEGACY,
-                        TopicImageGetter(context), TopicImageTagHandler(context))
+                    holder.binding.replyContent.let {
+                        it.text = Html.fromHtml(reply.contentHtml, FROM_HTML_MODE_LEGACY,
+                            GlideImageGetter(context, WeakReference(it)),
+                            TextViewTagHandler(context))
+                    }
                 } else {
-                    holder.binding.replyContent.text = Html.fromHtml(reply.contentHtml,
-                        TopicImageGetter(context), TopicImageTagHandler(context))
+                    holder.binding.replyContent.let {
+                        it.text = Html.fromHtml(reply.contentHtml,
+                            GlideImageGetter(context, WeakReference(it)),
+                            TextViewTagHandler(context))
+                    }
                 }
+                holder.binding.replyContent.movementMethod = LinkMovementMethod.getInstance()
                 holder.binding.thankNum.let { tv ->
                     tv.setOnClickListener {
                         viewOnClickListener.onThankClickListener(reply)
@@ -86,12 +97,19 @@ internal class TopicDetailAdapter(private val context: Context,
                 GlideApp.with(context).load("https:" + topic.member.avatarMiniUrl).into(holder.binding.avatar)
                 holder.binding.topic = topic
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
-                    holder.binding.contentText.text = Html.fromHtml(topic.contentHtml, FROM_HTML_MODE_LEGACY,
-                        TopicImageGetter(context), TopicImageTagHandler(context))
+                    holder.binding.contentText.let {
+                        it.text = Html.fromHtml(topic.contentHtml, FROM_HTML_MODE_LEGACY,
+                        GlideImageGetter(context, WeakReference(it)),
+                        TextViewTagHandler(context))
+                    }
                 } else {
-                    holder.binding.contentText.text = Html.fromHtml(topic.contentHtml,
-                        TopicImageGetter(context), TopicImageTagHandler(context))
+                    holder.binding.contentText.let {
+                        it.text = Html.fromHtml(topic.contentHtml,
+                            GlideImageGetter(context, WeakReference(it)),
+                            TextViewTagHandler(context))
+                    }
                 }
+                holder.binding.contentText.movementMethod = LinkMovementMethod.getInstance()
             }
         }
     }

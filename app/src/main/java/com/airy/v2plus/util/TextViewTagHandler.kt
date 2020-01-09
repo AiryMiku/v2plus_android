@@ -1,4 +1,4 @@
-package com.airy.v2plus.ui.topic
+package com.airy.v2plus.util
 
 import android.content.Context
 import android.text.Editable
@@ -18,21 +18,24 @@ import java.util.*
  * Github: AiryMiku
  */
 
-class TopicImageTagHandler(private val context: Context): Html.TagHandler {
+class TextViewTagHandler(private val context: Context): Html.TagHandler {
     override fun handleTag(
         opening: Boolean,
         tag: String?,
         output: Editable?,
         xmlReader: XMLReader?
     ) {
-        // 处理标签<img>  
         if (tag?.toLowerCase(Locale.getDefault()).equals("img")) {
             output?.let {
                 val len = it.length
                 val images: Array<ImageSpan> = output.getSpans(len - 1, len, ImageSpan::class.java)
                 val imageUrl = images.first().source
                 imageUrl?.let {
-                    output.setSpan(ClickableImage(context, imageUrl), len-1, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    output.setSpan(
+                        ClickableImage(
+                            context,
+                            imageUrl
+                        ), len-1, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 }
             }
         }

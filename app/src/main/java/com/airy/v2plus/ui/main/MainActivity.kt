@@ -51,6 +51,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
         // action bar
         toolbar = findViewById(R.id.toolbar)
+        toolbar.title = "Home"
         val actionBarDrawerToggle = ActionBarDrawerToggle(this, contentBinding.drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         contentBinding.drawer.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
@@ -95,7 +96,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             override fun onPageSelected(position: Int) {
                 when (position) {
                     0 -> {
-
+                        toolbar.title = "Home"
                         navigation.selectedItemId = R.id.Home
                     }
                     1 -> {
@@ -109,7 +110,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 }
             }
         })
-        toolbar.title = "Home"
+
 
         // bottom navigation view
         navigation = contentBinding.bottomNavigation
@@ -117,7 +118,6 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         navigation.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.Home -> {
-                    toolbar.title = "Home"
                     viewPage.currentItem = 0
                     true
                 }
