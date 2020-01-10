@@ -10,6 +10,9 @@ import com.airy.v2plus.R
 import com.airy.v2plus.bean.custom.CellItem
 import com.airy.v2plus.databinding.ItemPageCellBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 
 
 /**
@@ -43,7 +46,14 @@ class CellItemsAdapter(private val context: Context?, private val onClickCallbac
         val cell = getItem(position)
         holder.binding.cell = cell
         context?.let {
-            Glide.with(it).load("https:" + cell.avatarUrl).placeholder(R.color.color_control_light).into(holder.binding.avatar)
+            Glide.with(it)
+                .load("https:" + cell.avatarUrl)
+                .format(DecodeFormat.PREFER_RGB_565)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .downsample(DownsampleStrategy.AT_LEAST)
+                .dontAnimate()
+                .placeholder(R.color.color_control_light)
+                .into(holder.binding.avatar)
         }
         holder.binding.root.setOnClickListener {
             onClickCallback(cell)

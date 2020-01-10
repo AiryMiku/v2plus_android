@@ -21,12 +21,13 @@ data class Topic(
     val created: Long,
     val url: String?,
     @SerializedName("last_touched")
-    val lastTouchedMemberId: Long,
+    val lastTouchedTime: Long,
     @SerializedName("last_reply_by")
     val lastReplyMemberName: String?,
     @SerializedName("last_modified")
-    val lastModifiedMemberId: Long,
-    val replies: Long,
+    val lastModifiedTime: Long,
+    @SerializedName("replies")
+    val replyNum: Long,
     val node: Node,
     val member: User
 ) : Serializable, Parcelable {
@@ -54,10 +55,10 @@ data class Topic(
         writeString(contentHtml)
         writeLong(created)
         writeString(url)
-        writeLong(lastTouchedMemberId)
+        writeLong(lastTouchedTime)
         writeString(lastReplyMemberName)
-        writeLong(lastModifiedMemberId)
-        writeLong(replies)
+        writeLong(lastModifiedTime)
+        writeLong(replyNum)
         writeSerializable(node)
         writeSerializable(member)
     }

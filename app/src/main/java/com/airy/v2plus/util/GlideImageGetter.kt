@@ -9,6 +9,9 @@ import android.text.Html
 import android.util.Log
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.target.SizeReadyCallback
 import com.bumptech.glide.request.target.Target
@@ -28,30 +31,37 @@ class GlideImageGetter(private val context: Context,
 
     override fun getDrawable(source: String?): Drawable {
         val placeholder = BitmapDrawablePlaceholder()
-        Glide.with(context).asBitmap().load(source).into(placeholder)
+        Glide.with(context).asBitmap()
+            .format(DecodeFormat.PREFER_RGB_565)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            .downsample(DownsampleStrategy.AT_LEAST)
+            .load(source)
+            .thumbnail(0.3f).into(placeholder)
         return placeholder
     }
 
     inner class BitmapDrawablePlaceholder:
-        BitmapDrawable(context.resources, Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)),
+        BitmapDrawable(context.resources, Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565)),
         Target<Bitmap> {
 
         private var imageDrawable: Drawable? = null
             set(value) {
-                field = value
-                val drawableWidth = value!!.intrinsicWidth
-                val drawableHeight = value.intrinsicHeight
-                val maxWidth: Int = textViewReference.get()?.measuredWidth ?: 0
-                if (drawableWidth > maxWidth) {
-                    val calculatedHeight = maxWidth * drawableHeight / drawableWidth
-                    value.setBounds(0, 0, maxWidth, calculatedHeight)
-                    setBounds(0, 0, maxWidth, calculatedHeight)
-                } else {
-                    value.setBounds(0, 0, drawableWidth, drawableHeight)
-                    setBounds(0, 0, drawableWidth, drawableHeight)
-                }
-                textViewReference.get()?.let {
-                    it.text = it.text
+                if (value != null) {
+                    val drawableWidth = value.intrinsicWidth
+                    val drawableHeight = value.intrinsicHeight
+                    val maxWidth: Int = textViewReference.get()?.measuredWidth ?: 0
+                    if (drawableWidth > maxWidth) {
+                        val calculatedHeight = maxWidth * drawableHeight / drawableWidth
+                        value.setBounds(0, 0, maxWidth, calculatedHeight)
+                        setBounds(0, 0, maxWidth, calculatedHeight)
+                    } else {
+                        value.setBounds(0, 0, drawableWidth, drawableHeight)
+                        setBounds(0, 0, drawableWidth, drawableHeight)
+                    }
+                    textViewReference.get()?.let {
+                        it.text = it.text
+                    }
+                    field = value
                 }
             }
 
@@ -80,7 +90,7 @@ class GlideImageGetter(private val context: Context,
         override fun getSize(cb: SizeReadyCallback) {
             textViewReference.get()?.let {
                 it.post {
-                    cb.onSizeReady(it.width, it.height)
+                    cb.onSizeReady((it.width * 0.8).toInt(), (it.height * 0.8).toInt())
                 }
             }
         }

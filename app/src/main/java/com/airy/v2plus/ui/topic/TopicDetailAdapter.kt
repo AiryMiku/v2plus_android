@@ -20,8 +20,12 @@ import com.airy.v2plus.databinding.ItemTopicDetailBinding
 import com.airy.v2plus.databinding.ItemTopicReplyBinding
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.HeaderItemHolder
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.ReplyItemHolder
+import com.airy.v2plus.util.DateUtil
 import com.airy.v2plus.util.GlideImageGetter
 import com.airy.v2plus.util.TextViewTagHandler
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import java.lang.ref.WeakReference
 
 
@@ -67,8 +71,15 @@ internal class TopicDetailAdapter(private val context: Context,
         when (holder) {
             is ReplyItemHolder -> {
                 val reply = getItem(position) as Reply
-                GlideApp.with(context).load("https:" + reply.member.avatarMiniUrl).into(holder.binding.avatar)
+                GlideApp.with(context)
+                    .load("https:" + reply.member.avatarMiniUrl)
+                    .format(DecodeFormat.PREFER_RGB_565)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .downsample(DownsampleStrategy.AT_LEAST)
+                    .dontAnimate()
+                    .into(holder.binding.avatar)
                 holder.binding.reply = reply
+                holder.binding.createTime.text = DateUtil.formatTime(reply.created)
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
                     holder.binding.replyContent.let {
                         it.text = Html.fromHtml(reply.contentHtml, FROM_HTML_MODE_LEGACY,
@@ -88,13 +99,19 @@ internal class TopicDetailAdapter(private val context: Context,
                         viewOnClickListener.onThankClickListener(reply)
                     }
                 }
-                holder.binding.root.setOnLongClickListener {
+                holder.binding.card.setOnLongClickListener {
                     viewOnClickListener.onReplyLongClickListener(reply)
                 }
             }
             is HeaderItemHolder -> {
                 val topic = getItem(position) as Topic
-                GlideApp.with(context).load("https:" + topic.member.avatarMiniUrl).into(holder.binding.avatar)
+                GlideApp.with(context)
+                    .load("https:" + topic.member.avatarMiniUrl)
+                    .format(DecodeFormat.PREFER_RGB_565)
+                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                    .downsample(DownsampleStrategy.AT_LEAST)
+                    .dontAnimate()
+                    .into(holder.binding.avatar)
                 holder.binding.topic = topic
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
                     holder.binding.contentText.let {
