@@ -7,7 +7,7 @@ package com.airy.v2plus.bean.custom
  * Github: AiryMiku
  */
 
-data class CellItem(
+data class MainPageItem(
     val avatarUrl: String,
     val title: String,
     val topicId: Long,

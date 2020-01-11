@@ -90,7 +90,7 @@ class GlideImageGetter(private val context: Context,
         override fun getSize(cb: SizeReadyCallback) {
             textViewReference.get()?.let {
                 it.post {
-                    cb.onSizeReady((it.width * 0.8).toInt(), (it.height * 0.8).toInt())
+                    cb.onSizeReady(it.width, it.height)
                 }
             }
         }

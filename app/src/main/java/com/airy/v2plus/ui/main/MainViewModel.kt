@@ -3,7 +3,7 @@ package com.airy.v2plus.ui.main
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.airy.v2plus.bean.custom.Balance
-import com.airy.v2plus.bean.custom.CellItem
+import com.airy.v2plus.bean.custom.MainPageItem
 import com.airy.v2plus.bean.official.User
 import com.airy.v2plus.repository.MainRepository
 import com.airy.v2plus.repository.UserRepository
@@ -29,7 +29,7 @@ class MainViewModel :BaseViewModel() {
 
     val user: MutableLiveData<User> = MutableLiveData()
 
-    val mainListItem: MutableLiveData<List<CellItem>> = MutableLiveData()
+    val mainListItem: MutableLiveData<List<MainPageItem>> = MutableLiveData()
 
     val balance: MutableLiveData<Balance> = MutableLiveData()
 

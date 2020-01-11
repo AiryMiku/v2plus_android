@@ -1,8 +1,9 @@
 package com.airy.v2plus.util
 
 import com.airy.v2plus.bean.custom.Balance
-import com.airy.v2plus.bean.custom.CellItem
 import com.airy.v2plus.bean.custom.LoginResult
+import com.airy.v2plus.bean.custom.MainPageItem
+import com.airy.v2plus.bean.custom.Notification
 import com.airy.v2plus.ui.login.LoginKey
 import org.jsoup.Jsoup
 
@@ -29,8 +30,8 @@ class JsoupUtil {
             return LoginKey(userNameValue, pwValue, "/", onceValue, "", verifyValue)
         }
 
-        fun getMainPageItems(response: String): List<CellItem> {
-            val dataList = ArrayList<CellItem>()
+        fun getMainPageItems(response: String): List<MainPageItem> {
+            val dataList = ArrayList<MainPageItem>()
             val doc = Jsoup.parse(response)
             val content = doc.getElementsByClass("cell item")
             for (item in content) {
@@ -47,7 +48,33 @@ class JsoupUtil {
                 } else {
                     item.getElementsByClass("count_livid").select("a[href]").text()
                 }
-                dataList.add(CellItem(avatar, title, topicId, node, topicInfo, commentCount))
+                dataList.add(MainPageItem(avatar, title, topicId, node, topicInfo, commentCount))
+            }
+            return dataList
+        }
+
+        /**
+         * @return a notification list
+         */
+        fun getNotificationItems(response: String): List<Notification> {
+            val dataList = ArrayList<Notification>()
+            val doc = Jsoup.parse(response)
+            val main = doc.getElementById("Main")
+            val notifications = main.getElementsByClass("cell").select("div[id]")
+            notifications.forEach {
+                val tds = it.getElementsByTag("td")
+                val avatarUrl = tds[0].getElementsByTag("img")[0].attr("src")
+                val userName = tds[1].getElementsByTag("strong")[0].text()
+                val title = tds[1].getElementsByTag("span")[0].text()
+                val time = tds[1].getElementsByTag("span")[1].text()
+                val payload = tds[1].getElementsByClass("payload").let { p ->
+                    if (p.isEmpty()) {
+                        ""
+                    } else {
+                        p[0].text()
+                    }
+                }
+                dataList.add(Notification(avatarUrl, userName, title, time, payload))
             }
             return dataList
         }

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.airy.v2plus.R
-import com.airy.v2plus.bean.custom.CellItem
+import com.airy.v2plus.bean.custom.MainPageItem
 import com.airy.v2plus.databinding.ItemPageCellBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
@@ -21,17 +21,17 @@ import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
  * Github: AiryMiku
  */
 
-class CellItemsAdapter(private val context: Context?, private val onClickCallback: (CellItem) -> Unit = {})
-    : ListAdapter<CellItem, CellItemsAdapter.ViewHolder>(
+class MainPageItemsAdapter(private val context: Context?, private val onClickCallback: (MainPageItem) -> Unit = {})
+    : ListAdapter<MainPageItem, MainPageItemsAdapter.ViewHolder>(
     TaskDiffCallback()
 ){
 
-    class TaskDiffCallback: DiffUtil.ItemCallback<CellItem>() {
-        override fun areItemsTheSame(oldItem: CellItem, newItem: CellItem): Boolean {
+    class TaskDiffCallback: DiffUtil.ItemCallback<MainPageItem>() {
+        override fun areItemsTheSame(oldItem: MainPageItem, newItem: MainPageItem): Boolean {
             return oldItem.title == newItem.title
         }
 
-        override fun areContentsTheSame(oldItem: CellItem, newItem: CellItem): Boolean {
+        override fun areContentsTheSame(oldItem: MainPageItem, newItem: MainPageItem): Boolean {
             return oldItem == newItem
         }
     }

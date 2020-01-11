@@ -23,7 +23,7 @@ class HomeFragment: Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: HomeFragmentBinding
-    private lateinit var adapter: CellItemsAdapter
+    private lateinit var adapter: MainPageItemsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +36,7 @@ class HomeFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this.activity!!).get(MainViewModel::class.java)
-        adapter = CellItemsAdapter(activity) {
+        adapter = MainPageItemsAdapter(activity) {
             val intent = Intent(activity, TopicDetailActivity::class.java)
             intent.putExtra(Common.KEY_ID.TOPIC, it.topicId)
             startActivity(intent)
