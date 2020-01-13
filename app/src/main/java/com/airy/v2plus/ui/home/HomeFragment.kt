@@ -57,8 +57,8 @@ class HomeFragment: Fragment() {
 
     private fun subscribeUI() {
         viewModel.mainListItem.observe(this, Observer {
-            adapter.submitList(it)
             binding.refresh.isRefreshing = false
+            adapter.submitList(it)
         })
         viewModel.error.observe(this, Observer {
             binding.refresh.isRefreshing = false

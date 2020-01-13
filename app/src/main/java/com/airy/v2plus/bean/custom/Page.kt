@@ -8,9 +8,9 @@ package com.airy.v2plus.bean.custom
  */
 
 data class Page<T>(
-    val current: Long,  // attention index start from 0 or 1
-    val min: Long,
-    val max: Long,
+    val current: Int,  // attention index start from 0 or 1
+    val min: Int,
+    val max: Int,
     val items: List<T>
 ) {
     fun isLast(): Boolean = current == max

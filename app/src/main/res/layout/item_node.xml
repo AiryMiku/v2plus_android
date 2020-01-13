@@ -9,8 +9,8 @@
     </data>
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="100dp"
+            android:layout_height="60dp">
 
         <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -27,6 +27,7 @@
                     android:layout_margin="10dp"
                     android:text="@{node.title}"
                     android:layout_gravity="center"
+                    android:singleLine="true"
                     tools:text="node"/>
 
         </com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="notification"
+                type="com.airy.v2plus.bean.custom.Notification" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardElevation="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@null">
+
+            <ImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="30dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:contentDescription="@string/avatar"
+                    android:layout_height="30dp"
+                    tools:src="@mipmap/ic_launcher_round"/>
+
+            <TextView
+                    android:id="@+id/title"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/color_accent"
+                    app:layout_constraintTop_toTopOf="@id/avatar"
+                    app:layout_constraintStart_toEndOf="@id/avatar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"
+                    android:text="@{notification.title}"
+                    tools:text="beimenjun 在 分享一下这段时间使用 WF-1000xm3 的使用体验 里回复了你"/>
+
+            <TextView
+                    android:id="@+id/payload"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/title"
+                    app:layout_constraintStart_toStartOf="@id/title"
+                    app:layout_constraintEnd_toEndOf="@id/title"
+                    android:text="@{notification.payload}"
+                    tools:text="我是走天猫的一家索尼专卖，使用下来比较大的问题感觉是入耳式的问题，什么口腔动作导致有相关声音之类的，小问题比如调节音量总是左边的先降低，右边再降低。 我是 MDR-1000X 的用户，其实我更喜欢 1000X，但是耳机海绵发霉了比较难过。 最大的感受是 Sony 的 iOS App 难用，有些时候可能是 iOS 的 bug，连接上的音量会很大，所以每次都要确保音量不大才敢开启音乐"/>
+
+            <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/payload"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/payload"
+                    android:text="@{notification.time}"
+                    tools:text="180 天前" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

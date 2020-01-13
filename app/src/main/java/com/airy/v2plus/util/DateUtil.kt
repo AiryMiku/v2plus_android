@@ -48,7 +48,7 @@ class DateUtil {
                 val seconds = result / 86400000
                 seconds.toString() + "天前"
             } else { // 日期格式
-                val format = "yyyy-MM-dd HH:mm"
+                val format = "yyyy/MM/dd HH:mm"
                 val df = SimpleDateFormat(format, Locale.US)
                 df.format(targetDate)
             }

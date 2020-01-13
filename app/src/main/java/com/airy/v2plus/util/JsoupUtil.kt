@@ -1,9 +1,6 @@
 package com.airy.v2plus.util
 
-import com.airy.v2plus.bean.custom.Balance
-import com.airy.v2plus.bean.custom.LoginResult
-import com.airy.v2plus.bean.custom.MainPageItem
-import com.airy.v2plus.bean.custom.Notification
+import com.airy.v2plus.bean.custom.*
 import com.airy.v2plus.ui.login.LoginKey
 import org.jsoup.Jsoup
 
@@ -56,7 +53,7 @@ class JsoupUtil {
         /**
          * @return a notification list
          */
-        fun getNotificationItems(response: String): List<Notification> {
+        fun getNotificationPage(response: String): Page<Notification> {
             val dataList = ArrayList<Notification>()
             val doc = Jsoup.parse(response)
             val main = doc.getElementById("Main")
@@ -76,7 +73,11 @@ class JsoupUtil {
                 }
                 dataList.add(Notification(avatarUrl, userName, title, time, payload))
             }
-            return dataList
+            val pageInfo = main.getElementsByClass("cell").first().getElementsByTag("input").first()
+            val current = pageInfo.attr("value")
+            val min = pageInfo.attr("min")
+            val max = pageInfo.attr("max")
+            return Page(current.toInt(), min.toInt(), max.toInt(), dataList)
         }
 
         /**

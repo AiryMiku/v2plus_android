@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.airy.v2plus.ui.home.HomeFragment
-import com.airy.v2plus.ui.message.MessageFragment
+import com.airy.v2plus.ui.notification.NotificationFragment
 import com.airy.v2plus.ui.node.NodeFragment
 
 
@@ -16,7 +16,7 @@ import com.airy.v2plus.ui.node.NodeFragment
 
 class FragmentViewPagerAdapter(fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val fragments = arrayOf(HomeFragment.newInstance(), MessageFragment.newInstance(), NodeFragment.newInstance())
+    private val fragments = arrayOf(HomeFragment.newInstance(), NotificationFragment.newInstance(), NodeFragment.newInstance())
 
     override fun getItem(position: Int): Fragment {
         return fragments[position]
