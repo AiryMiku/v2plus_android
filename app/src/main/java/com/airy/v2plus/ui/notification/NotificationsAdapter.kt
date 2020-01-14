@@ -62,3 +62,7 @@ class NotificationsAdapter(private val context: Context?, private val onClickCal
 
     class ViewHolder(val binding: ItemNotificationBinding): RecyclerView.ViewHolder(binding.root)
 }
+
+object NotificationLoadMoreItem
+
+object NotificationLoadEndItem

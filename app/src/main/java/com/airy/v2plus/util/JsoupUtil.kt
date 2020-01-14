@@ -37,7 +37,7 @@ class JsoupUtil {
                 val title = titleLink.text()
                 var topicId = 0L
                 val m = Regex("[0-9]+").find(titleLink.attr("href"))
-                m?.let { topicId = m.groupValues.first().toLong() }
+                m?.run { topicId = m.groupValues.first().toLong() }
                 val node = item.getElementsByClass("node").text()
                 val topicInfo = item.getElementsByClass("topic_info").select("span").text().split(" • ")
                 val commentCount = if (item.getElementsByClass("count_livid").select("a[href]").text().isNullOrBlank()) {

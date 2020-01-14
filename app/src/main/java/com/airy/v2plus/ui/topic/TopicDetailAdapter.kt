@@ -127,6 +127,8 @@ internal class TopicDetailAdapter(private val context: Context,
                     }
                 }
                 holder.binding.contentText.movementMethod = LinkMovementMethod.getInstance()
+                holder.binding.createTime.text = DateUtil.formatTime(topic.created)
+                holder.binding.commentCount.text = topic.replyNum.toString()
             }
         }
     }
