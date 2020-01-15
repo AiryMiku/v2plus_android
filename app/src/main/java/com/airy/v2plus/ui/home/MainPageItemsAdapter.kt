@@ -6,13 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.airy.v2plus.R
 import com.airy.v2plus.bean.custom.MainPageItem
 import com.airy.v2plus.databinding.ItemPageCellBinding
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
+import com.airy.v2plus.loadLowQualityImageWithPlaceholder
 
 
 /**
@@ -21,7 +17,8 @@ import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
  * Github: AiryMiku
  */
 
-class MainPageItemsAdapter(private val context: Context?, private val onClickCallback: (MainPageItem) -> Unit = {})
+class MainPageItemsAdapter(private val context: Context?,
+                           private val onClickCallback: (MainPageItem, ViewHolder) -> Unit = { _, _ ->})
     : ListAdapter<MainPageItem, MainPageItemsAdapter.ViewHolder>(
     TaskDiffCallback()
 ){
@@ -46,17 +43,10 @@ class MainPageItemsAdapter(private val context: Context?, private val onClickCal
         val cell = getItem(position)
         holder.binding.cell = cell
         context?.let {
-            Glide.with(it)
-                .load("https:" + cell.avatarUrl)
-                .format(DecodeFormat.PREFER_RGB_565)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .downsample(DownsampleStrategy.AT_LEAST)
-                .dontAnimate()
-                .placeholder(R.color.color_control_light)
-                .into(holder.binding.avatar)
+            loadLowQualityImageWithPlaceholder(it, "https:" + cell.avatarUrl, holder.binding.avatar)
         }
         holder.binding.root.setOnClickListener {
-            onClickCallback(cell)
+            onClickCallback(cell, holder)
         }
     }
 

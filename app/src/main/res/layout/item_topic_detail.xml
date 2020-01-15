@@ -30,7 +30,8 @@
                             android:layout_width="35dp"
                             android:layout_height="35dp"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:transitionName="avatarView"/>
 
                     <TextView
                             android:id="@+id/user_name"

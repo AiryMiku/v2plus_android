@@ -36,10 +36,12 @@ class HomeFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this.activity!!).get(MainViewModel::class.java)
-        adapter = MainPageItemsAdapter(activity) {
+        adapter = MainPageItemsAdapter(activity) { item, holder ->
             val intent = Intent(activity, TopicDetailActivity::class.java)
-            intent.putExtra(Common.KEY_ID.TOPIC, it.topicId)
+            intent.putExtra(Common.KEY_ID.TOPIC, item.topicId)
             startActivity(intent)
+            // Todo Add TransitionAnimation
+            // ActivityOptions.makeSceneTransitionAnimation(activity , holder.binding.avatar, "avatarView").toBundle()
         }
         binding.list.adapter = adapter
 

@@ -25,14 +25,15 @@
                 android:padding="10dp"
                 android:background="@null">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/avatar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:src="@mipmap/ic_launcher_round"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:contentDescription="@string/avatar"/>
+                    android:contentDescription="@string/avatar"
+                    android:transitionName="avatarView"/>
 
             <TextView
                     android:layout_width="wrap_content"
