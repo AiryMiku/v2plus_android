@@ -12,10 +12,13 @@ class NotificationViewModel : BaseViewModel() {
 
     val notificationPage = MutableLiveData<Page<Notification>>()
 
+    val pagedData = repository.getDataSourceNotificationPages()
+
     fun getNotification(page: Int) {
         launchOnIO({
             val r = repository.getNotificationPages(page)
             notificationPage.postValue(r)
         })
     }
+
 }

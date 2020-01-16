@@ -18,7 +18,8 @@ class NotificationFragment : Fragment() {
 
     private lateinit var viewModel: NotificationViewModel
     private lateinit var binding: NotificationFragmentBinding
-    private lateinit var adapter: NotificationsAdapter
+//    private lateinit var adapter: NotificationsAdapter
+    private lateinit var adapter: NotificationPagedListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,14 +32,19 @@ class NotificationFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(NotificationViewModel::class.java)
-        adapter = NotificationsAdapter(this.context)
+//        adapter = NotificationsAdapter(this.context)
+        adapter = NotificationPagedListAdapter(this.context)
         binding.list.adapter = adapter
-        viewModel.getNotification(1)
-        binding.refresh.isRefreshing = true
+//        viewModel.getNotification(1)
+//        binding.refresh.isRefreshing = true
 
-        viewModel.notificationPage.observe(this, Observer {
-            binding.refresh.isRefreshing = false
-            adapter.submitList(it.items)
+//        viewModel.notificationPage.observe(this, Observer {
+//            binding.refresh.isRefreshing = false
+//            adapter.submitList(it.items)
+//        })
+
+        viewModel.pagedData.observe(this, Observer {
+            adapter.submitList(it)
         })
 
         viewModel.error.observe(this, Observer {
