@@ -79,13 +79,12 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
         // night switch
         nightModeSwitch = contentBinding.navigationView.menu.findItem(R.id.night_mode).actionView as SwitchMaterial
+        nightModeSwitch.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
         nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
-                makeToastShort("night mode on")
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
-                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
-                makeToastShort("night mode off")
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
         }
 

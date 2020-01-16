@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.text.Html
 import android.util.Log
 import android.widget.TextView
+import com.airy.v2plus.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -41,7 +42,7 @@ class GlideImageGetter(private val context: Context,
     }
 
     inner class BitmapDrawablePlaceholder:
-        BitmapDrawable(context.resources, Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565)),
+        BitmapDrawable(context.resources, Bitmap.createBitmap(50, 50, Bitmap.Config.RGB_565)),
         Target<Bitmap> {
 
         private var imageDrawable: Drawable? = null

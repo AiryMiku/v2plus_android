@@ -1,6 +1,7 @@
 package com.airy.v2plus.ui.notification
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
@@ -51,10 +52,9 @@ class NotificationPagedListAdapter(private val context: Context?,
             }
             holder.binding.root.setOnClickListener {
                 onClickCallback(n)
-
             }
         } else {
-
+            Log.d("NotificationAdapter", "null data found")
         }
 
     }

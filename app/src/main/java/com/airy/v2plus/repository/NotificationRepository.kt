@@ -2,6 +2,7 @@ package com.airy.v2plus.repository
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
+import androidx.paging.Config
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.airy.v2plus.api.V2plusRetrofitService
@@ -35,6 +36,10 @@ class NotificationRepository {
     @MainThread
     fun getDataSourceNotificationPages() : LiveData<PagedList<Notification>> {
         val factory = NotificationDataSourceFactory()
-        return factory.toLiveData(10)
+        return factory.toLiveData(Config(
+            pageSize = 10,
+            prefetchDistance = 1,
+            enablePlaceholders = true
+        ))
     }
 }
