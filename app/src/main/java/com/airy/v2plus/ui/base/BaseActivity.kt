@@ -8,7 +8,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
+import com.airy.v2plus.App
 import com.airy.v2plus.R
+import com.airy.v2plus.ui.share.ShareViewModel
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -22,13 +25,19 @@ abstract class BaseActivity: AppCompatActivity() {
 
     private var toolbar: Toolbar? = null
 
+    protected lateinit var shareViewModel: ShareViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView()
+
+        shareViewModel = getAppViewModelProvider()[ShareViewModel::class.java]
+
         toolbar = findViewById(R.id.toolbar)
         toolbar?.let {
             setSupportActionBar(it)
         }
+
         initViews()
         loadData()
     }
@@ -65,4 +74,9 @@ abstract class BaseActivity: AppCompatActivity() {
     fun makeSnackarLong(layout: View, message: String) {
         Snackbar.make(layout, message, Snackbar.LENGTH_LONG).show()
     }
+
+    fun getAppViewModelProvider(): ViewModelProvider {
+        return (applicationContext as App).getAppViewModelProvider(this)
+    }
+
 }

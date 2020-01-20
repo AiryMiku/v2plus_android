@@ -15,6 +15,8 @@ import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
 import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.ui.login.LoginActivity
 import com.airy.v2plus.ui.settings.SettingsActivity
+import com.airy.v2plus.ui.theme.Theme
+import com.airy.v2plus.updateForTheme
 import com.airy.v2plus.util.UserCenter
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -82,9 +84,11 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         nightModeSwitch.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
         nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                shareViewModel.theme.value = Theme.DARK
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                shareViewModel.theme.value = Theme.LIGHT
+//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
         }
 
@@ -159,16 +163,13 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 }
             }
         })
-        viewModel.balance.observe(this, Observer {
-            navHeaderBinding?.balance = it
-        })
+        viewModel.balance.observe(this, Observer { navHeaderBinding?.balance = it })
         viewModel.redeemMessages.observe(this, Observer {
             navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
             makeToastLong(it.toString())
         })
-        viewModel.error.observe(this, Observer {
-            makeToastLong(it.toString())
-        })
+        viewModel.error.observe(this, Observer { makeToastLong(it.toString()) })
+        shareViewModel.theme.observe(this, Observer { updateForTheme(it) })
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
