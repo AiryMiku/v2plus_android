@@ -3,7 +3,7 @@
     <string name="avatar">avatar</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
-    <string name="working">Working</string>
+    <string name="working">…</string>
     <string name="redeem_done">👌Done</string>
     <string name="reply">Reply</string>
     <string name="copy_reply_content">Copy reply content</string>
