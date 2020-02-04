@@ -46,7 +46,7 @@ class App: Application(), ViewModelStoreOwner {
 
     private fun getAppFactory(activity: Activity): ViewModelProvider.Factory {
         val application = checkApplication(activity)!!
-        if (this::factory.isInitialized) {
+        if (!this::factory.isInitialized) {
             factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         }
         return factory

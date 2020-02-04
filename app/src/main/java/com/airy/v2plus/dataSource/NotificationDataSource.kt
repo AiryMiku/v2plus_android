@@ -1,5 +1,6 @@
 package com.airy.v2plus.dataSource
 
+import android.util.Log
 import androidx.paging.PageKeyedDataSource
 import com.airy.v2plus.api.V2plusApi
 import com.airy.v2plus.bean.custom.Notification
@@ -17,20 +18,30 @@ import kotlinx.coroutines.launch
 
 class NotificationDataSource(private val api: V2plusApi): PageKeyedDataSource<Int, Notification>() {
 
+    private val TAG = "NotificationDataSource"
+
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, Notification>
     ) {
         CoroutineScope(Dispatchers.IO).launch {
-            val data = api.getNotificationsResponse(1).let { JsoupUtil.getNotificationPage(it) }
-            callback.onResult(data.items, null, let { if (data.isLast()) { null } else { data.current + 1 } })
+            try {
+                val data = api.getNotificationsResponse(1).let { JsoupUtil.getNotificationPage(it) }
+                callback.onResult(data.items, null, let { if (data.isLast()) { null } else { data.current + 1 } })
+            } catch (e: Exception) {
+                Log.d(TAG, e.message, e)
+            }
         }
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Notification>) {
         CoroutineScope(Dispatchers.IO).launch {
-            val data = api.getNotificationsResponse(params.key).let { JsoupUtil.getNotificationPage(it) }
-            callback.onResult(data.items, let { if (data.isLast()) { null } else { data.current + 1 } })
+            try {
+                val data = api.getNotificationsResponse(params.key).let { JsoupUtil.getNotificationPage(it) }
+                callback.onResult(data.items, let { if (data.isLast()) { null } else { data.current + 1 } })
+            } catch (e: Exception) {
+                Log.d(TAG, e.message, e)
+            }
         }
     }
 
