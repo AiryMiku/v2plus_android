@@ -3,6 +3,7 @@ package com.airy.v2plus
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
@@ -24,7 +25,7 @@ class App: Application(), ViewModelStoreOwner {
     }
 
     private lateinit var viewModelStore: ViewModelStore
-    private lateinit var factory: ViewModelProvider.Factory
+    private var factory: ViewModelProvider.Factory? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -37,16 +38,15 @@ class App: Application(), ViewModelStoreOwner {
         return viewModelStore
     }
 
-    fun getAppViewModelProvider(activity: Activity): ViewModelProvider {
-        return ViewModelProvider(
-            (activity.applicationContext as App),
-            (activity.applicationContext as App).getAppFactory(activity)
-        )
+    fun getAppViewModelProvider(activity: Activity): ViewModelProvider? {
+        return (activity.applicationContext as App).getAppFactory(activity)?.let {
+            ViewModelProvider((activity.applicationContext as App), it)
+        }
     }
 
-    private fun getAppFactory(activity: Activity): ViewModelProvider.Factory {
-        val application = checkApplication(activity)!!
-        if (!this::factory.isInitialized) {
+    private fun getAppFactory(activity: Activity): ViewModelProvider.Factory? {
+        val application = checkApplication(activity)
+        application?.let {
             factory = ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         }
         return factory
@@ -58,6 +58,10 @@ class App: Application(), ViewModelStoreOwner {
                 "Your activity/fragment is not yet attached to "
                         + "Application. You can't request ViewModel before onCreate call."
             )
+    }
+
+    private fun checkActivity(fragment: Fragment): Activity? {
+        return fragment.activity ?: throw IllegalStateException("Can't create ViewModelProvider for detached fragment")
     }
 
 }

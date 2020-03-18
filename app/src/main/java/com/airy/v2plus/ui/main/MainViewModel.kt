@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.bean.custom.MainPageItem
 import com.airy.v2plus.bean.official.User
+import com.airy.v2plus.component.Event
 import com.airy.v2plus.repository.MainRepository
 import com.airy.v2plus.repository.UserRepository
 import com.airy.v2plus.ui.base.BaseViewModel
@@ -35,7 +36,8 @@ class MainViewModel :BaseViewModel() {
 
 //    val isRedeem: MutableLiveData<Boolean> = MutableLiveData()
 
-    val redeemMessages: MutableLiveData<List<String>> = MutableLiveData()
+    val redeemMessages: MutableLiveData<Event<List<String>>> = MutableLiveData()
+
 
 //    val pageUserInfo: MutableLiveData<List<String>> = MutableLiveData()
 
@@ -92,7 +94,7 @@ class MainViewModel :BaseViewModel() {
             }
             val redeemMessages = JsoupUtil.getDailyMissionRedeemResult(redeemResponse)
             getBalance(redeemResponse)
-            this@MainViewModel.redeemMessages.postValue(redeemMessages)
+            this@MainViewModel.redeemMessages.postValue(Event(redeemMessages))
         }, {
                 t -> Log.e("MainViewModel", t.message, t)
         })

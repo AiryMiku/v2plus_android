@@ -52,7 +52,7 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
     }
 
     override fun onThankClickListener(reply: Reply) {
-        makeSnackarShort(binding.container, "Thanks for your admired❤, id: ${reply.id}")
+        makeSnackBarShort(binding.container, "Thanks for your admired❤, id: ${reply.id}")
     }
 
     override fun onReplyLongClickListener(reply: Reply): Boolean {

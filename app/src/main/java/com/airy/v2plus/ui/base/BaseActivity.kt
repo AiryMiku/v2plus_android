@@ -7,12 +7,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.airy.v2plus.App
 import com.airy.v2plus.R
 import com.airy.v2plus.ui.share.ShareViewModel
+import com.airy.v2plus.ui.theme.Theme
 import com.google.android.material.snackbar.Snackbar
+import java.lang.IllegalArgumentException
 
 
 /**
@@ -25,18 +29,20 @@ abstract class BaseActivity: AppCompatActivity() {
 
     private var toolbar: Toolbar? = null
 
-    protected lateinit var shareViewModel: ShareViewModel
+    protected var shareViewModel: ShareViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView()
 
-        shareViewModel = getAppViewModelProvider()[ShareViewModel::class.java]
+        shareViewModel = getAppViewModelProvider()?.get(ShareViewModel::class.java)
 
         toolbar = findViewById(R.id.toolbar)
         toolbar?.let {
             setSupportActionBar(it)
         }
+
+        updateForTheme()
 
         initViews()
         loadData()
@@ -67,16 +73,29 @@ abstract class BaseActivity: AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    fun makeSnackarShort(layout: View, message: String) {
+    fun makeSnackBarShort(layout: View, message: String) {
         Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show()
     }
 
-    fun makeSnackarLong(layout: View, message: String) {
+    fun makeSnackBarLong(layout: View, message: String) {
         Snackbar.make(layout, message, Snackbar.LENGTH_LONG).show()
     }
 
-    fun getAppViewModelProvider(): ViewModelProvider {
+    fun getAppViewModelProvider(): ViewModelProvider? {
         return (applicationContext as App).getAppViewModelProvider(this)
     }
 
+    private fun updateForTheme() {
+        shareViewModel?.let {
+            it.theme.observe(this, Observer { t ->
+                when(t) {
+                    Theme.LIGHT -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+                    Theme.DARK -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+                    Theme.SYSTEM -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                    Theme.BATTERY_SAVER -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+                    else -> {}     // do nothing
+                }
+            })
+        }
+    }
 }

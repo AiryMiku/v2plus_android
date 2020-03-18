@@ -42,7 +42,7 @@ class LoginActivity : BaseActivity(){
         binding.verifyCodeImage.setOnClickListener {
             progressBar.show()
             viewModel.requestLoginKey()
-            makeSnackarLong(binding.container, "Loading login data, please wait for the verify code show up")
+            makeSnackBarLong(binding.container, "Loading login data, please wait for the verify code show up")
         }
 
         subscribeUI()

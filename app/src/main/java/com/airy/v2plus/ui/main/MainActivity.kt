@@ -1,9 +1,12 @@
 package com.airy.v2plus.ui.main
 
+import android.app.Activity
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -51,6 +54,9 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     override fun initViews() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
+        // init listener
+        contentBinding.navigationView.setNavigationItemSelectedListener(this)
+
         // action bar
         toolbar = findViewById(R.id.toolbar)
         toolbar.title = "Home"
@@ -71,25 +77,23 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 navToActivity(this, LoginActivity::class.java)
             }
             header.redeem.setOnClickListener {
-//                makeToastShort("Processing...")
                 header.redeem.text = getString(R.string.working)
                 viewModel.getDailyMissionRedeem()
             }
         }
 
-        contentBinding.navigationView.setNavigationItemSelectedListener(this)
-
         // night switch
         nightModeSwitch = contentBinding.navigationView.menu.findItem(R.id.night_mode).actionView as SwitchMaterial
-        nightModeSwitch.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+        nightModeSwitch.isChecked = delegate.localNightMode == AppCompatDelegate.MODE_NIGHT_YES
         nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                shareViewModel.theme.value = Theme.DARK
+                shareViewModel?.theme?.postValue(Theme.DARK)
 //                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
-                shareViewModel.theme.value = Theme.LIGHT
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                shareViewModel?.theme?.postValue(Theme.LIGHT)
             }
+
+            Log.d(TAG, "now app theme mode ${delegate.localNightMode}")
         }
 
         // view page
@@ -164,12 +168,13 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             }
         })
         viewModel.balance.observe(this, Observer { navHeaderBinding?.balance = it })
-        viewModel.redeemMessages.observe(this, Observer {
-            navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
-            makeToastLong(it.toString())
+        viewModel.redeemMessages.observe(this, Observer { event ->
+            event.getContentIfNotHandled()?.let {
+                navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
+                makeToastLong(it.toString())
+            }
         })
         viewModel.error.observe(this, Observer { makeToastLong(it.toString()) })
-        shareViewModel.theme.observe(this, Observer { updateForTheme(it) })
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

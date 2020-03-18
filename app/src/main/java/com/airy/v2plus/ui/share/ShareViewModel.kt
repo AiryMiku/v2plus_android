@@ -15,4 +15,8 @@ class ShareViewModel: ViewModel() {
 
     val theme: MutableLiveData<Theme> = MutableLiveData()
 
+    init {
+        
+    }
+
 }
