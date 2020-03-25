@@ -1,12 +1,10 @@
 package com.airy.v2plus.ui.main
 
-import android.app.Activity
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -19,8 +17,9 @@ import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.ui.login.LoginActivity
 import com.airy.v2plus.ui.settings.SettingsActivity
 import com.airy.v2plus.ui.theme.Theme
-import com.airy.v2plus.updateForTheme
 import com.airy.v2plus.util.UserCenter
+import com.airy.v2plus.util.getDarkModeStorage
+import com.airy.v2plus.util.setDarkModeStorage
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -84,7 +83,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
         // night switch
         nightModeSwitch = contentBinding.navigationView.menu.findItem(R.id.night_mode).actionView as SwitchMaterial
-        nightModeSwitch.isChecked = delegate.localNightMode == AppCompatDelegate.MODE_NIGHT_YES
+        nightModeSwitch.isChecked = getDarkModeStorage()
         nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 shareViewModel?.theme?.postValue(Theme.DARK)
@@ -92,7 +91,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             } else {
                 shareViewModel?.theme?.postValue(Theme.LIGHT)
             }
-
+            setDarkModeStorage(isChecked)
             Log.d(TAG, "now app theme mode ${delegate.localNightMode}")
         }
 
@@ -155,6 +154,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     }
 
     private fun subscribeUI() {
+
         viewModel.user.observe(this, Observer { u->
             navHeaderBinding?.let {
                 Glide.with(this).load("https:${u.avatarNormalUrl}").into(it.avatar)
@@ -167,13 +167,18 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 }
             }
         })
+
         viewModel.balance.observe(this, Observer { navHeaderBinding?.balance = it })
+
         viewModel.redeemMessages.observe(this, Observer { event ->
-            event.getContentIfNotHandled()?.let {
+            if (event.hasBeenHandled) {
                 navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
+            }
+            event.getContentIfNotHandled()?.let {
                 makeToastLong(it.toString())
             }
         })
+
         viewModel.error.observe(this, Observer { makeToastLong(it.toString()) })
     }
 

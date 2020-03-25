@@ -3,6 +3,7 @@ package com.airy.v2plus.ui.share
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.airy.v2plus.ui.theme.Theme
+import com.airy.v2plus.util.getDarkModeStorage
 
 
 /**
@@ -13,10 +14,12 @@ import com.airy.v2plus.ui.theme.Theme
 
 class ShareViewModel: ViewModel() {
 
-    val theme: MutableLiveData<Theme> = MutableLiveData()
-
-    init {
-        
+    val theme: MutableLiveData<Theme> by lazy {
+        if (getDarkModeStorage()) {
+            MutableLiveData(Theme.DARK)
+        } else {
+            MutableLiveData(Theme.LIGHT)
+        }
     }
 
 }

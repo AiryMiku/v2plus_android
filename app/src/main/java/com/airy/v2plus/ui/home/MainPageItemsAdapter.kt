@@ -48,6 +48,7 @@ class MainPageItemsAdapter(private val context: Context?,
         holder.binding.root.setOnClickListener {
             onClickCallback(cell, holder)
         }
+//        holder.binding.executePendingBindings()   todo 由于data binding的资源节省机制,如需要保证item的实时更新,需要调用此方法
     }
 
     class ViewHolder(val binding: ItemPageCellBinding): RecyclerView.ViewHolder(binding.root)

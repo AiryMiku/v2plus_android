@@ -53,7 +53,7 @@ open class BaseViewModel: ViewModel() {
         }
     }
 
-    fun handleException(e: Exception){
+    private fun handleException(e: Exception){
         Log.e(this.javaClass.simpleName, e.message, e)
         error.postValue(e)
 //        when (e) {  //todo
