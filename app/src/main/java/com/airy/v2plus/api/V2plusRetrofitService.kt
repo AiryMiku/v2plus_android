@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -24,6 +25,10 @@ class V2plusRetrofitService {
 
     companion object {
 
+        private const val CONNECTION_TIME_OUT = 8000L //连接超时时间
+
+        private const val SOCKET_TIME_OUT = 5000L //读写超时时间
+        
         private const val TAG = "V2plusRetrofitService"
 
         private val persistentCookieStore = PersistentCookieStore(getAppContext())
@@ -64,9 +69,11 @@ class V2plusRetrofitService {
                 }
                 it.addInterceptor(loggingInterceptor)
             }
+//            it.connectTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             it.cookieJar(CookieJarImpl(persistentCookieStore))
             it.addInterceptor(headersInterceptor)
             it.addInterceptor(errorInterceptor)
+            it.retryOnConnectionFailure(true)
             it.build()
         }
 

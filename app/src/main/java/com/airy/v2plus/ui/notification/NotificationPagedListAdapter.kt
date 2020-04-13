@@ -44,11 +44,7 @@ class NotificationPagedListAdapter(private val context: Context?,
         if (n != null) {
             holder.binding.notification = n
             context?.let { c ->
-                loadLowQualityImageWithPlaceholder(
-                    c,
-                    "https:" + n.avatarUrl,
-                    holder.binding.avatar
-                )
+                loadLowQualityImageWithPlaceholder(c, n.avatarUrl, holder.binding.avatar)
             }
             holder.binding.root.setOnClickListener {
                 onClickCallback(n)

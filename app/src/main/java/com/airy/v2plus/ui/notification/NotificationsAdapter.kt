@@ -47,7 +47,7 @@ class NotificationsAdapter(private val context: Context?, private val onClickCal
         holder.binding.notification = n
         context?.let {
             Glide.with(it)
-                .load("https:" + n.avatarUrl)
+                .load(n.avatarUrl)
                 .format(DecodeFormat.PREFER_RGB_565)
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .downsample(DownsampleStrategy.AT_LEAST)

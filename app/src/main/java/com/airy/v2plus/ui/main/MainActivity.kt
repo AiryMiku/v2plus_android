@@ -3,16 +3,17 @@ package com.airy.v2plus.ui.main
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.airy.v2plus.R
+import com.airy.v2plus.widget.ZoomOutPageTransformer
 import com.airy.v2plus.databinding.ActivityMainBinding
 import com.airy.v2plus.databinding.NavHeaderBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
+import com.airy.v2plus.loadLowQualityImageWithPlaceholder
 import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.ui.login.LoginActivity
 import com.airy.v2plus.ui.settings.SettingsActivity
@@ -98,6 +99,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         // view page
         viewPage = contentBinding.viewPager
         viewPage.adapter = FragmentViewPagerAdapter(supportFragmentManager)
+        viewPage.setPageTransformer(true, ZoomOutPageTransformer())
         viewPage.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 when (position) {
@@ -157,7 +159,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
         viewModel.user.observe(this, Observer { u->
             navHeaderBinding?.let {
-                Glide.with(this).load("https:${u.avatarNormalUrl}").into(it.avatar)
+                Glide.with(this).load(u.avatarNormalUrl).into(it.avatar)
                 it.userName.text = u.username
                 it.avatar.setOnClickListener {
                     makeToastShort("Hello ${u.username}~")
@@ -171,9 +173,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         viewModel.balance.observe(this, Observer { navHeaderBinding?.balance = it })
 
         viewModel.redeemMessages.observe(this, Observer { event ->
-            if (event.hasBeenHandled) {
-                navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
-            }
+            navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
             event.getContentIfNotHandled()?.let {
                 makeToastLong(it.toString())
             }

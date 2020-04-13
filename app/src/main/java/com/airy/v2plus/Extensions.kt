@@ -18,15 +18,17 @@ import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
  */
 
 // glide
-fun loadLowQualityImageWithPlaceholder(context: Context, url: String, imageView: ImageView) {
-    Glide.with(context)
-        .load(url)
+fun loadLowQualityImageWithPlaceholder(context: Context, url: String?, imageView: ImageView) {
+    url?.let {
+        Glide.with(context)
+        .load(it)
         .format(DecodeFormat.PREFER_RGB_565)
         .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
         .downsample(DownsampleStrategy.AT_LEAST)
         .dontAnimate()
         .placeholder(R.color.color_control_light)
         .into(imageView)
+    }
 }
 
 

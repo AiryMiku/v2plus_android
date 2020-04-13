@@ -41,6 +41,10 @@ class MainViewModel :BaseViewModel() {
 
 //    val pageUserInfo: MutableLiveData<List<String>> = MutableLiveData()
 
+    init {
+        getMainPageResponse()
+    }
+
     fun getMainPageResponse() {
         launchOnIO({
             val r = mainRepository.getMainPageResponse()

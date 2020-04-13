@@ -43,7 +43,7 @@ class MainPageItemsAdapter(private val context: Context?,
         val cell = getItem(position)
         holder.binding.cell = cell
         context?.let {
-            loadLowQualityImageWithPlaceholder(it, "https:" + cell.avatarUrl, holder.binding.avatar)
+            loadLowQualityImageWithPlaceholder(it, cell.avatarUrl, holder.binding.avatar)
         }
         holder.binding.root.setOnClickListener {
             onClickCallback(cell, holder)

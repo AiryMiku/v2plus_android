@@ -33,17 +33,11 @@ abstract class BaseActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView()
-
         shareViewModel = getAppViewModelProvider()?.get(ShareViewModel::class.java)
-
-        toolbar = findViewById(R.id.toolbar)
-        toolbar?.let {
-            setSupportActionBar(it)
-        }
-
         updateForTheme()
-
+        setContentView()
+        toolbar = findViewById(R.id.toolbar)
+        toolbar?.let { setSupportActionBar(it) }
         initViews()
         loadData()
     }

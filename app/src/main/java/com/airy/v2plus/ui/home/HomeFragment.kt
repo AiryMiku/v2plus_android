@@ -1,7 +1,9 @@
 package com.airy.v2plus.ui.home
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +12,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.Common
 import com.airy.v2plus.databinding.HomeFragmentBinding
+import com.airy.v2plus.ui.base.BaseFragment
 import com.airy.v2plus.ui.main.MainViewModel
 import com.airy.v2plus.ui.topic.TopicDetailActivity
 
-class HomeFragment: Fragment() {
+class HomeFragment: BaseFragment() {
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -25,17 +28,10 @@ class HomeFragment: Fragment() {
     private lateinit var binding: HomeFragmentBinding
     private lateinit var adapter: MainPageItemsAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = HomeFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun initPrepare() {
+        Log.d(TAG, "initPrepare")
         viewModel = ViewModelProviders.of(this.activity!!).get(MainViewModel::class.java)
+
         adapter = MainPageItemsAdapter(activity) { item, holder ->
             val intent = Intent(activity, TopicDetailActivity::class.java)
             intent.putExtra(Common.KEY_ID.TOPIC, item.topicId)
@@ -45,7 +41,6 @@ class HomeFragment: Fragment() {
         }
         binding.list.adapter = adapter
 
-        viewModel.getMainPageResponse()
         binding.refresh.let {
             it.isRefreshing = true
             it.setOnRefreshListener {
@@ -57,6 +52,19 @@ class HomeFragment: Fragment() {
         subscribeUI()
     }
 
+    override fun initData() {
+        Log.d(TAG, "initData")
+    }
+
+    override fun initView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = HomeFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     private fun subscribeUI() {
         viewModel.mainListItem.observe(this, Observer {
             binding.refresh.isRefreshing = false
@@ -66,5 +74,4 @@ class HomeFragment: Fragment() {
             binding.refresh.isRefreshing = false
         })
     }
-
 }
