@@ -15,4 +15,19 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+
+    <string-array name="theme_mode_entries">
+        <item>Auto</item>
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Battery</item>
+    </string-array>
+
+    <string-array name="theme_mode_values">
+        <item>auto</item>
+        <item>light</item>
+        <item>dark</item>
+        <item>battery</item>
+    </string-array>
 </resources>

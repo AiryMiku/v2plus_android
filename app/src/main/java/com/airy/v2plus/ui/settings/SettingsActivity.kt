@@ -11,13 +11,14 @@ class SettingsActivity : BaseActivity() {
         setContentView(R.layout.settings_activity)
     }
 
+    override val toolbarLabel: CharSequence? = "Settings"
+
     override fun initViews() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.settings, SettingsFragment())
             .commit()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Settings"
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {

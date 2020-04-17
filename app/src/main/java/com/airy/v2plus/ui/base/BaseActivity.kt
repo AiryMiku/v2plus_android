@@ -16,6 +16,8 @@ import com.airy.v2plus.R
 import com.airy.v2plus.ui.share.ShareViewModel
 import com.airy.v2plus.ui.theme.Theme
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import java.lang.IllegalArgumentException
 
 
@@ -25,19 +27,22 @@ import java.lang.IllegalArgumentException
  * Github: AiryMiku
  */
 
-abstract class BaseActivity: AppCompatActivity() {
+abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() {
 
-    private var toolbar: Toolbar? = null
+    protected var toolbar: Toolbar? = null
+    // default label
+    abstract val toolbarLabel: CharSequence?
+    protected var displayHomeAsUpEnabled: Boolean = false //Todo: need refactor
 
     protected var shareViewModel: ShareViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // init share viewModel
         shareViewModel = getAppViewModelProvider()?.get(ShareViewModel::class.java)
         updateForTheme()
         setContentView()
-        toolbar = findViewById(R.id.toolbar)
-        toolbar?.let { setSupportActionBar(it) }
+        initToolbar()
         initViews()
         loadData()
     }
@@ -47,6 +52,19 @@ abstract class BaseActivity: AppCompatActivity() {
     open fun loadData() {}
 
     abstract fun setContentView()
+
+    private fun initToolbar() {
+        toolbar = findViewById(R.id.toolbar)
+        toolbar?.let { setSupportActionBar(it) }
+    }
+
+    override fun setSupportActionBar(toolbar: Toolbar?) {
+        super.setSupportActionBar(toolbar)
+        supportActionBar?.let {
+            it.setDisplayHomeAsUpEnabled(displayHomeAsUpEnabled)
+            it.title = toolbarLabel
+        }
+    }
 
     fun navToActivity(context: Context, clazz: Class<*>) {
         startActivity(Intent(context, clazz))
@@ -75,8 +93,15 @@ abstract class BaseActivity: AppCompatActivity() {
         Snackbar.make(layout, message, Snackbar.LENGTH_LONG).show()
     }
 
-    fun getAppViewModelProvider(): ViewModelProvider? {
+    private fun getAppViewModelProvider(): ViewModelProvider? {
         return (applicationContext as App).getAppViewModelProvider(this)
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        val base = newBase ?: return super.attachBaseContext(newBase)
+
+        // do something
+        super.attachBaseContext(newBase)
     }
 
     private fun updateForTheme() {

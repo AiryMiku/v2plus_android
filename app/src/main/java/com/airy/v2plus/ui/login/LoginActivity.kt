@@ -23,12 +23,12 @@ class LoginActivity : BaseActivity(){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
     }
 
+    override val toolbarLabel: CharSequence? = "Login"
+
     override fun initViews() {
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Login"
+        displayHomeAsUpEnabled = true
         progressBar = binding.progressBar
-
         binding.submit.setOnClickListener {
             if (validateParams()) {
                 progressBar.show()
