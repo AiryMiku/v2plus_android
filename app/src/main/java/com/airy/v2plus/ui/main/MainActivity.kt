@@ -46,6 +46,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     }
 
     override val toolbarLabel: CharSequence? = "Home"
+    override var displayHomeAsUpEnabled: Boolean? = null
 
     override fun setContentView() {
         contentBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)

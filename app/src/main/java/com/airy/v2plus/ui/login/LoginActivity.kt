@@ -24,10 +24,10 @@ class LoginActivity : BaseActivity(){
     }
 
     override val toolbarLabel: CharSequence? = "Login"
+    override val displayHomeAsUpEnabled: Boolean? = true
 
     override fun initViews() {
         viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
-        displayHomeAsUpEnabled = true
         progressBar = binding.progressBar
         binding.submit.setOnClickListener {
             if (validateParams()) {

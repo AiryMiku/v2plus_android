@@ -9,6 +9,9 @@ class AboutActivity : BaseActivity() {
         setContentView(R.layout.activity_about)
     }
 
+    override val toolbarLabel: CharSequence? = "About"
+    override val displayHomeAsUpEnabled: Boolean? = true
+
     override fun initViews() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

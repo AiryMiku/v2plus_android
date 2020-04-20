@@ -17,16 +17,16 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
     private lateinit var adapter: TopicDetailAdapter
     private var id: Long = 0L
 
+    override val toolbarLabel: CharSequence? = "Detail"
+    override val displayHomeAsUpEnabled: Boolean? = true
+
     override fun setContentView() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_topic_detail)
     }
 
-    override val toolbarLabel: CharSequence? = "Detail"
-
     override fun initViews() {
         id = intent.getLongExtra(Common.KEY_ID.TOPIC, 0L)
         viewModel = ViewModelProviders.of(this).get(TopicDetailViewModel::class.java)   //Todo: need refactor
-        displayHomeAsUpEnabled = true //Todo: need refactor
         adapter = TopicDetailAdapter(this, this)
         binding.list.adapter = adapter
         subscribeUI()

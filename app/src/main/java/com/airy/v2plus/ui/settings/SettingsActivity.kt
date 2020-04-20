@@ -12,13 +12,14 @@ class SettingsActivity : BaseActivity() {
     }
 
     override val toolbarLabel: CharSequence? = "Settings"
+    override var displayHomeAsUpEnabled: Boolean? = true
 
     override fun initViews() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.settings, SettingsFragment())
             .commit()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {

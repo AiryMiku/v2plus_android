@@ -32,7 +32,7 @@ abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() 
     protected var toolbar: Toolbar? = null
     // default label
     abstract val toolbarLabel: CharSequence?
-    protected var displayHomeAsUpEnabled: Boolean = false //Todo: need refactor
+    abstract val displayHomeAsUpEnabled: Boolean? //Todo: need refactor
 
     protected var shareViewModel: ShareViewModel? = null
 
@@ -60,9 +60,9 @@ abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() 
 
     override fun setSupportActionBar(toolbar: Toolbar?) {
         super.setSupportActionBar(toolbar)
-        supportActionBar?.let {
-            it.setDisplayHomeAsUpEnabled(displayHomeAsUpEnabled)
-            it.title = toolbarLabel
+        supportActionBar?.let { actionBar ->
+            displayHomeAsUpEnabled?.let { actionBar.setDisplayHomeAsUpEnabled(it) }
+            actionBar.title = toolbarLabel
         }
     }
 
