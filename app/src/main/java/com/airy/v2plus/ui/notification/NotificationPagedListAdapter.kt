@@ -18,8 +18,7 @@ import com.airy.v2plus.loadLowQualityImageWithPlaceholder
  * Github: AiryMiku
  */
 
-class NotificationPagedListAdapter(private val context: Context?,
-                                   private val onClickCallback: (Notification) -> Unit = {})
+class NotificationPagedListAdapter(private val onClickCallback: (Notification) -> Unit = {})
     : PagedListAdapter<Notification, NotificationPagedListAdapter.ViewHolder>(TaskDiffCallback()) {
 
 
@@ -43,9 +42,7 @@ class NotificationPagedListAdapter(private val context: Context?,
         val n = getItem(position)
         if (n != null) {
             holder.binding.notification = n
-            context?.let { c ->
-                loadLowQualityImageWithPlaceholder(c, n.avatarUrl, holder.binding.avatar)
-            }
+            holder.binding.avatar.loadLowQualityImageWithPlaceholder(n.avatarUrl)
             holder.binding.root.setOnClickListener {
                 onClickCallback(n)
             }

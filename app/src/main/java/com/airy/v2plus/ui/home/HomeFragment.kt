@@ -1,13 +1,11 @@
 package com.airy.v2plus.ui.home
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.Common
@@ -32,7 +30,7 @@ class HomeFragment: BaseFragment() {
         Log.d(TAG, "initPrepare")
         viewModel = ViewModelProviders.of(this.activity!!).get(MainViewModel::class.java)
 
-        adapter = MainPageItemsAdapter(activity) { item, holder ->
+        adapter = MainPageItemsAdapter { item, holder ->
             val intent = Intent(activity, TopicDetailActivity::class.java)
             intent.putExtra(Common.KEY_ID.TOPIC, item.topicId)
             startActivity(intent)

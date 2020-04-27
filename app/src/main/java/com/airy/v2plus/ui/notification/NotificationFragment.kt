@@ -33,7 +33,7 @@ class NotificationFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(NotificationViewModel::class.java)
 //        adapter = NotificationsAdapter(this.context)
-        adapter = NotificationPagedListAdapter(this.context)
+        adapter = NotificationPagedListAdapter()
         binding.list.adapter = adapter
 //        viewModel.getNotification(1)
 //        binding.refresh.isRefreshing = true

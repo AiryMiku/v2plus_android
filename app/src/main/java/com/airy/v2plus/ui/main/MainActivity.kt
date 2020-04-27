@@ -3,24 +3,22 @@ package com.airy.v2plus.ui.main
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.airy.v2plus.R
-import com.airy.v2plus.widget.ZoomOutPageTransformer
 import com.airy.v2plus.databinding.ActivityMainBinding
 import com.airy.v2plus.databinding.NavHeaderBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
-import com.airy.v2plus.loadLowQualityImageWithPlaceholder
+import com.airy.v2plus.isNightMode
 import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.ui.login.LoginActivity
 import com.airy.v2plus.ui.settings.SettingsActivity
 import com.airy.v2plus.ui.theme.Theme
 import com.airy.v2plus.util.UserCenter
-import com.airy.v2plus.util.getDarkModeStorage
 import com.airy.v2plus.util.setDarkModeStorage
+import com.airy.v2plus.widget.ZoomOutPageTransformer
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -83,11 +81,10 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
         // night switch
         nightModeSwitch = contentBinding.navigationView.menu.findItem(R.id.night_mode).actionView as SwitchMaterial
-        nightModeSwitch.isChecked = getDarkModeStorage()
+        nightModeSwitch.isChecked = this.isNightMode()
         nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 shareViewModel?.theme?.postValue(Theme.DARK)
-//                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             } else {
                 shareViewModel?.theme?.postValue(Theme.LIGHT)
             }

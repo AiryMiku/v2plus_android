@@ -69,7 +69,7 @@ internal class TopicDetailAdapter(private val context: Context,
             is ReplyItemHolder -> {
                 val reply = getItem(position) as Reply
                 holder.binding.reply = reply
-                loadLowQualityImageWithPlaceholder(context, reply.member.avatarMiniUrl, holder.binding.avatar)
+                holder.binding.avatar.loadLowQualityImageWithPlaceholder(reply.member.avatarMiniUrl)
                 holder.binding.createTime.text = DateUtil.formatTime(reply.created)
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
                     holder.binding.replyContent.let {
@@ -97,7 +97,7 @@ internal class TopicDetailAdapter(private val context: Context,
             is HeaderItemHolder -> {
                 val topic = getItem(position) as Topic
                 holder.binding.topic = topic
-                loadLowQualityImageWithPlaceholder(context, topic.member.avatarMiniUrl, holder.binding.avatar)
+                holder.binding.avatar.loadLowQualityImageWithPlaceholder(topic.member.avatarMiniUrl)
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
                     holder.binding.contentText.let {
                         it.text = Html.fromHtml(topic.contentHtml, FROM_HTML_MODE_LEGACY,

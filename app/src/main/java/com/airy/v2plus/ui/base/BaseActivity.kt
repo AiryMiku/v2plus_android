@@ -15,6 +15,7 @@ import com.airy.v2plus.App
 import com.airy.v2plus.R
 import com.airy.v2plus.ui.share.ShareViewModel
 import com.airy.v2plus.ui.theme.Theme
+import com.airy.v2plus.updateForTheme
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -107,13 +108,7 @@ abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() 
     private fun updateForTheme() {
         shareViewModel?.let {
             it.theme.observe(this, Observer { t ->
-                when(t) {
-                    Theme.LIGHT -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
-                    Theme.DARK -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
-                    Theme.SYSTEM -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                    Theme.BATTERY_SAVER -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-                    else -> {}     // do nothing
-                }
+                this.updateForTheme(t)
             })
         }
     }

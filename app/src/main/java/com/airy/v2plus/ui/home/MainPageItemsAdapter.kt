@@ -1,6 +1,5 @@
 package com.airy.v2plus.ui.home
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -17,8 +16,7 @@ import com.airy.v2plus.loadLowQualityImageWithPlaceholder
  * Github: AiryMiku
  */
 
-class MainPageItemsAdapter(private val context: Context?,
-                           private val onClickCallback: (MainPageItem, ViewHolder) -> Unit = { _, _ ->})
+class MainPageItemsAdapter(private val onClickCallback: (MainPageItem, ViewHolder) -> Unit = { _, _ ->})
     : ListAdapter<MainPageItem, MainPageItemsAdapter.ViewHolder>(
     TaskDiffCallback()
 ){
@@ -42,9 +40,7 @@ class MainPageItemsAdapter(private val context: Context?,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cell = getItem(position)
         holder.binding.cell = cell
-        context?.let {
-            loadLowQualityImageWithPlaceholder(it, cell.avatarUrl, holder.binding.avatar)
-        }
+        holder.binding.avatar.loadLowQualityImageWithPlaceholder(cell.avatarUrl)
         holder.binding.root.setOnClickListener {
             onClickCallback(cell, holder)
         }
