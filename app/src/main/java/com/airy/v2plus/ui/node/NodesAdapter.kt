@@ -15,7 +15,7 @@ import com.airy.v2plus.databinding.ItemNodeBinding
  * Github: AiryMiku
  */
 
-class NodesAdapter(private val onClickCallback: (Node) -> Unit)
+class NodesAdapter(private val onClickCallback: (Node) -> Unit = {})
     : ListAdapter<Node, NodesAdapter.ViewHolder>(TaskDiffCallback()){
 
     class TaskDiffCallback: DiffUtil.ItemCallback<Node>() {

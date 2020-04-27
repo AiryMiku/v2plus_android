@@ -30,7 +30,7 @@ class NodeFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(NodeViewModel::class.java)
-        adapter = NodesAdapter {  }
+        adapter = NodesAdapter()
         binding.list.adapter = adapter
 
         binding.refresh.let {
@@ -42,7 +42,7 @@ class NodeFragment : Fragment() {
         }
         viewModel.getAllNode()
 
-        viewModel.nodes.observe(this, Observer {
+        viewModel.nodes.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
             binding.refresh.isRefreshing = false
         })

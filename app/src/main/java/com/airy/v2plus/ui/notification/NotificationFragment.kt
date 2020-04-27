@@ -43,11 +43,11 @@ class NotificationFragment : Fragment() {
 //            adapter.submitList(it.items)
 //        })
 
-        viewModel.pagedData.observe(this, Observer {
+        viewModel.pagedData.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.error.observe(this, Observer {
+        viewModel.error.observe(viewLifecycleOwner, Observer {
             binding.refresh.isRefreshing = false
             Toast.makeText(this.context, it.message, Toast.LENGTH_LONG).show()
         })

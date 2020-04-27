@@ -64,11 +64,11 @@ class HomeFragment: BaseFragment() {
     }
 
     private fun subscribeUI() {
-        viewModel.mainListItem.observe(this, Observer {
+        viewModel.mainListItem.observe(viewLifecycleOwner, Observer {
             binding.refresh.isRefreshing = false
             adapter.submitList(it)
         })
-        viewModel.error.observe(this, Observer {
+        viewModel.error.observe(viewLifecycleOwner, Observer {
             binding.refresh.isRefreshing = false
         })
     }
