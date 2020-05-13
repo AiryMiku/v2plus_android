@@ -40,11 +40,25 @@ fun Context.isNightMode(): Boolean {
     return mode == UI_MODE_NIGHT_YES
 }
 
-fun AppCompatActivity.updateForTheme(theme: Theme) = when (theme) {
-    Theme.DARK -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
-    Theme.LIGHT -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
-    Theme.SYSTEM -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-    Theme.BATTERY_SAVER -> delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+fun AppCompatActivity.updateForTheme(theme: Theme) {
+    when (theme) {
+        Theme.DARK -> {
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        Theme.LIGHT -> {
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+        Theme.SYSTEM -> {
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        }
+        Theme.BATTERY_SAVER -> {
+            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
+        }
+    }
 }
 
 // Context

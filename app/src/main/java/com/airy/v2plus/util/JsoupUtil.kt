@@ -99,6 +99,36 @@ class JsoupUtil {
             }
         }
 
+        /**
+         * @return [userName, logoutOnce]
+         */
+        fun getTopUserInfo(response: String): List<String> {
+            val doc = Jsoup.parse(response)
+            val top = doc.getElementById("Top")
+            val topItem = top.select("a[href]")
+            var userName = ""
+            var logoutOnce =  ""
+            for (i in topItem) {
+                val href = i.attr("href")
+                if(href.contains("member", true)) {
+                    userName = i.text()
+                }
+                if (href == "#;") {
+                    val regex = Regex("once=[0-9]+")
+                    val m = regex.find(i.attr("onclick"))
+                    m?.let { ms ->
+                        ms.groupValues.first().split("=").getOrNull(1)?.let {
+                            logoutOnce = it
+                        }
+                    }
+                }
+            }
+            val userInfo = ArrayList<String>()
+            userInfo.add(userName)
+            userInfo.add(logoutOnce)
+            return userInfo
+        }
+
         fun getLoginResult(response: String): LoginResult {
             val doc = Jsoup.parse(response)
             val problems = doc.getElementsByClass("problem").select("li").eachText()

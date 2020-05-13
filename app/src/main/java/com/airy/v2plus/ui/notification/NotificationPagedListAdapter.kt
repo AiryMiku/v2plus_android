@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.airy.v2plus.bean.Status
 import com.airy.v2plus.bean.custom.Notification
 import com.airy.v2plus.databinding.ItemNotificationBinding
 import com.airy.v2plus.loadLowQualityImageWithPlaceholder
