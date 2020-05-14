@@ -1,6 +1,7 @@
 package com.airy.v2plus
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.widget.ImageView
@@ -8,11 +9,15 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.airy.v2plus.ui.theme.Theme
+import com.airy.v2plus.ui.topic.TopicDetailActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
+import org.jetbrains.annotations.Nullable
 
 
 /**
@@ -59,6 +64,13 @@ fun AppCompatActivity.updateForTheme(theme: Theme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
         }
     }
+}
+
+fun Fragment.navToTopicActivity(topicId: Long, @Nullable replyNo: Long? = null) {
+    val intent = Intent(this.requireActivity(), TopicDetailActivity::class.java)
+    intent.putExtra(Common.KEY_ID.TOPIC_ID, topicId)
+    replyNo?.let { intent.putExtra(Common.KEY_ID.REPLY_NO, it)  }
+    startActivity(intent)
 }
 
 // Context

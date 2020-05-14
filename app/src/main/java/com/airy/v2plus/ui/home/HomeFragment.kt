@@ -1,6 +1,5 @@
 package com.airy.v2plus.ui.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,11 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.airy.v2plus.Common
 import com.airy.v2plus.databinding.HomeFragmentBinding
+import com.airy.v2plus.navToTopicActivity
 import com.airy.v2plus.ui.base.BaseFragment
 import com.airy.v2plus.ui.main.MainViewModel
-import com.airy.v2plus.ui.topic.TopicDetailActivity
 
 class HomeFragment: BaseFragment() {
 
@@ -28,14 +26,12 @@ class HomeFragment: BaseFragment() {
 
     override fun initPrepare() {
         Log.d(TAG, "initPrepare")
-        viewModel = ViewModelProviders.of(this.activity!!).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this.requireActivity()).get(MainViewModel::class.java)
 
         adapter = MainPageItemsAdapter { item, holder ->
-            val intent = Intent(activity, TopicDetailActivity::class.java)
-            intent.putExtra(Common.KEY_ID.TOPIC, item.topicId)
-            startActivity(intent)
-            // Todo Add TransitionAnimation
-            // ActivityOptions.makeSceneTransitionAnimation(activity , holder.binding.avatar, "avatarView").toBundle()
+            navToTopicActivity(item.topicId)
+            // Todo Add TransitionAnimation, need pass the avatar bitmap to topic activity
+//            ActivityOptions.makeSceneTransitionAnimation(activity , holder.binding.avatar, "avatarView").toBundle()
         }
         binding.list.adapter = adapter
 

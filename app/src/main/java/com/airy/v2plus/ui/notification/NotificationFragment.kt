@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.databinding.NotificationFragmentBinding
+import com.airy.v2plus.navToTopicActivity
 
 class NotificationFragment : Fragment() {
 
@@ -33,7 +34,9 @@ class NotificationFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(NotificationViewModel::class.java)
 //        adapter = NotificationsAdapter(this.context)
-        adapter = NotificationPagedListAdapter()
+        adapter = NotificationPagedListAdapter() {
+            navToTopicActivity(it.topicId, it.replyNo)
+        }
         binding.list.adapter = adapter
 //        viewModel.getNotification(1)
 //        binding.refresh.isRefreshing = true

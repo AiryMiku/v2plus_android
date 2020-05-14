@@ -11,6 +11,8 @@ data class Notification(
     val avatarUrl: String,
     val userName: String,
     val title: String,
+    val topicId: Long,
+    val replyNo: Long,
     val time: String,
     val payload: String
 )

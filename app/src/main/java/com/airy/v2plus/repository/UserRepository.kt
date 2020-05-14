@@ -7,7 +7,7 @@ import com.airy.v2plus.api.V2plusRetrofitService
 import com.airy.v2plus.bean.custom.LoginResult
 import com.airy.v2plus.bean.official.User
 import com.airy.v2plus.ui.login.LoginKey
-import com.airy.v2plus.util.JsoupUtil
+import com.airy.v2plus.util.V2exHtmlUtil
 
 
 /**
@@ -29,7 +29,7 @@ class UserRepository {
 
     suspend fun getLoginKey(): LoginKey {
         val response = V2plusRetrofitService.getV2plusApi().getLoginResponse()
-        return JsoupUtil.getLoginValue(response)
+        return V2exHtmlUtil.getLoginValue(response)
     }
 
     suspend fun getVerifyPic(key: String): Bitmap {
@@ -43,7 +43,7 @@ class UserRepository {
 
     suspend fun login(params: HashMap<String, String>): LoginResult {
         val response = V2plusRetrofitService.getV2plusApi().postLogin(params)
-        return JsoupUtil.getLoginResult(response)
+        return V2exHtmlUtil.getLoginResult(response)
     }
 
     suspend fun getUserInfoByName(userName: String): User {

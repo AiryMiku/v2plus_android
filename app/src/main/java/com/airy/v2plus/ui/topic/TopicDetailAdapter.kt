@@ -90,7 +90,7 @@ internal class TopicDetailAdapter(private val context: Context,
                         viewOnClickListener.onThankClickListener(reply)
                     }
                 }
-                holder.binding.card.setOnLongClickListener {
+                holder.binding.root.setOnLongClickListener {
                     viewOnClickListener.onReplyLongClickListener(reply)
                 }
             }
@@ -118,6 +118,8 @@ internal class TopicDetailAdapter(private val context: Context,
         }
     }
 
+
+
     interface ViewOfItemOnClickListener {
         fun onThankClickListener(reply: Reply)
         fun onReplyLongClickListener(reply: Reply): Boolean
@@ -129,6 +131,10 @@ internal sealed class TopicDetailViewHolder(itemView: View): RecyclerView.ViewHo
     class ReplyItemHolder(val binding: ItemTopicReplyBinding): TopicDetailViewHolder(binding.root)
 
     class HeaderItemHolder(val binding: ItemTopicDetailBinding): TopicDetailViewHolder(binding.root)
+
+    fun animateItem(position: Int) {
+        itemView.performClick()
+    }
 }
 
 internal object TopicDetailDiffCallback : DiffUtil.ItemCallback<Any>() {

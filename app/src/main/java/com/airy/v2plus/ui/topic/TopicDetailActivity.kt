@@ -1,14 +1,22 @@
 package com.airy.v2plus.ui.topic
 
+import android.util.Log
+import androidx.core.view.children
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.coroutineScope
 import com.airy.v2plus.Common
 import com.airy.v2plus.R
 import com.airy.v2plus.bean.official.Reply
 import com.airy.v2plus.databinding.ActivityTopicDetailBinding
 import com.airy.v2plus.ui.base.BaseActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClickListener {
 
@@ -16,6 +24,8 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
     private lateinit var viewModel: TopicDetailViewModel
     private lateinit var adapter: TopicDetailAdapter
     private var id: Long = 0L
+
+    private val TAG = "TopicDetailActivity"
 
     override val toolbarLabel: CharSequence? = "Detail"
     override val displayHomeAsUpEnabled: Boolean? = true
@@ -25,7 +35,7 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
     }
 
     override fun initViews() {
-        id = intent.getLongExtra(Common.KEY_ID.TOPIC, 0L)
+        id = intent.getLongExtra(Common.KEY_ID.TOPIC_ID, 0L)
         viewModel = ViewModelProviders.of(this).get(TopicDetailViewModel::class.java)   //Todo: need refactor
         adapter = TopicDetailAdapter(this, this)
         binding.list.adapter = adapter
@@ -48,7 +58,33 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
         viewModel.topicDetails.observe(this, Observer {
             adapter.submitList(it)
             binding.refresh.isRefreshing = false
+            handlingReplyPositionItem()
         })
+    }
+
+    // Todo out of index, because recycle only show display item view, so that way to find adapter position item is not correct
+    private fun handlingReplyPositionItem() {
+        lifecycle.coroutineScope.launch(Dispatchers.IO) {
+            val replyNo = intent.getLongExtra(Common.KEY_ID.REPLY_NO, -1L)
+            if (replyNo != -1L) {
+                delay(500L)
+                val position = replyNo.toInt() + 1  // headItem
+                Log.d(TAG, "handle position $position")
+                if (position <= adapter.itemCount) {
+                    binding.list.smoothScrollToPosition(position)
+                    delay(2000L)
+                    val displayChildren = binding.list.children
+                    displayChildren.iterator().forEach { view ->
+                        val adapterPosition = binding.list.getChildAdapterPosition(view)
+                        if(adapterPosition == position) {
+                            Log.d(TAG, "performClick adapterPosition: $adapterPosition")
+//                            view.performClick() todo not correct way to simulate finger click or just add some animation
+//                            view.animate()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onThankClickListener(reply: Reply) {

@@ -9,7 +9,7 @@ import com.airy.v2plus.component.Event
 import com.airy.v2plus.repository.MainRepository
 import com.airy.v2plus.repository.UserRepository
 import com.airy.v2plus.ui.base.BaseViewModel
-import com.airy.v2plus.util.JsoupUtil
+import com.airy.v2plus.util.V2exHtmlUtil
 import com.airy.v2plus.util.UserCenter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -49,7 +49,7 @@ class MainViewModel :BaseViewModel() {
         launchOnIO({
             val r = mainRepository.getMainPageResponse()
             mainPageResponse.postValue(r)
-            val dataList = JsoupUtil.getMainPageItems(r)
+            val dataList = V2exHtmlUtil.getMainPageItems(r)
             mainListItem.postValue(dataList)
             getBalance(r)
         }, {
@@ -90,13 +90,13 @@ class MainViewModel :BaseViewModel() {
         launchOnIO({
             val redeemResponse: String
             val response = userRepository.getDailyMissionResponse()
-            val param = JsoupUtil.getDailyMissionParam(response)
+            val param = V2exHtmlUtil.getDailyMissionParam(response)
             redeemResponse = if (param != "") {
                 userRepository.getDailyMissionRedeemResponse(param)
             } else {
                 response
             }
-            val redeemMessages = JsoupUtil.getDailyMissionRedeemResult(redeemResponse)
+            val redeemMessages = V2exHtmlUtil.getDailyMissionRedeemResult(redeemResponse)
             getBalance(redeemResponse)
             this@MainViewModel.redeemMessages.postValue(Event(redeemMessages))
         }, {
@@ -105,7 +105,7 @@ class MainViewModel :BaseViewModel() {
     }
 
     fun getBalance(response: String) {
-        val result = JsoupUtil.getBalance(response)
+        val result = V2exHtmlUtil.getBalance(response)
         balance.postValue(result)
     }
 

@@ -12,6 +12,7 @@ object Common {
     const val prefix = "V2_PLUS"
 
     object KEY_ID {
-        const val TOPIC = "${prefix}_KEY_TOPIC_ID"
+        const val TOPIC_ID = "${prefix}_KEY_TOPIC_ID"
+        const val REPLY_NO = "${prefix}_KEY_REPLY_NO"
     }
 }

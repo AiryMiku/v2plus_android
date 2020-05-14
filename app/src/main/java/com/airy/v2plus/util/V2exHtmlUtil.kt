@@ -13,7 +13,7 @@ import org.jsoup.Jsoup
  * Github: AiryMiku
  */
 
-class JsoupUtil {
+class V2exHtmlUtil {
 
     companion object {
 
@@ -62,7 +62,19 @@ class JsoupUtil {
                 val tds = it.getElementsByTag("td")
                 val avatarUrl = tds[0].getElementsByTag("img")[0].attr("src")
                 val userName = tds[1].getElementsByTag("strong")[0].text()
-                val title = tds[1].getElementsByTag("span")[0].text()
+                val titleSpan = tds[1].getElementsByTag("span")[0]
+                val title = titleSpan.text()
+                val notificationInfo = titleSpan.select("a[href]")[1].attr("href")
+                val topicId = notificationInfo.let { n->
+                    val regex = Regex("/t/[0-9]+")
+                    val m = regex.find(n)
+                    m?.groupValues?.first()?.split("/t/")?.getOrNull(1)?.toLong()
+                }?: -1L
+                val replyNo = notificationInfo.let { n->
+                    val regex = Regex("#reply[0-9]+")
+                    val m = regex.find(n)
+                    m?.groupValues?.first()?.split("#reply")?.getOrNull(1)?.toLong()
+                }?: -1L
                 val time = tds[1].getElementsByTag("span")[1].text()
                 val payload = tds[1].getElementsByClass("payload").let { p ->
                     if (p.isEmpty()) {
@@ -71,7 +83,7 @@ class JsoupUtil {
                         p[0].text()
                     }
                 }
-                dataList.add(Notification(avatarUrl, userName, title, time, payload))
+                dataList.add(Notification(avatarUrl, userName, title, topicId, replyNo,time, payload))
             }
             val pageInfo = main.getElementsByClass("cell").first().getElementsByTag("input").first()
             val current = pageInfo.attr("value")

@@ -6,7 +6,7 @@ import androidx.paging.PageKeyedDataSource
 import com.airy.v2plus.api.V2plusApi
 import com.airy.v2plus.bean.Status
 import com.airy.v2plus.bean.custom.Notification
-import com.airy.v2plus.util.JsoupUtil
+import com.airy.v2plus.util.V2exHtmlUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ class NotificationDataSource(private val api: V2plusApi): PageKeyedDataSource<In
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 status.postValue(Status.LOADING)
-                val data = api.getNotificationsResponse(1).let { JsoupUtil.getNotificationPage(it) }
+                val data = api.getNotificationsResponse(1).let { V2exHtmlUtil.getNotificationPage(it) }
                 callback.onResult(data.items, null, let { if (data.isLast()) { null } else { data.current + 1 } })
                 status.postValue(Status.FINISH)
             } catch (e: Exception) {
@@ -45,7 +45,7 @@ class NotificationDataSource(private val api: V2plusApi): PageKeyedDataSource<In
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 status.postValue(Status.LOADING)
-                val data = api.getNotificationsResponse(params.key).let { JsoupUtil.getNotificationPage(it) }
+                val data = api.getNotificationsResponse(params.key).let { V2exHtmlUtil.getNotificationPage(it) }
                 callback.onResult(data.items, let { if (data.isLast()) { null } else { data.current + 1 } })
                 status.postValue(Status.FINISH)
             } catch (e: Exception) {

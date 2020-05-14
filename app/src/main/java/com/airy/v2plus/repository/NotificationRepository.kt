@@ -9,7 +9,7 @@ import com.airy.v2plus.api.V2plusRetrofitService
 import com.airy.v2plus.bean.custom.Notification
 import com.airy.v2plus.bean.custom.Page
 import com.airy.v2plus.dataSource.NotificationDataSourceFactory
-import com.airy.v2plus.util.JsoupUtil
+import com.airy.v2plus.util.V2exHtmlUtil
 
 
 /**
@@ -30,7 +30,7 @@ class NotificationRepository {
 
     suspend fun getNotificationPages(page: Int): Page<Notification> {
         val r = V2plusRetrofitService.getV2plusApi().getNotificationsResponse(page)
-        return JsoupUtil.getNotificationPage(r)
+        return V2exHtmlUtil.getNotificationPage(r)
     }
 
     @MainThread
