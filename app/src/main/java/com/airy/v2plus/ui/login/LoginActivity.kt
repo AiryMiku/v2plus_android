@@ -36,6 +36,7 @@ class LoginActivity : BaseActivity(){
                 val password = binding.password.text.toString()
                 val verifyCode = binding.verifyCode.text.toString()
                 viewModel.doLogin(userName, password, verifyCode)
+                it.isEnabled = false
             }
         }
 
@@ -69,6 +70,7 @@ class LoginActivity : BaseActivity(){
         viewModel.loginKey.observe(this, Observer {
             if (hasRequestLoginKey) {
                 makeToastShort("Well, please try again~")
+                binding.submit.isEnabled = true
             } else {
                 hasRequestLoginKey = true
             }
@@ -95,6 +97,7 @@ class LoginActivity : BaseActivity(){
                         progressBar.show()
                     }
                     .show()
+                binding.submit.isEnabled = true
             } else {
                 UserCenter.setUserName(it.userName)
                 makeToastShort("Login Success")
@@ -105,6 +108,7 @@ class LoginActivity : BaseActivity(){
 
         viewModel.error.observe(this, Observer {
             makeToastLong(it.toString())
+            binding.submit.isEnabled = true
         })
     }
 
