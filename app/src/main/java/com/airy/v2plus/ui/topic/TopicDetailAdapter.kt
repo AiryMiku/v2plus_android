@@ -2,13 +2,12 @@ package com.airy.v2plus.ui.topic
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
-import android.text.Html
-import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
+import androidx.core.text.HtmlCompat.FROM_HTML_MODE_LEGACY
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +16,7 @@ import com.airy.v2plus.bean.official.Reply
 import com.airy.v2plus.bean.official.Topic
 import com.airy.v2plus.databinding.ItemTopicDetailBinding
 import com.airy.v2plus.databinding.ItemTopicReplyBinding
-import com.airy.v2plus.loadLowQualityImageWithPlaceholder
+import com.airy.v2plus.loadLowQImageWithDefaultPlaceholder
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.HeaderItemHolder
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.ReplyItemHolder
 import com.airy.v2plus.util.DateUtil
@@ -69,17 +68,11 @@ internal class TopicDetailAdapter(private val context: Context,
             is ReplyItemHolder -> {
                 val reply = getItem(position) as Reply
                 holder.binding.reply = reply
-                holder.binding.avatar.loadLowQualityImageWithPlaceholder(reply.member.avatarMiniUrl)
+                holder.binding.avatar.loadLowQImageWithDefaultPlaceholder(reply.member.avatarMiniUrl)
                 holder.binding.createTime.text = DateUtil.formatTime(reply.created)
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
+                reply.contentHtml?.run {
                     holder.binding.replyContent.let {
-                        it.text = Html.fromHtml(reply.contentHtml, FROM_HTML_MODE_LEGACY,
-                            GlideImageGetter(context, WeakReference(it)),
-                            TextViewTagHandler(context))
-                    }
-                } else {
-                    holder.binding.replyContent.let {
-                        it.text = Html.fromHtml(reply.contentHtml,
+                        it.text = HtmlCompat.fromHtml(reply.contentHtml, FROM_HTML_MODE_LEGACY,
                             GlideImageGetter(context, WeakReference(it)),
                             TextViewTagHandler(context))
                     }
@@ -91,24 +84,24 @@ internal class TopicDetailAdapter(private val context: Context,
                     }
                 }
                 holder.binding.root.setOnLongClickListener {
-                    viewOnClickListener.onReplyLongClickListener(reply)
+                    viewOnClickListener. onReplyLongClickListener(reply)
                 }
             }
             is HeaderItemHolder -> {
                 val topic = getItem(position) as Topic
                 holder.binding.topic = topic
-                holder.binding.avatar.loadLowQualityImageWithPlaceholder(topic.member.avatarMiniUrl)
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
-                    holder.binding.contentText.let {
-                        it.text = Html.fromHtml(topic.contentHtml, FROM_HTML_MODE_LEGACY,
-                        GlideImageGetter(context, WeakReference(it)),
-                        TextViewTagHandler(context))
+                holder.binding.avatar.loadLowQImageWithDefaultPlaceholder(topic.member.avatarMiniUrl)
+                topic.contentHtml?.run {
+                    var content = this
+                    if (trim().isBlank()) {
+                        content = "---No content---\n"
                     }
-                } else {
                     holder.binding.contentText.let {
-                        it.text = Html.fromHtml(topic.contentHtml,
+                        it.text = HtmlCompat.fromHtml(
+                            content, FROM_HTML_MODE_LEGACY,
                             GlideImageGetter(context, WeakReference(it)),
-                            TextViewTagHandler(context))
+                            TextViewTagHandler(context)
+                        )
                     }
                 }
                 holder.binding.contentText.movementMethod = LinkMovementMethod.getInstance()
@@ -132,9 +125,6 @@ internal sealed class TopicDetailViewHolder(itemView: View): RecyclerView.ViewHo
 
     class HeaderItemHolder(val binding: ItemTopicDetailBinding): TopicDetailViewHolder(binding.root)
 
-    fun animateItem(position: Int) {
-        itemView.performClick()
-    }
 }
 
 internal object TopicDetailDiffCallback : DiffUtil.ItemCallback<Any>() {

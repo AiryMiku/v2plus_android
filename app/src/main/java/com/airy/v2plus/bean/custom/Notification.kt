@@ -14,5 +14,6 @@ data class Notification(
     val topicId: Long,
     val replyNo: Long,
     val time: String,
-    val payload: String
+    val payload: String,
+    val isReply: Boolean = true
 )

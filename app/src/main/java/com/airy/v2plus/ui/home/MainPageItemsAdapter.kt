@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.airy.v2plus.bean.custom.MainPageItem
 import com.airy.v2plus.databinding.ItemPageCellBinding
-import com.airy.v2plus.loadLowQualityImageWithPlaceholder
+import com.airy.v2plus.loadLowQImageWithDefaultPlaceholder
 
 
 /**
@@ -40,7 +40,7 @@ class MainPageItemsAdapter(private val onClickCallback: (MainPageItem, ViewHolde
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cell = getItem(position)
         holder.binding.cell = cell
-        holder.binding.avatar.loadLowQualityImageWithPlaceholder(cell.avatarUrl)
+        holder.binding.avatar.loadLowQImageWithDefaultPlaceholder(cell.avatarUrl)
         holder.binding.root.setOnClickListener {
             onClickCallback(cell, holder)
         }

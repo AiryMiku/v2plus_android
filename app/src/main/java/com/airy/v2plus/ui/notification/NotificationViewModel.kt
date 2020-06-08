@@ -1,6 +1,7 @@
 package com.airy.v2plus.ui.notification
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.airy.v2plus.bean.custom.Notification
 import com.airy.v2plus.bean.custom.Page
 import com.airy.v2plus.repository.NotificationRepository
@@ -13,6 +14,12 @@ class NotificationViewModel : BaseViewModel() {
     val notificationPage = MutableLiveData<Page<Notification>>()
 
     val pagedData = repository.getDataSourceNotificationPages()
+
+
+    fun refresh() {
+//        pagedData.value?.refresh?.invoke()
+
+    }
 
     fun getNotification(page: Int) {
         launchOnIO({

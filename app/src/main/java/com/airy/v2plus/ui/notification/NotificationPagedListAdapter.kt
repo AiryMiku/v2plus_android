@@ -1,16 +1,14 @@
 package com.airy.v2plus.ui.notification
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.airy.v2plus.bean.Status
 import com.airy.v2plus.bean.custom.Notification
 import com.airy.v2plus.databinding.ItemNotificationBinding
-import com.airy.v2plus.loadLowQualityImageWithPlaceholder
+import com.airy.v2plus.loadLowQImageWithDefaultPlaceholder
 
 
 /**
@@ -43,7 +41,7 @@ class NotificationPagedListAdapter(private val onClickCallback: (Notification) -
         val n = getItem(position)
         if (n != null) {
             holder.binding.notification = n
-            holder.binding.avatar.loadLowQualityImageWithPlaceholder(n.avatarUrl)
+            holder.binding.avatar.loadLowQImageWithDefaultPlaceholder(n.avatarUrl)
             holder.binding.root.setOnClickListener {
                 onClickCallback(n)
             }

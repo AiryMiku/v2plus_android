@@ -33,14 +33,14 @@ class NotificationFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(NotificationViewModel::class.java)
-//        adapter = NotificationsAdapter(this.context)
         adapter = NotificationPagedListAdapter() {
-            navToTopicActivity(it.topicId, it.replyNo)
+            navToTopicActivity(it.topicId, if (it.isReply) it.replyNo else null)
         }
         binding.list.adapter = adapter
+
+//        adapter = NotificationsAdapter(this.context)
 //        viewModel.getNotification(1)
 //        binding.refresh.isRefreshing = true
-
 //        viewModel.notificationPage.observe(this, Observer {
 //            binding.refresh.isRefreshing = false
 //            adapter.submitList(it.items)

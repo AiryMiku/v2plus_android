@@ -1,5 +1,6 @@
 package com.airy.v2plus.dataSource
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.airy.v2plus.api.V2plusRetrofitService
 import com.airy.v2plus.bean.custom.Notification
@@ -12,7 +13,12 @@ import com.airy.v2plus.bean.custom.Notification
  */
 
 class NotificationDataSourceFactory: DataSource.Factory<Int, Notification>() {
+
+    val sourceLiveData = MutableLiveData<NotificationDataSource>()
+
     override fun create(): DataSource<Int, Notification> {
-        return NotificationDataSource(V2plusRetrofitService.getV2plusApi())
+        val source = NotificationDataSource(V2plusRetrofitService.getV2plusApi())
+        sourceLiveData.postValue(source)
+        return source
     }
 }

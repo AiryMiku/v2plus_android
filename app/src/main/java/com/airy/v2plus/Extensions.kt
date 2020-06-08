@@ -10,7 +10,6 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import com.airy.v2plus.ui.theme.Theme
 import com.airy.v2plus.ui.topic.TopicDetailActivity
 import com.bumptech.glide.Glide
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.Nullable
  */
 
 // glide
-fun ImageView.loadLowQualityImageWithPlaceholder(url: String?) {
+fun ImageView.loadLowQImageWithDefaultPlaceholder(url: String?) {
     url?.let {
         Glide.with(context)
         .load(it)
