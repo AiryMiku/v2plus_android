@@ -37,13 +37,14 @@ class LoginActivity : BaseActivity(){
                 val verifyCode = binding.verifyCode.text.toString()
                 viewModel.doLogin(userName, password, verifyCode)
                 it.isEnabled = false
+                makeToastShort("Working on for your login...")
             }
         }
 
         binding.verifyCodeImage.setOnClickListener {
             progressBar.show()
             viewModel.requestLoginKey()
-            makeSnackBarLong(binding.container, "Loading login data, please wait for the verify code show up")
+            makeSnackBarLong(binding.container, "Loading login data, please wait for newer verify code show up")
         }
 
         subscribeUI()

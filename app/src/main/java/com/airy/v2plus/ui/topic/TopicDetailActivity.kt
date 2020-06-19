@@ -68,7 +68,7 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
         if (replyNo == -1L) {
             return
         }
-        lifecycle.coroutineScope.launch(Dispatchers.IO) {
+        launch(Dispatchers.IO) {
             val itemPosition = replyNo.toInt()
             if (itemPosition <= adapter.itemCount) {
                 val displayPosition = if (itemPosition - 1 > 0) itemPosition - 1 else itemPosition
@@ -113,7 +113,7 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
             rotateAnim.duration = duration
             rotateAnim.repeatMode = Animation.REVERSE
             rotateAnim.repeatCount = 3
-
+            
             val animSet = AnimationSet(false)
 //            animSet.addAnimation(scaleAnim)
             animSet.addAnimation(rotateAnim)

@@ -1,6 +1,5 @@
 package com.airy.v2plus.repository
 
-import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.paging.Config
 import androidx.paging.DataSource

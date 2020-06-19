@@ -19,6 +19,7 @@ import com.airy.v2plus.updateForTheme
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import java.lang.IllegalArgumentException
 
 
@@ -46,6 +47,11 @@ abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() 
         initToolbar()
         initViews()
         loadData()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancel()
     }
 
     open fun initViews() {}
