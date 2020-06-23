@@ -64,13 +64,13 @@
                     android:gravity="center"
                     android:clickable="true"
                     android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:drawablePadding="2dp"
                     android:drawableEnd="@drawable/ic_thank_black_24dp"
                     android:padding="4dp"
-                    android:text="0"
+                    android:text="@{String.valueOf(reply.thanks)}"
                     tools:text="99"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

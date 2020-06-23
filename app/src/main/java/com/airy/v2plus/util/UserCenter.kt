@@ -1,5 +1,6 @@
 package com.airy.v2plus.util
 
+import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.util.SharedPreferencesUtil.getSp
 
 
@@ -15,6 +16,7 @@ class UserCenter {
         private const val KEY_USER_COOKIE_EXPIRED = "KEY_USER_COOKIE_EXPIRED"
         private const val KEY_USER_ID = "KEY_USER_ID"
         private const val KEY_USER_NAME = "KEY_USER_NAME"
+        private const val KEY_LAST_BALANCE = "KEY_LAST_BALANCE"
 
         fun isUserCookieExpired(): Boolean {
             return getSp().getBoolean(KEY_USER_COOKIE_EXPIRED, true)
@@ -34,6 +36,20 @@ class UserCenter {
 
         fun setUserName(name: String) {
             getSp().edit().putString(KEY_USER_NAME, name).apply()
+        }
+
+        fun getLastBalance(): Balance {
+            val b = getSp().getString(KEY_LAST_BALANCE, "")
+            return if (b == null || b.isBlank()) {
+                Balance("0", "0", "0")
+            } else {
+                val list = b.split("-")
+                Balance(list[0]?: "0", list[1]?: "0", list[2]?: "0")
+            }
+        }
+
+        fun setLastBalance(balance: Balance) {
+            getSp().edit().putString(KEY_LAST_BALANCE, "${balance.gold}-${balance.silver}-${balance.bronze}").apply()
         }
     }
 

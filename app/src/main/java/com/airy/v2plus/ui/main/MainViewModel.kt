@@ -106,6 +106,7 @@ class MainViewModel :BaseViewModel() {
 
     fun getBalance(response: String) {
         val result = V2exHtmlUtil.getBalance(response)
+        UserCenter.setLastBalance(result)
         balance.postValue(result)
     }
 

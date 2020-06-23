@@ -1,5 +1,6 @@
 package com.airy.v2plus.ui.main
 
+import android.content.Intent
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -7,12 +8,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
+import com.airy.v2plus.Common
 import com.airy.v2plus.R
 import com.airy.v2plus.databinding.ActivityMainBinding
 import com.airy.v2plus.databinding.NavHeaderBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
 import com.airy.v2plus.isNightMode
 import com.airy.v2plus.ui.base.BaseActivity
+import com.airy.v2plus.ui.hot_or_latest.HotOrLatestActivity
 import com.airy.v2plus.ui.login.LoginActivity
 import com.airy.v2plus.ui.settings.SettingsActivity
 import com.airy.v2plus.ui.theme.Theme
@@ -70,6 +73,9 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             header.avatar.setOnClickListener {
                 navToActivity(this, LoginActivity::class.java)
             }
+            if (!UserCenter.getUserName().isBlank()) {
+                header.userName.text = UserCenter.getUserName()
+            }
             header.userName.setOnClickListener {
                 navToActivity(this, LoginActivity::class.java)
             }
@@ -77,6 +83,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 header.redeem.text = getString(R.string.working)
                 viewModel.getDailyMissionRedeem()
             }
+            header.balance = UserCenter.getLastBalance()
         }
 
         // night switch
@@ -114,7 +121,6 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 }
             }
         })
-
 
         // bottom navigation view
         navigation = contentBinding.bottomNavigation
@@ -180,8 +186,13 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.latest -> {
+                val i = Intent(this, HotOrLatestActivity::class.java)
+                i.putExtra(Common.KEY_BOOLEAN.IS_LATEST, true)
+                startActivity(i)
+            }
             R.id.hottest -> {
-                makeToastShort("Developing~")
+                navToActivity(this, HotOrLatestActivity::class.java)
             }
             R.id.settings -> {
                 navToActivity(this, SettingsActivity::class.java)

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="topic"
+                type="com.airy.v2plus.bean.official.Topic" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardElevation="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="30dp"
+                android:background="@null">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@mipmap/ic_launcher_round"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:contentDescription="@string/avatar"
+                    android:transitionName="avatarView"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:textColor="@color/color_accent"
+                    android:textSize="16sp"
+                    android:text="@{topic.member.username}"
+                    app:layout_constraintStart_toEndOf="@id/avatar"
+                    app:layout_constraintTop_toTopOf="@id/avatar"
+                    app:layout_constraintBottom_toBottomOf="@id/avatar"
+                    tools:text="Airy"/>
+
+            <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@{topic.title}"
+                    android:singleLine="false"
+                    app:layout_constraintTop_toBottomOf="@id/avatar"
+                    app:layout_constraintStart_toStartOf="@id/avatar"
+                    tools:text="tittitletitletitltitltletitletitltitletitltletitletitltitletitltletitletitltitletitltletitletitltitletitletitletitltitletitletitlletitletitletitle"/>
+
+            <TextView
+                    android:id="@+id/node"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="@{topic.node.name}"
+                    android:gravity="center"
+                    android:background="@drawable/borderless_round_rectangle"
+                    android:textColor="@color/design_default_color_background"
+                    android:shadowColor="@color/design_default_color_on_secondary"
+                    app:layout_constraintTop_toTopOf="@id/avatar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="Node"/>
+
+
+            <TextView
+                    android:id="@+id/label_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Comment"
+                    app:layout_constraintStart_toStartOf="@id/title"
+                    app:layout_constraintTop_toBottomOf="@id/title"/>
+
+            <TextView
+                    android:id="@+id/comment_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text='@{String.valueOf(topic.replyNum)}'
+                    android:textColor="@color/color_accent"
+                    app:layout_constraintTop_toTopOf="@id/label_comment"
+                    app:layout_constraintStart_toEndOf="@id/label_comment"
+                    tools:text="99"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

@@ -14,19 +14,23 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".ui.hot_or_latest.HotOrLatestActivity"></activity>
         <activity
                 android:name=".ui.launch.LaunchActivity"
                 android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.topic.TopicDetailActivity"/>
-        <activity android:name=".ui.about.AboutActivity"/>
-        <activity android:name=".ui.login.LoginActivity"/>
-        <activity android:name=".ui.main.MainActivity"/>
-        <activity android:name=".ui.settings.SettingsActivity" android:label="@string/title_activity_settings"/>
+        <activity android:name=".ui.topic.TopicDetailActivity" />
+        <activity android:name=".ui.about.AboutActivity" />
+        <activity android:name=".ui.login.LoginActivity" />
+        <activity android:name=".ui.main.MainActivity" />
+        <activity
+                android:name=".ui.settings.SettingsActivity"
+                android:label="@string/title_activity_settings" />
     </application>
 
 </manifest>

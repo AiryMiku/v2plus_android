@@ -72,6 +72,13 @@ fun Fragment.navToTopicActivity(topicId: Long, @Nullable replyNo: Long? = null) 
     startActivity(intent)
 }
 
+fun AppCompatActivity.navToTopicActivity(topicId: Long, @Nullable replyNo: Long? = null) {
+    val intent = Intent(this, TopicDetailActivity::class.java)
+    intent.putExtra(Common.KEY_ID.TOPIC_ID, topicId)
+    replyNo?.let { intent.putExtra(Common.KEY_ID.REPLY_NO, it)  }
+    startActivity(intent)
+}
+
 // Context
 fun Context.showToastShort(message: CharSequence) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

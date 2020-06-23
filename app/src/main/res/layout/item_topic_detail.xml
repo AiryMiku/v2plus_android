@@ -72,6 +72,7 @@
                             android:layout_marginStart="4dp"
                             android:textSize="12sp"
                             android:textColor="@color/color_accent"
+                            android:text="@{String.valueOf(topic.replyNum)}"
                             app:layout_constraintStart_toEndOf="@id/label_comment"
                             app:layout_constraintTop_toTopOf="@id/label_comment"
                             app:layout_constraintBottom_toBottomOf="@id/label_comment"
