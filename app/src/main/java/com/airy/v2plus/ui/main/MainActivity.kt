@@ -182,6 +182,14 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         })
 
         viewModel.error.observe(this, Observer { makeToastLong(it.toString()) })
+
+        viewModel.pageUserInfo.observe(this, Observer {
+            if (it.isEmpty()) {
+                makeToastLong("As if your login status is expired, try to re-login~")
+            } else {
+                makeToastShort("Everything is right!")
+            }
+        })
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

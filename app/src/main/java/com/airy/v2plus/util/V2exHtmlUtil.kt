@@ -136,6 +136,9 @@ class V2exHtmlUtil {
                     }
                 }
             }
+            if (userName == "" || logoutOnce == "") {
+                return emptyList()
+            }
             val userInfo = ArrayList<String>()
             userInfo.add(userName)
             userInfo.add(logoutOnce)

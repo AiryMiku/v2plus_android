@@ -3,11 +3,15 @@ package com.airy.v2plus.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.Html
 import android.util.Log
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import com.airy.v2plus.App
 import com.airy.v2plus.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
@@ -17,6 +21,7 @@ import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.target.SizeReadyCallback
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
+import com.bumptech.glide.util.Preconditions
 import java.lang.ref.WeakReference
 
 
@@ -42,8 +47,11 @@ class GlideImageGetter(private val context: Context,
     }
 
     inner class BitmapDrawablePlaceholder:
-        BitmapDrawable(context.resources, Bitmap.createBitmap(50, 50, Bitmap.Config.RGB_565)),
+        BitmapDrawable(context.resources, Bitmap.createBitmap(200, 200, Bitmap.Config.RGB_565)),
         Target<Bitmap> {
+
+        val DRAWABLE_LOADING = ContextCompat.getDrawable(App.getAppContext(), R.drawable.ic_baseline_sync_blue_24dp)
+        val PAINT = Paint()
 
         private var imageDrawable: Drawable? = null
             set(value) {
@@ -66,8 +74,21 @@ class GlideImageGetter(private val context: Context,
                 }
             }
 
+        init {
+            PAINT.setColor(Color.LTGRAY)
+            Preconditions.checkNotNull(DRAWABLE_LOADING)
+            DRAWABLE_LOADING?.also {
+                setBounds(0, 0, it.intrinsicWidth, it.intrinsicHeight)
+            }
+        }
+
         override fun draw(canvas: Canvas) {
-            imageDrawable?.draw(canvas)
+            if (imageDrawable != null) {
+                imageDrawable?.draw(canvas)
+                return
+            }
+            canvas.drawRect(bounds, PAINT)
+//            DRAWABLE_LOADING?.draw(canvas)
         }
 
         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {

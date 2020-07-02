@@ -38,8 +38,7 @@ class MainViewModel :BaseViewModel() {
 
     val redeemMessages: MutableLiveData<Event<List<String>>> = MutableLiveData()
 
-
-//    val pageUserInfo: MutableLiveData<List<String>> = MutableLiveData()
+    val pageUserInfo: MutableLiveData<List<String>> = MutableLiveData()
 
     init {
         getMainPageResponse()
@@ -52,6 +51,7 @@ class MainViewModel :BaseViewModel() {
             val dataList = V2exHtmlUtil.getMainPageItems(r)
             mainListItem.postValue(dataList)
             getBalance(r)
+            getPageUserInfo(r)
         }, {
             t -> Log.e("MainViewModel", t.message, t)
         })
@@ -108,6 +108,10 @@ class MainViewModel :BaseViewModel() {
         val result = V2exHtmlUtil.getBalance(response)
         UserCenter.setLastBalance(result)
         balance.postValue(result)
+    }
+
+    fun getPageUserInfo(response: String) {
+        pageUserInfo.postValue(V2exHtmlUtil.getTopUserInfo(response))
     }
 
 }

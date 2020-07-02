@@ -24,9 +24,6 @@ class HotOrLatestActivity : BaseActivity() {
 
     override fun initViews() {
         isLatest = intent.getBooleanExtra(Common.KEY_BOOLEAN.IS_LATEST, false)
-        if (isLatest) {
-            actionBar?.title = "Latest"
-        }
         adapter = HotOrLatestAdapter {
             navToTopicActivity(it.id)
         }
@@ -40,6 +37,16 @@ class HotOrLatestActivity : BaseActivity() {
             binding.refresh.isRefreshing = true
         }
         subscribeUI()
+    }
+
+    override fun loadData() {
+        if (isLatest) {
+            supportActionBar?.title = "Latest"
+            viewModel.getLatest()
+        } else {
+            viewModel.getHot()
+        }
+        binding.refresh.isRefreshing = true
     }
 
     private fun subscribeUI() {
