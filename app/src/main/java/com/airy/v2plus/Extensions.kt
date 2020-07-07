@@ -45,24 +45,14 @@ fun Context.isNightMode(): Boolean {
 }
 
 fun AppCompatActivity.updateForTheme(theme: Theme) {
-    when (theme) {
-        Theme.DARK -> {
-            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
-        Theme.LIGHT -> {
-            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-        Theme.SYSTEM -> {
-            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        }
-        Theme.BATTERY_SAVER -> {
-            delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
-        }
+    val mode = when (theme) {
+        Theme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+        Theme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+        Theme.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        Theme.BATTERY_SAVER -> AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY
     }
+    delegate.localNightMode = mode
+    AppCompatDelegate.setDefaultNightMode(mode)
 }
 
 fun Fragment.navToTopicActivity(topicId: Long, @Nullable replyNo: Long? = null) {

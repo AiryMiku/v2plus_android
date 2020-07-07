@@ -1,14 +1,21 @@
 package com.airy.v2plus.ui.login
 
+import android.graphics.drawable.Drawable
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.R
+import com.airy.v2plus.api.RequestHelper
 import com.airy.v2plus.databinding.ActivityLoginBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
 import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.util.UserCenter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.greenrobot.eventbus.EventBus
 
@@ -18,6 +25,7 @@ class LoginActivity : BaseActivity(){
     private lateinit var viewModel: LoginViewModel
     private lateinit var progressBar: ContentLoadingProgressBar
     private var hasRequestLoginKey: Boolean = false
+    private lateinit var captchaImageListener: RequestListener<Drawable>
 
     override fun setContentView() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
@@ -41,10 +49,36 @@ class LoginActivity : BaseActivity(){
             }
         }
 
+        captchaImageListener = object: RequestListener<Drawable> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                makeToastLong("Load captcha failed, ${e?.message}")
+                return false
+            }
+
+            override fun onResourceReady(
+                resource: Drawable?,
+                model: Any?,
+                target: Target<Drawable>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                binding.progressBar.hide()
+                makeSnackBarLong(binding.container, "Well, please try again~")
+//                makeToastShort("Well, please try again~")
+                return false
+            }
+
+        }
+
         binding.verifyCodeImage.setOnClickListener {
             progressBar.show()
             viewModel.requestLoginKey()
-            makeSnackBarLong(binding.container, "Loading login data, please wait for newer verify code show up")
+//            makeSnackBarLong(binding.container, "Loading login data, please wait for newer verify code show up")
         }
 
         subscribeUI()
@@ -70,11 +104,16 @@ class LoginActivity : BaseActivity(){
 
         viewModel.loginKey.observe(this, Observer {
             if (hasRequestLoginKey) {
-                makeToastShort("Well, please try again~")
                 binding.submit.isEnabled = true
             } else {
                 hasRequestLoginKey = true
             }
+            Glide.with(this)
+                .load(RequestHelper.getCaptchaImageUrl(it.once))
+                .dontAnimate()
+                .listener(captchaImageListener)
+                .placeholder(R.color.color_control_light)
+                .into(binding.verifyCodeImage)
         })
 
         viewModel.picBitmap.observe(this, Observer {
@@ -114,3 +153,4 @@ class LoginActivity : BaseActivity(){
     }
 
 }
+

@@ -29,7 +29,7 @@ class LoginViewModel: BaseViewModel() {
         launchOnIO({
             val r = userRepository.getLoginKey()
             loginKey.postValue(r)
-            requestVerifyBitmap(r.once)
+//            requestVerifyBitmap(r.once)
         })
     }
 

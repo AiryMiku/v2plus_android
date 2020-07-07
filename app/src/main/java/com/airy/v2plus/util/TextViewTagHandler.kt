@@ -8,6 +8,7 @@ import android.text.style.ClickableSpan
 import android.text.style.ImageSpan
 import android.view.View
 import android.widget.Toast
+import com.airy.v2plus.provider.ImageViewerProvider
 import org.xml.sax.XMLReader
 import java.util.*
 
@@ -44,6 +45,7 @@ class TextViewTagHandler(private val context: Context): Html.TagHandler {
     private class ClickableImage(private val context: Context,
                                  private val url: String) : ClickableSpan() {
         override fun onClick(widget: View) {
+            ImageViewerProvider.viewImage(context, url)
             Toast.makeText(context, url, Toast.LENGTH_SHORT).show()
         }
     }
