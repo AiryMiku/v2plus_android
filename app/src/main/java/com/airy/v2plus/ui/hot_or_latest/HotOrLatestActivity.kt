@@ -24,7 +24,7 @@ class HotOrLatestActivity : BaseActivity() {
 
     override fun initViews() {
         isLatest = intent.getBooleanExtra(Common.KEY_BOOLEAN.IS_LATEST, false)
-        adapter = HotOrLatestAdapter {
+        adapter = HotOrLatestAdapter(this) {
             navToTopicActivity(it.id)
         }
         binding.list.adapter = adapter

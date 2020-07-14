@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.airy.v2plus.ui.theme.Theme
 import com.airy.v2plus.ui.topic.TopicDetailActivity
+import com.airy.v2plus.util.withCrossFade
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -26,7 +27,7 @@ import org.jetbrains.annotations.Nullable
  */
 
 // glide
-fun ImageView.loadLowQImageWithDefaultPlaceholder(url: String?) {
+fun ImageView.loadTopicImage(url: String?) {
     url?.let {
         Glide.with(context)
         .load(it)
@@ -36,6 +37,15 @@ fun ImageView.loadLowQImageWithDefaultPlaceholder(url: String?) {
         .dontAnimate()
         .placeholder(R.color.color_control_light)
         .into(this)
+    }
+}
+
+fun ImageView.loadAvatar(context: Context, url: String?) {
+    url?.let {
+        Glide.with(context)
+            .load(url)
+            .placeholder(R.color.color_control_light)
+            .fitCenter().into(this)
     }
 }
 

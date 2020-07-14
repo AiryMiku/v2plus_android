@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.airy.v2plus.bean.official.Topic
 import com.airy.v2plus.databinding.ItemTopicBinding
-import com.airy.v2plus.loadLowQImageWithDefaultPlaceholder
+import com.airy.v2plus.loadAvatar
+import com.airy.v2plus.loadTopicImage
 
-class HotOrLatestAdapter(private val onClickCallback: (Topic) -> Unit = {})
+class HotOrLatestAdapter(private val context: Context,
+                         private val onClickCallback: (Topic) -> Unit = {})
     : ListAdapter<Topic, HotOrLatestAdapter.ViewHolder>(
     TaskDiffCallback()
 ){
@@ -34,7 +36,7 @@ class HotOrLatestAdapter(private val onClickCallback: (Topic) -> Unit = {})
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val t = getItem(position)
         holder.binding.topic = t
-        holder.binding.avatar.loadLowQImageWithDefaultPlaceholder(t.member.avatarMiniUrl)
+        holder.binding.avatar.loadAvatar(context, t.member.avatarMiniUrl)
         holder.binding.root.setOnClickListener {
             onClickCallback(t)
         }

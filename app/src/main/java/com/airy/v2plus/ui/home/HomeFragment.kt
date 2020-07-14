@@ -26,9 +26,9 @@ class HomeFragment: BaseFragment() {
 
     override fun initPrepare() {
         Log.d(TAG, "initPrepare")
-        viewModel = ViewModelProviders.of(this.requireActivity()).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
 
-        adapter = MainPageItemsAdapter { item, holder ->
+        adapter = MainPageItemsAdapter(requireContext()) { item, holder ->
             navToTopicActivity(item.topicId)
             // Todo Add TransitionAnimation, need pass the avatar bitmap to topic activity
 //            ActivityOptions.makeSceneTransitionAnimation(activity , holder.binding.avatar, "avatarView").toBundle()

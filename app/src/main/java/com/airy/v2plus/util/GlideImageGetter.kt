@@ -47,7 +47,7 @@ class GlideImageGetter(private val context: Context,
     }
 
     inner class BitmapDrawablePlaceholder:
-        BitmapDrawable(context.resources, Bitmap.createBitmap(200, 200, Bitmap.Config.RGB_565)),
+        BitmapDrawable(context.resources, Bitmap.createBitmap(400, 400, Bitmap.Config.RGB_565)),
         Target<Bitmap> {
 
         val DRAWABLE_LOADING = ContextCompat.getDrawable(App.getAppContext(), R.drawable.ic_baseline_sync_blue_24dp)

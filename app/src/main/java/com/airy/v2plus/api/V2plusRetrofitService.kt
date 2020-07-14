@@ -25,7 +25,9 @@ class V2plusRetrofitService {
 
     companion object {
 
-        private const val TIME_OUT = 10L //连接超时时间
+        private const val CONNECT_TIME_OUT = 30L //连接超时时间
+        private const val READ_TIME_OUT = 30L
+
         
         private const val TAG = "V2plusRetrofitService"
 
@@ -37,11 +39,7 @@ class V2plusRetrofitService {
                 val original = chain.request()
 
                 val request = original.newBuilder().apply {
-                    header("Origin", "https://www.v2ex.com")
-                    header("Content-Type", "application/x-www-form-urlencoded")
-                    header("Host", "www.v2ex.com")
                     header("User-Agent", Config.USER_AGENT)
-//                    header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Safari/537.36")
                 }.build()
 
                 return chain.proceed(request)
@@ -68,13 +66,14 @@ class V2plusRetrofitService {
                 }
                 addInterceptor(loggingInterceptor)
             }
-            connectTimeout(TIME_OUT, TimeUnit.SECONDS)
-            readTimeout(TIME_OUT, TimeUnit.SECONDS)
-            writeTimeout(TIME_OUT, TimeUnit.SECONDS)
+            connectTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)
+            writeTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)
+            readTimeout(READ_TIME_OUT, TimeUnit.SECONDS)
             cookieJar(CookieJarImpl(persistentCookieStore))
             addInterceptor(headersInterceptor)
             addInterceptor(errorInterceptor)
             retryOnConnectionFailure(true)
+            followRedirects(false)
         }.build()
 
 

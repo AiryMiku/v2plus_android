@@ -16,7 +16,8 @@ import com.airy.v2plus.bean.official.Reply
 import com.airy.v2plus.bean.official.Topic
 import com.airy.v2plus.databinding.ItemTopicDetailBinding
 import com.airy.v2plus.databinding.ItemTopicReplyBinding
-import com.airy.v2plus.loadLowQImageWithDefaultPlaceholder
+import com.airy.v2plus.loadAvatar
+import com.airy.v2plus.loadTopicImage
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.HeaderItemHolder
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.ReplyItemHolder
 import com.airy.v2plus.util.DateUtil
@@ -68,7 +69,7 @@ internal class TopicDetailAdapter(private val context: Context,
             is ReplyItemHolder -> {
                 val reply = getItem(position) as Reply
                 holder.binding.reply = reply
-                holder.binding.avatar.loadLowQImageWithDefaultPlaceholder(reply.member.avatarMiniUrl)
+                holder.binding.avatar.loadAvatar(context, reply.member.avatarMiniUrl)
                 holder.binding.createTime.text = DateUtil.formatTime(reply.created)
                 reply.contentHtml?.run {
                     holder.binding.replyContent.let {
@@ -90,7 +91,7 @@ internal class TopicDetailAdapter(private val context: Context,
             is HeaderItemHolder -> {
                 val topic = getItem(position) as Topic
                 holder.binding.topic = topic
-                holder.binding.avatar.loadLowQImageWithDefaultPlaceholder(topic.member.avatarMiniUrl)
+                holder.binding.avatar.loadAvatar(context, topic.member.avatarMiniUrl)
                 topic.contentHtml?.run {
                     var content = this
                     if (trim().isBlank()) {

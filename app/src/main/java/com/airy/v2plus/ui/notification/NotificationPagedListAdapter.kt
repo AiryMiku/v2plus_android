@@ -1,5 +1,6 @@
 package com.airy.v2plus.ui.notification
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +9,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.airy.v2plus.bean.custom.Notification
 import com.airy.v2plus.databinding.ItemNotificationBinding
-import com.airy.v2plus.loadLowQImageWithDefaultPlaceholder
+import com.airy.v2plus.loadAvatar
+import com.airy.v2plus.loadTopicImage
 
 
 /**
@@ -17,7 +19,8 @@ import com.airy.v2plus.loadLowQImageWithDefaultPlaceholder
  * Github: AiryMiku
  */
 
-class NotificationPagedListAdapter(private val onClickCallback: (Notification) -> Unit = {})
+class NotificationPagedListAdapter(private val context: Context,
+                                   private val onClickCallback: (Notification) -> Unit = {})
     : PagedListAdapter<Notification, NotificationPagedListAdapter.ViewHolder>(TaskDiffCallback()) {
 
 
@@ -41,7 +44,7 @@ class NotificationPagedListAdapter(private val onClickCallback: (Notification) -
         val n = getItem(position)
         if (n != null) {
             holder.binding.notification = n
-            holder.binding.avatar.loadLowQImageWithDefaultPlaceholder(n.avatarUrl)
+            holder.binding.avatar.loadAvatar(context, n.avatarUrl)
             holder.binding.root.setOnClickListener {
                 onClickCallback(n)
             }

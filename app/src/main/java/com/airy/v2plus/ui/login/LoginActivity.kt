@@ -56,7 +56,7 @@ class LoginActivity : BaseActivity(){
                 target: Target<Drawable>?,
                 isFirstResource: Boolean
             ): Boolean {
-                makeToastLong("Load captcha failed, ${e?.message}")
+                makeToastLong("Loading captcha failed, ${e?.message}")
                 return false
             }
 
@@ -68,8 +68,7 @@ class LoginActivity : BaseActivity(){
                 isFirstResource: Boolean
             ): Boolean {
                 binding.progressBar.hide()
-                makeSnackBarLong(binding.container, "Well, please try again~")
-//                makeToastShort("Well, please try again~")
+                makeSnackBarLong(binding.container, "Well, please try ~")
                 return false
             }
 
@@ -78,7 +77,6 @@ class LoginActivity : BaseActivity(){
         binding.verifyCodeImage.setOnClickListener {
             progressBar.show()
             viewModel.requestLoginKey()
-//            makeSnackBarLong(binding.container, "Loading login data, please wait for newer verify code show up")
         }
 
         subscribeUI()
