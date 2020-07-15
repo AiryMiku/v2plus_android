@@ -18,10 +18,10 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Gradle
-      run: ./gradlew assembleDebug
+      run: ./gradlew build
   
     - name: upload apk
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: app
         path: app/build/outputs/apk/debug/*.apk 
