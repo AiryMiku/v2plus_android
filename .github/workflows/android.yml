@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -20,8 +19,8 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
   
-    - name: upload apk
+    - name: upload apk file
       uses: actions/upload-artifact@v2
       with:
-        name: app
-        path: app/build/outputs/apk/debug/*.apk 
+        name: actions_build_apk
+        path: app/build/outputs/apk/release/*.apk

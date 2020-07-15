@@ -187,7 +187,8 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             if (it.isEmpty()) {
                 makeToastLong("As if your login status is expired, try to re-login~")
             } else {
-                makeToastShort("Everything is right!")
+                makeToastShort("Try to get your redeem now...")
+                viewModel.getDailyMissionRedeem()
             }
         })
     }

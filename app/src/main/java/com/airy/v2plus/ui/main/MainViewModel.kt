@@ -88,6 +88,12 @@ class MainViewModel :BaseViewModel() {
 
     fun getDailyMissionRedeem() {
         launchOnIO({
+            if (balance.value != null) {
+                this@MainViewModel.redeemMessages.let {
+                    val localData = it.value
+                    it.postValue(localData)
+                }
+            }
             val redeemResponse: String
             val response = userRepository.getDailyMissionResponse()
             val param = V2exHtmlUtil.getDailyMissionParam(response)
@@ -98,7 +104,7 @@ class MainViewModel :BaseViewModel() {
             }
             val redeemMessages = V2exHtmlUtil.getDailyMissionRedeemResult(redeemResponse)
             getBalance(redeemResponse)
-            this@MainViewModel.redeemMessages.postValue(Event(redeemMessages))
+
         }, {
                 t -> Log.e("MainViewModel", t.message, t)
         })
