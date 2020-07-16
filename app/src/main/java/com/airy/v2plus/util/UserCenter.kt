@@ -44,7 +44,7 @@ class UserCenter {
                 Balance("0", "0", "0")
             } else {
                 val list = b.split("-")
-                Balance(list[0]?: "0", list[1]?: "0", list[2]?: "0")
+                Balance(list[0], list[1], list[2])
             }
         }
 

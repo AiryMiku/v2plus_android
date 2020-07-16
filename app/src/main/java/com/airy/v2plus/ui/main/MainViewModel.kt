@@ -1,6 +1,7 @@
 package com.airy.v2plus.ui.main
 
 import android.util.Log
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.bean.custom.MainPageItem
@@ -12,6 +13,7 @@ import com.airy.v2plus.ui.base.BaseViewModel
 import com.airy.v2plus.util.V2exHtmlUtil
 import com.airy.v2plus.util.UserCenter
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.withContext
 
 
@@ -34,7 +36,7 @@ class MainViewModel :BaseViewModel() {
 
     val balance: MutableLiveData<Balance> = MutableLiveData()
 
-//    val isRedeem: MutableLiveData<Boolean> = MutableLiveData()
+    val isRedeemed: ObservableBoolean = ObservableBoolean(false)
 
     val redeemMessages: MutableLiveData<Event<List<String>>> = MutableLiveData()
 
@@ -104,6 +106,7 @@ class MainViewModel :BaseViewModel() {
             }
             val redeemMessages = V2exHtmlUtil.getDailyMissionRedeemResult(redeemResponse)
             getBalance(redeemResponse)
+            this@MainViewModel.redeemMessages.postValue(Event(redeemMessages))
 
         }, {
                 t -> Log.e("MainViewModel", t.message, t)

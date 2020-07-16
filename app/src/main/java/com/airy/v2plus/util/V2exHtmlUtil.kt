@@ -203,8 +203,8 @@ class V2exHtmlUtil {
          */
         fun getBalance(response: String): Balance {
             val doc = Jsoup.parse(response)
-            val money = doc.getElementById("money")
-            val balanceArea = money.getElementsByClass("balance_area")
+            val money = doc.getElementById("money")?: return Balance()
+            val balanceArea = money.getElementsByClass("balance_area") ?: return Balance()
             val balanceImgList = balanceArea.select("img[src]").eachAttr("src")
             val balanceStrings = balanceArea.text().split(" ")
             var gold = "0"

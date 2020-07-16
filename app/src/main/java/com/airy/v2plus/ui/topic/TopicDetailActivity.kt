@@ -18,6 +18,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+// todo unknown crash
 class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClickListener {
 
     private lateinit var binding: ActivityTopicDetailBinding

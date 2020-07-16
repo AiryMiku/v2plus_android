@@ -73,7 +73,6 @@ class V2plusRetrofitService {
             addInterceptor(headersInterceptor)
             addInterceptor(errorInterceptor)
             retryOnConnectionFailure(true)
-            followRedirects(false)
         }.build()
 
 

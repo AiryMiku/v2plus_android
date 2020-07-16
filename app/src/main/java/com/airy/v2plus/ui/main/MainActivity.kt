@@ -3,6 +3,7 @@ package com.airy.v2plus.ui.main
 import android.content.Intent
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -44,6 +45,10 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onRequestUserInfoFromLoginEvent(e: RequestUserInfoFromLoginEvent) {
         viewModel.getUserInfoByName()
+        navHeaderBinding?.let { header ->
+            header.balanceLayout.visibility = View.VISIBLE
+            viewModel.getMainPageResponse()
+        }
     }
 
     override val toolbarLabel: CharSequence? = "Home"
@@ -69,21 +74,30 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             DataBindingUtil.bind<NavHeaderBinding>(this)
             navHeaderBinding = DataBindingUtil.getBinding(this)
         }
-        navHeaderBinding?.let { header->
+
+        navHeaderBinding?.let { header ->
+
             header.avatar.setOnClickListener {
                 navToActivity(this, LoginActivity::class.java)
             }
+
             if (!UserCenter.getUserName().isBlank()) {
                 header.userName.text = UserCenter.getUserName()
             }
+
             header.userName.setOnClickListener {
                 navToActivity(this, LoginActivity::class.java)
             }
+
             header.redeem.setOnClickListener {
                 header.redeem.text = getString(R.string.working)
                 viewModel.getDailyMissionRedeem()
             }
-            header.balance = UserCenter.getLastBalance()
+
+            if (UserCenter.getUserId() != 0L) {
+                header.balanceLayout.visibility = View.VISIBLE
+                header.balance = UserCenter.getLastBalance()
+            }
         }
 
         // night switch
@@ -175,15 +189,18 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         viewModel.balance.observe(this, Observer { navHeaderBinding?.balance = it })
 
         viewModel.redeemMessages.observe(this, Observer { event ->
-            navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
-            event.getContentIfNotHandled()?.let {
-                makeToastLong(it.toString())
+            if (event != null) {
+                navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
+                event.getContentIfNotHandled()?.let {
+                    makeToastLong(it.toString())
+                }
             }
         })
 
         viewModel.error.observe(this, Observer { makeToastLong(it.toString()) })
 
         viewModel.pageUserInfo.observe(this, Observer {
+            Log.d(TAG, it.toString())
             if (it.isEmpty()) {
                 makeToastLong("As if your login status is expired, try to re-login~")
             } else {
