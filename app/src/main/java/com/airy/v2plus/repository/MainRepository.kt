@@ -1,6 +1,10 @@
 package com.airy.v2plus.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.airy.v2plus.api.V2plusRetrofitService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 /**
@@ -9,7 +13,7 @@ import com.airy.v2plus.api.V2plusRetrofitService
  * Github: AiryMiku
  */
 
-class MainRepository {
+class MainRepository: Repository {
 
     companion object {
         @Volatile
@@ -20,7 +24,12 @@ class MainRepository {
         }
     }
 
-    suspend fun getMainPageResponse(): String {
-        return V2plusRetrofitService.getV2plusApi().getMainPageResponse()
+    suspend fun fetchMainPageResponse(): LiveData<String> = withContext(Dispatchers.IO) {
+        val liveData = MutableLiveData<String>()
+        val responseString = V2plusRetrofitService.getV2plusApi().getMainPageResponse()
+
+        liveData.apply { postValue(responseString) }
     }
+
+
 }

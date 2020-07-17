@@ -2,7 +2,7 @@ package com.airy.v2plus.ui.main
 
 import android.util.Log
 import androidx.databinding.ObservableBoolean
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.bean.custom.MainPageItem
 import com.airy.v2plus.bean.official.User
@@ -13,7 +13,6 @@ import com.airy.v2plus.ui.base.BaseViewModel
 import com.airy.v2plus.util.V2exHtmlUtil
 import com.airy.v2plus.util.UserCenter
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.withContext
 
 
@@ -32,33 +31,55 @@ class MainViewModel :BaseViewModel() {
 
     val user: MutableLiveData<User> = MutableLiveData()
 
-    val mainListItem: MutableLiveData<List<MainPageItem>> = MutableLiveData()
+    val mainListItem: LiveData<List<MainPageItem>> = mainPageResponse.switchMap {
+        launchOnViewModelScope {
+            MutableLiveData<List<MainPageItem>>().apply {
+                postValue(V2exHtmlUtil.getMainPageItems(it))
+            }
+        }
+    }
 
-    val balance: MutableLiveData<Balance> = MutableLiveData()
+    val pageUserInfo: LiveData<List<String>> = mainPageResponse.switchMap {
+        MutableLiveData<List<String>>().apply {
+            value = V2exHtmlUtil.getTopUserInfo(it)
+        }
+    }
+    private val redeemResponse: MutableLiveData<String> = MutableLiveData()
+
+    val balance: MediatorLiveData<Balance> = MediatorLiveData()
 
     val isRedeemed: ObservableBoolean = ObservableBoolean(false)
 
-    val redeemMessages: MutableLiveData<Event<List<String>>> = MutableLiveData()
-
-    val pageUserInfo: MutableLiveData<List<String>> = MutableLiveData()
+    val redeemMessages: LiveData<Event<List<String>>> = redeemResponse.switchMap {
+        launchOnViewModelScope {
+            MutableLiveData<Event<List<String>>>().apply {
+                postValue(Event(V2exHtmlUtil.getDailyMissionRedeemResult(it)))
+            }
+        }
+    }
 
     init {
+        balance.postValue(UserCenter.getLastBalance())
+        balance.addSource(mainPageResponse) {
+            launchOnIO({
+                balance.postValue(parseBalance(it))
+            })
+        }
+        balance.addSource(redeemResponse) {
+            launchOnIO({
+                balance.postValue(parseBalance(it))
+            })
+        }
         getMainPageResponse()
     }
 
     fun getMainPageResponse() {
         launchOnIO({
-            val r = mainRepository.getMainPageResponse()
-            mainPageResponse.postValue(r)
-            val dataList = V2exHtmlUtil.getMainPageItems(r)
-            mainListItem.postValue(dataList)
-            getBalance(r)
-            getPageUserInfo(r)
+            mainRepository.fetchMainPageResponse().let { mainPageResponse.postValue(it.value) }
         }, {
             t -> Log.e("MainViewModel", t.message, t)
         })
     }
-
 
     fun getUserInfoByName() {
         launchOnIO({
@@ -90,37 +111,23 @@ class MainViewModel :BaseViewModel() {
 
     fun getDailyMissionRedeem() {
         launchOnIO({
-            if (balance.value != null) {
-                this@MainViewModel.redeemMessages.let {
-                    val localData = it.value
-                    it.postValue(localData)
-                }
-            }
-            val redeemResponse: String
             val response = userRepository.getDailyMissionResponse()
             val param = V2exHtmlUtil.getDailyMissionParam(response)
-            redeemResponse = if (param != "") {
+            if (param.isNotBlank()) {
                 userRepository.getDailyMissionRedeemResponse(param)
             } else {
-                response
+                redeemResponse.postValue(response)
             }
-            val redeemMessages = V2exHtmlUtil.getDailyMissionRedeemResult(redeemResponse)
-            getBalance(redeemResponse)
-            this@MainViewModel.redeemMessages.postValue(Event(redeemMessages))
-
         }, {
                 t -> Log.e("MainViewModel", t.message, t)
         })
     }
 
-    fun getBalance(response: String) {
-        val result = V2exHtmlUtil.getBalance(response)
-        UserCenter.setLastBalance(result)
-        balance.postValue(result)
-    }
-
-    fun getPageUserInfo(response: String) {
-        pageUserInfo.postValue(V2exHtmlUtil.getTopUserInfo(response))
+    private fun parseBalance(response: String): Balance {
+        return V2exHtmlUtil.getBalance(response).apply {
+            UserCenter.setLastBalance(this)
+            isRedeemed.set(true)
+        }
     }
 
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.databinding.NotificationFragmentBinding
@@ -22,20 +23,20 @@ class NotificationFragment : Fragment() {
         fun newInstance() = NotificationFragment()
     }
 
-    private lateinit var viewModel: NotificationViewModel
+    private val viewModel: NotificationViewModel by viewModels()
     private lateinit var binding: NotificationFragmentBinding
 //    private lateinit var adapter: NotificationsAdapter
     private lateinit var adapter: NotificationPagedListAdapter
 
-    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
-    fun onRequestUserHadLoginEvent(e: RequestUserHadLoginEvent) {
-        if (this::adapter.isInitialized) {
-            adapter = NotificationPagedListAdapter(requireContext()) {
-                navToTopicActivity(it.topicId, if (it.isReply) it.replyNo else null)
-            }
-            binding.list.adapter = adapter
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
+//    fun onRequestUserHadLoginEvent(e: RequestUserHadLoginEvent) {
+//        if (this::adapter.isInitialized) {
+//            adapter = NotificationPagedListAdapter(requireContext()) {
+//                navToTopicActivity(it.topicId, if (it.isReply) it.replyNo else null)
+//            }
+//            binding.list.adapter = adapter
+//        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,11 +48,12 @@ class NotificationFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        EventBus.getDefault().register(this)
-        viewModel = ViewModelProviders.of(this).get(NotificationViewModel::class.java)
 
         // should init adapter
-
+        adapter = NotificationPagedListAdapter(requireContext()) {
+            navToTopicActivity(it.topicId, if (it.isReply) it.replyNo else null)
+        }
+        binding.list.adapter = adapter
 
 //        adapter = NotificationsAdapter(this.context)
 //        viewModel.getNotification(1)
@@ -75,7 +77,6 @@ class NotificationFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        EventBus.getDefault().unregister(this)
     }
 
 }

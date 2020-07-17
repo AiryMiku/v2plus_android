@@ -2,13 +2,12 @@ package com.airy.v2plus.ui.topic
 
 import android.view.View
 import android.view.animation.*
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.coroutineScope
-import com.airy.v2plus.Common
-import com.airy.v2plus.GlideApp
-import com.airy.v2plus.R
+import com.airy.v2plus.*
 import com.airy.v2plus.bean.official.Reply
 import com.airy.v2plus.databinding.ActivityTopicDetailBinding
 import com.airy.v2plus.ui.base.BaseActivity
@@ -22,7 +21,7 @@ import kotlinx.coroutines.withContext
 class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClickListener {
 
     private lateinit var binding: ActivityTopicDetailBinding
-    private lateinit var viewModel: TopicDetailViewModel
+    private val viewModel: TopicDetailViewModel by viewModels() //Todo: need refactor
     private lateinit var adapter: TopicDetailAdapter
     private var id: Long = 0L
 
@@ -37,9 +36,10 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
 
     override fun initViews() {
         id = intent.getLongExtra(Common.KEY_ID.TOPIC_ID, 0L)
-        viewModel = ViewModelProviders.of(this).get(TopicDetailViewModel::class.java)   //Todo: need refactor
+
         adapter = TopicDetailAdapter(this, this)
         binding.list.adapter = adapter
+
         subscribeUI()
     }
 
@@ -54,7 +54,7 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
 
     private fun subscribeUI() {
         viewModel.error.observe(this, Observer {
-            makeToastLong(it.toString())
+            showToastLong(it.toString())
         })
         viewModel.topicDetails.observe(this, Observer {
             adapter.submitList(it)
@@ -92,9 +92,9 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
         listDialog.setItems(R.array.reply_items) {
                 _, which ->
             when (which) {
-                0 -> makeToastShort("Dev~")
-                1 -> makeToastShort("Dev~")
-                2 -> makeToastShort("HoHoHo~")
+                0 -> showToastShort("Dev~")
+                1 -> showToastShort("Dev~")
+                2 -> showToastShort("HoHoHo~")
             }
         }
         listDialog.show()

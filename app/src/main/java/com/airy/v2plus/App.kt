@@ -65,8 +65,7 @@ class App: Application(), ViewModelStoreOwner {
     private fun checkApplication(activity: Activity): Application? {
         return activity.application
             ?: throw IllegalStateException(
-                "Your activity/fragment is not yet attached to "
-                        + "Application. You can't request ViewModel before onCreate call."
+                "Your activity/fragment is not yet attached to Application. You can't request ViewModel before onCreate call."
             )
     }
 

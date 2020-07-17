@@ -24,4 +24,7 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="redeem">Redeem</string>
+    <string name="login_hint">Click the circle to Login</string>
+    <string name="balance">Balance</string>
 </resources>

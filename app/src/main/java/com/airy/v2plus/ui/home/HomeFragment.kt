@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.databinding.HomeFragmentBinding
@@ -20,13 +21,12 @@ class HomeFragment: BaseFragment() {
 
     private val TAG = "HomeFragment"
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by activityViewModels()
     private lateinit var binding: HomeFragmentBinding
     private lateinit var adapter: MainPageItemsAdapter
 
     override fun initPrepare() {
         Log.d(TAG, "initPrepare")
-        viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
 
         adapter = MainPageItemsAdapter(requireContext()) { item, holder ->
             navToTopicActivity(item.topicId)

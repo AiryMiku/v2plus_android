@@ -1,14 +1,16 @@
 package com.airy.v2plus.ui.login
 
 import android.graphics.drawable.Drawable
+import androidx.activity.viewModels
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.R
 import com.airy.v2plus.api.RequestHelper
 import com.airy.v2plus.databinding.ActivityLoginBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
+import com.airy.v2plus.showToastLong
+import com.airy.v2plus.showToastShort
 import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.util.UserCenter
 import com.bumptech.glide.Glide
@@ -22,7 +24,7 @@ import org.greenrobot.eventbus.EventBus
 class LoginActivity : BaseActivity(){
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by viewModels()
     private lateinit var progressBar: ContentLoadingProgressBar
     private var hasRequestLoginKey: Boolean = false
     private lateinit var captchaImageListener: RequestListener<Drawable>
@@ -35,7 +37,6 @@ class LoginActivity : BaseActivity(){
     override val displayHomeAsUpEnabled: Boolean? = true
 
     override fun initViews() {
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
         progressBar = binding.progressBar
         binding.submit.setOnClickListener {
             if (validateParams()) {
@@ -45,7 +46,7 @@ class LoginActivity : BaseActivity(){
                 val verifyCode = binding.verifyCode.text.toString()
                 viewModel.doLogin(userName, password, verifyCode)
                 it.isEnabled = false
-                makeToastShort("Working on for your login...")
+                showToastShort("Working on for your login...")
             }
         }
 
@@ -56,7 +57,7 @@ class LoginActivity : BaseActivity(){
                 target: Target<Drawable>?,
                 isFirstResource: Boolean
             ): Boolean {
-                makeToastLong("Loading captcha failed, ${e?.message}")
+                showToastLong("Loading captcha failed, ${e?.message}")
                 return false
             }
 
@@ -138,14 +139,14 @@ class LoginActivity : BaseActivity(){
                 binding.submit.isEnabled = true
             } else {
                 UserCenter.setUserName(it.userName)
-                makeToastShort("Login Success")
+                showToastShort("Login Success")
                 EventBus.getDefault().post(RequestUserInfoFromLoginEvent())
                 finish()
             }
         })
 
         viewModel.error.observe(this, Observer {
-            makeToastLong(it.toString())
+            showToastLong(it.toString())
             binding.submit.isEnabled = true
         })
     }

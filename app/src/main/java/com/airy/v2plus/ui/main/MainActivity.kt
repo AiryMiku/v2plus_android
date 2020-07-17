@@ -4,17 +4,15 @@ import android.content.Intent
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
-import com.airy.v2plus.Common
-import com.airy.v2plus.R
+import com.airy.v2plus.*
 import com.airy.v2plus.databinding.ActivityMainBinding
 import com.airy.v2plus.databinding.NavHeaderBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
-import com.airy.v2plus.isNightMode
 import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.ui.hot_or_latest.HotOrLatestActivity
 import com.airy.v2plus.ui.login.LoginActivity
@@ -35,7 +33,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
     private val TAG = "MainActivity"
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var contentBinding: ActivityMainBinding
     private lateinit var viewPage: ViewPager
     private lateinit var navigation: BottomNavigationView
@@ -59,8 +57,6 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     }
 
     override fun initViews() {
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-
         // init listener
         contentBinding.navigationView.setNavigationItemSelectedListener(this)
 
@@ -76,6 +72,8 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         }
 
         navHeaderBinding?.let { header ->
+
+            header.vm = viewModel
 
             header.avatar.setOnClickListener {
                 navToActivity(this, LoginActivity::class.java)
@@ -96,7 +94,6 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
             if (UserCenter.getUserId() != 0L) {
                 header.balanceLayout.visibility = View.VISIBLE
-                header.balance = UserCenter.getLastBalance()
             }
         }
 
@@ -138,7 +135,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
         // bottom navigation view
         navigation = contentBinding.bottomNavigation
-//        navigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
+        // navigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
         navigation.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.Home -> {
@@ -178,7 +175,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 Glide.with(this).load(u.avatarNormalUrl).into(it.avatar)
                 it.userName.text = u.username
                 it.avatar.setOnClickListener {
-                    makeToastShort("Hello ${u.username}~")
+                    showToastShort("Hello ${u.username}~")
                 }
                 if (UserCenter.getUserName().isNotBlank()) {
                     UserCenter.setUserId(u.id)
@@ -192,19 +189,21 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             if (event != null) {
                 navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
                 event.getContentIfNotHandled()?.let {
-                    makeToastLong(it.toString())
+                    showToastLong(it.toString())
                 }
             }
         })
 
-        viewModel.error.observe(this, Observer { makeToastLong(it.toString()) })
+        viewModel.error.observe(this, Observer { showToastLong(it.toString()) })
 
         viewModel.pageUserInfo.observe(this, Observer {
             Log.d(TAG, it.toString())
             if (it.isEmpty()) {
-                makeToastLong("As if your login status is expired, try to re-login~")
+                if (UserCenter.getUserId() != 0L) {
+                    showToastLong("As if your login status is expired, try to re-login~")
+                }
             } else {
-                makeToastShort("Try to get your redeem now...")
+                showToastShort("Try to get your redeem now...")
                 viewModel.getDailyMissionRedeem()
             }
         })
@@ -224,7 +223,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 navToActivity(this, SettingsActivity::class.java)
             }
             R.id.about -> {
-                makeToastShort("Developing~")
+                showToastShort("Developing~")
             }
         }
         return true

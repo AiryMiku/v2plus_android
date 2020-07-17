@@ -6,9 +6,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.airy.v2plus.App
@@ -84,14 +87,6 @@ abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() 
         return super.onOptionsItemSelected(item)
     }
 
-    fun makeToastShort(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-    }
-
-    fun makeToastLong(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
-
     fun makeSnackBarShort(layout: View, message: String) {
         Snackbar.make(layout, message, Snackbar.LENGTH_SHORT).show()
     }
@@ -118,4 +113,8 @@ abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() 
             })
         }
     }
+
+    protected inline fun <reified T : ViewDataBinding> binding(
+        @LayoutRes resId: Int
+    ): Lazy<T> = lazy { DataBindingUtil.setContentView<T>(this, resId) }
 }

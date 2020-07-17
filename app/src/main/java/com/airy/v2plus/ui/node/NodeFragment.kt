@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.databinding.NodeFragmentBinding
@@ -15,7 +16,7 @@ class NodeFragment : Fragment() {
         fun newInstance() = NodeFragment()
     }
 
-    private lateinit var viewModel: NodeViewModel
+    private val viewModel: NodeViewModel by viewModels()
     private lateinit var binding: NodeFragmentBinding
     private lateinit var adapter: NodesAdapter
 
@@ -29,7 +30,6 @@ class NodeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(NodeViewModel::class.java)
         adapter = NodesAdapter()
         binding.list.adapter = adapter
 

@@ -5,6 +5,9 @@
 
     <data>
         <variable
+                name="vm"
+                type="com.airy.v2plus.ui.main.MainViewModel" />
+        <variable
                 name="balance"
                 type="com.airy.v2plus.bean.custom.Balance" />
     </data>
@@ -32,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:text="Click the circle to Login"
+                android:text="@string/login_hint"
                 app:layout_constraintTop_toTopOf="@id/avatar"
                 app:layout_constraintBottom_toBottomOf="@id/avatar"
                 app:layout_constraintStart_toEndOf="@id/avatar"/>
@@ -63,7 +66,7 @@
                         android:id="@+id/balance_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Balance"
+                        android:text="@string/balance"
                         android:textColor="@color/color_accent"
                         android:textSize="15sp"
                         android:layout_marginStart="5dp"
@@ -127,12 +130,13 @@
                         style="@style/CustomMaterialUnelevatedButton"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
-                        android:text="Redeem"
+                        android:text="@{vm.isRedeemed? @string/redeem:@string/redeem_done}"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/balance_area"
-                        app:layout_constraintHorizontal_bias="0.9"/>
+                        app:layout_constraintHorizontal_bias="0.9"
+                        tools:text="Redeem"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>

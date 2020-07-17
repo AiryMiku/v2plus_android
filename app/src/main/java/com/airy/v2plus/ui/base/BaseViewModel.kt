@@ -1,9 +1,7 @@
 package com.airy.v2plus.ui.base
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.airy.v2plus.App
 import com.airy.v2plus.showToastShort
 import com.google.gson.JsonParseException
@@ -27,6 +25,12 @@ open class BaseViewModel: ViewModel() {
     }
 
     val error: MutableLiveData<Throwable> = MutableLiveData()
+
+    inline fun <T> launchOnViewModelScope(crossinline block: suspend () -> LiveData<T>): LiveData<T> {
+        return liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
+            emitSource(block())
+        }
+    }
 
     private suspend fun baseLaunch(tryBlock: suspend CoroutineScope.() -> Unit,
                                    catchBlock: suspend CoroutineScope.(Throwable) -> Unit,
