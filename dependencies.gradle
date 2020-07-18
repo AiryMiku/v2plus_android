@@ -1,4 +1,7 @@
 ext.versions = [
+        // glide
+        glideVersion            : '4.11.0',
+
         // architecture components
         fragmentVersion         : '1.2.5',
         lifecycleVersion        : '2.2.0',

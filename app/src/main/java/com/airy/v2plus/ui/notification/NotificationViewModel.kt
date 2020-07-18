@@ -1,5 +1,6 @@
 package com.airy.v2plus.ui.notification
 
+import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.airy.v2plus.bean.custom.Notification
@@ -10,6 +11,8 @@ import com.airy.v2plus.ui.base.BaseViewModel
 class NotificationViewModel : BaseViewModel() {
 
     val repository: NotificationRepository by lazy { NotificationRepository.getInstance() }
+
+    val showLoginHint = ObservableBoolean(false)
 
     val notificationPage = MutableLiveData<Page<Notification>>()
 

@@ -18,7 +18,6 @@ class LoginViewModel: BaseViewModel() {
     private val userRepository = UserRepository.getInstance()
 
     val loginKey: MutableLiveData<LoginKey> = MutableLiveData()
-    val picBitmap: MutableLiveData<Bitmap> = MutableLiveData()
     val loginResult: MutableLiveData<LoginResult> = MutableLiveData()
 
     init {
@@ -29,16 +28,9 @@ class LoginViewModel: BaseViewModel() {
         launchOnIO({
             val r = userRepository.getLoginKey()
             loginKey.postValue(r)
-//            requestVerifyBitmap(r.once)
         })
     }
 
-    private fun requestVerifyBitmap(key: String) {
-        launchOnIO({
-            val r = userRepository.getVerifyPic(key)
-            picBitmap.postValue(r)
-        })
-    }
 
     fun doLogin(userName: String, password: String, verifyCode: String) {
         launchOnIO({

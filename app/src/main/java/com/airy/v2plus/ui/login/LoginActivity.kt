@@ -115,11 +115,6 @@ class LoginActivity : BaseActivity(){
                 .into(binding.verifyCodeImage)
         })
 
-        viewModel.picBitmap.observe(this, Observer {
-            progressBar.hide()
-            binding.verifyCodeImage.setImageBitmap(it)
-        })
-
         viewModel.loginResult.observe(this, Observer {
             progressBar.hide()
             if (it.problems.isNotEmpty()) {

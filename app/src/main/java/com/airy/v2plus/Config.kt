@@ -17,4 +17,8 @@ object Config {
     const val USER_AGENT = "V2EX+/" + BuildConfig.VERSION_NAME
     val USER_AGENT_ANDROID = String.format("%s (Android %s)", USER_AGENT, Build.VERSION.RELEASE)
 
+    object ViewSize {
+        const val AVATAR = 35
+    }
+
 }

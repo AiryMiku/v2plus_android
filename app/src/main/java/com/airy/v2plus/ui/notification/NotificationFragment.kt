@@ -75,8 +75,4 @@ class NotificationFragment : Fragment() {
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
 }
