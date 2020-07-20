@@ -70,7 +70,7 @@ class MainViewModel :BaseViewModel() {
                 balance.postValue(parseBalance(it))
             })
         }
-        getMainPageResponse()
+//        getMainPageResponse()
     }
 
     fun getMainPageResponse() {

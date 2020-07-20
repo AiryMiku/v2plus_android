@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.airy.v2plus.*
@@ -14,8 +15,11 @@ import com.airy.v2plus.databinding.ActivityMainBinding
 import com.airy.v2plus.databinding.NavHeaderBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
 import com.airy.v2plus.ui.base.BaseActivity
+import com.airy.v2plus.ui.home.HomeFragment
 import com.airy.v2plus.ui.hot_or_latest.HotOrLatestActivity
 import com.airy.v2plus.ui.login.LoginActivity
+import com.airy.v2plus.ui.node.NodeFragment
+import com.airy.v2plus.ui.notification.NotificationFragment
 import com.airy.v2plus.ui.settings.SettingsActivity
 import com.airy.v2plus.ui.theme.Theme
 import com.airy.v2plus.util.UserCenter
@@ -36,9 +40,14 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     private val viewModel: MainViewModel by viewModels()
     private lateinit var contentBinding: ActivityMainBinding
     private lateinit var viewPage: ViewPager
+    private lateinit var fragmentAdapter: FragmentViewPagerAdapter
     private lateinit var navigation: BottomNavigationView
     private var navHeaderBinding: NavHeaderBinding? = null
     private lateinit var nightModeSwitch: SwitchMaterial
+
+    private lateinit var fragmentList: MutableList<Fragment>
+    private lateinit var titleList: MutableList<String>
+    private lateinit var iconIdList: MutableList<Int>
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onRequestUserInfoFromLoginEvent(e: RequestUserInfoFromLoginEvent) {
@@ -88,8 +97,12 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             }
 
             header.redeem.setOnClickListener {
-                header.redeem.text = getString(R.string.working)
-                viewModel.getDailyMissionRedeem()
+                if (viewModel.isRedeemed.get()) {
+                    showToastShort("You has been redeemed, Congratulation~")
+                } else {
+                    header.redeem.text = getString(R.string.working)
+                    viewModel.getDailyMissionRedeem()
+                }
             }
 
             if (UserCenter.getUserId() != 0L) {
@@ -110,26 +123,24 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             Log.d(TAG, "now app theme mode ${delegate.localNightMode}")
         }
 
+        // init fragments
+        fragmentList = mutableListOf<Fragment>().apply {
+            add(HomeFragment.newInstance())
+            add(NotificationFragment.newInstance())
+            add(NodeFragment.newInstance())
+        }
+        titleList = mutableListOf("Home", "Message", "Node")
+        iconIdList = mutableListOf(R.id.Home, R.id.Message, R.id.Node)
+
         // view page
         viewPage = contentBinding.viewPager
-        viewPage.adapter = FragmentViewPagerAdapter(supportFragmentManager)
+        fragmentAdapter = FragmentViewPagerAdapter(fragmentList, titleList, supportFragmentManager)
+        viewPage.adapter = fragmentAdapter
         viewPage.setPageTransformer(true, ZoomOutPageTransformer())
         viewPage.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
-                when (position) {
-                    0 -> {
-                        toolbar?.title = "Home"
-                        navigation.selectedItemId = R.id.Home
-                    }
-                    1 -> {
-                        toolbar?.title = "Message"
-                        navigation.selectedItemId = R.id.Message
-                    }
-                    2 -> {
-                        toolbar?.title = "Node"
-                        navigation.selectedItemId = R.id.Node
-                    }
-                }
+                toolbar?.title = fragmentAdapter.getPageTitle(position)
+                navigation.selectedItemId = iconIdList[position]
             }
         })
 
@@ -161,6 +172,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
     override fun loadData() {
         viewModel.getUserInfoById()
+        viewModel.getMainPageResponse()
     }
 
     override fun onDestroy() {

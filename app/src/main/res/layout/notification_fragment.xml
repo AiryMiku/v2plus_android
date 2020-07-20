@@ -29,12 +29,12 @@
                     tools:listitem="@layout/item_notification"/>
 
             <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/login_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/after_login_hint"
-                    android:visibility="@{vm.showLoginHint? View.VISIBLE : View.GONE}"
-                    tools:visibility="visible"/>
+                    visible="@{vm.showLoginHint}" />
 
         </FrameLayout>
 

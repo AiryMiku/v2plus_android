@@ -13,11 +13,12 @@ import com.airy.v2plus.databinding.NotificationFragmentBinding
 import com.airy.v2plus.event.RequestUserHadLoginEvent
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
 import com.airy.v2plus.navToTopicActivity
+import com.airy.v2plus.ui.base.BaseLazyFragment
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class NotificationFragment : Fragment() {
+class NotificationFragment : BaseLazyFragment() {
 
     companion object {
         fun newInstance() = NotificationFragment()
@@ -38,16 +39,18 @@ class NotificationFragment : Fragment() {
 //        }
 //    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+    override fun setContentView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = NotificationFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun lazyLoad() {
+
+        binding.refresh.isRefreshing = true
 
         // should init adapter
         adapter = NotificationPagedListAdapter(requireContext()) {
@@ -65,6 +68,7 @@ class NotificationFragment : Fragment() {
 
         viewModel.pagedData.observe(viewLifecycleOwner, Observer {
             if (this::adapter.isInitialized) {
+                binding.refresh.isRefreshing = false
                 adapter.submitList(it)
             }
         })

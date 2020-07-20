@@ -7,6 +7,7 @@ import com.airy.v2plus.bean.custom.Notification
 import com.airy.v2plus.bean.custom.Page
 import com.airy.v2plus.repository.NotificationRepository
 import com.airy.v2plus.ui.base.BaseViewModel
+import com.airy.v2plus.util.UserCenter
 
 class NotificationViewModel : BaseViewModel() {
 
@@ -18,6 +19,9 @@ class NotificationViewModel : BaseViewModel() {
 
     val pagedData = repository.getDataSourceNotificationPages()
 
+    init {
+        showLoginHint.set(UserCenter.getUserId() == 0L) // todo better use cookie
+    }
 
     fun refresh() {
 //        pagedData.value?.refresh?.invoke()

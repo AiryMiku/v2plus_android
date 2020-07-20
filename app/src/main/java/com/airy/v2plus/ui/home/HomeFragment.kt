@@ -11,6 +11,7 @@ import com.airy.v2plus.Config
 import com.airy.v2plus.databinding.HomeFragmentBinding
 import com.airy.v2plus.navToTopicActivity
 import com.airy.v2plus.ui.base.BaseFragment
+import com.airy.v2plus.ui.base.BaseLazyFragment
 import com.airy.v2plus.ui.main.MainViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.ListPreloader
@@ -19,7 +20,7 @@ import com.bumptech.glide.integration.recyclerview.RecyclerViewPreloader
 import com.bumptech.glide.util.ViewPreloadSizeProvider
 import java.util.*
 
-class HomeFragment: BaseFragment() {
+class HomeFragment: BaseLazyFragment() {
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -34,9 +35,16 @@ class HomeFragment: BaseFragment() {
     private lateinit var preLoadModelProvider: ListPreloader.PreloadModelProvider<String>
     private lateinit var preLoader: RecyclerViewPreloader<String>
 
-    override fun initPrepare() {
-        Log.d(TAG, "initPrepare")
+    override fun setContentView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = HomeFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun lazyLoad() {
         preLoadSizeProvider = ViewPreloadSizeProvider<String>()
         preLoadModelProvider = object: ListPreloader.PreloadModelProvider<String> {
             override fun getPreloadItems(position: Int): MutableList<String> {
@@ -53,12 +61,12 @@ class HomeFragment: BaseFragment() {
                 return Glide.with(requireContext()).load(item).override(Config.ViewSize.AVATAR)
             }
         }
-        preLoader = RecyclerViewPreloader(Glide.with(requireContext()), preLoadModelProvider, preLoadSizeProvider, 8)
+        preLoader = RecyclerViewPreloader(Glide.with(requireContext()), preLoadModelProvider, preLoadSizeProvider, 4)
         binding.list.addOnScrollListener(preLoader)
-        adapter = MainPageItemsAdapter(requireContext()) { item, holder ->
+        adapter = MainPageItemsAdapter(requireContext()) { item, _ ->
             navToTopicActivity(item.topicId)
             // Todo Add TransitionAnimation, need pass the avatar bitmap to topic activity
-//            ActivityOptions.makeSceneTransitionAnimation(activity , holder.binding.avatar, "avatarView").toBundle()
+            // ActivityOptions.makeSceneTransitionAnimation(activity , holder.binding.avatar, "avatarView").toBundle()
         }
         binding.list.adapter = adapter
 
@@ -73,19 +81,6 @@ class HomeFragment: BaseFragment() {
         subscribeUI()
     }
 
-    override fun initData() {
-        Log.d(TAG, "initData")
-    }
-
-    override fun initView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = HomeFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     private fun subscribeUI() {
         viewModel.mainListItem.observe(viewLifecycleOwner, Observer {
             binding.refresh.isRefreshing = false
@@ -95,4 +90,5 @@ class HomeFragment: BaseFragment() {
             binding.refresh.isRefreshing = false
         })
     }
+
 }

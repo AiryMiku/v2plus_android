@@ -9,8 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.databinding.NodeFragmentBinding
+import com.airy.v2plus.ui.base.BaseLazyFragment
 
-class NodeFragment : Fragment() {
+class NodeFragment : BaseLazyFragment() {
 
     companion object {
         fun newInstance() = NodeFragment()
@@ -20,16 +21,16 @@ class NodeFragment : Fragment() {
     private lateinit var binding: NodeFragmentBinding
     private lateinit var adapter: NodesAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+    override fun setContentView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = NodeFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun lazyLoad() {
         adapter = NodesAdapter()
         binding.list.adapter = adapter
 

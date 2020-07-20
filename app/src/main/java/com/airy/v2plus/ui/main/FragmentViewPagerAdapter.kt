@@ -14,15 +14,20 @@ import com.airy.v2plus.ui.node.NodeFragment
  * Github: AiryMiku
  */
 
-class FragmentViewPagerAdapter(fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
-    private val fragments = arrayOf(HomeFragment.newInstance(), NotificationFragment.newInstance(), NodeFragment.newInstance())
+class FragmentViewPagerAdapter(
+    private val fragmentList: MutableList<Fragment>,
+    private val titleList: MutableList<String>,
+    fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
-        return fragments[position]
+        return fragmentList[position]
     }
 
     override fun getCount(): Int {
-        return fragments.size
+        return fragmentList.size
+    }
+
+    override fun getPageTitle(position: Int): CharSequence? {
+        return titleList[position]
     }
 }
