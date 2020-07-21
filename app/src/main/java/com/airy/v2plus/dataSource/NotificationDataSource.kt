@@ -4,11 +4,13 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.airy.v2plus.api.V2plusApi
-import com.airy.v2plus.repository.util.Status
 import com.airy.v2plus.bean.custom.Notification
+import com.airy.v2plus.launchOnIOInGlobal
+import com.airy.v2plus.repository.util.NetworkState
 import com.airy.v2plus.util.V2exHtmlUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
@@ -22,37 +24,33 @@ class NotificationDataSource(private val api: V2plusApi): PageKeyedDataSource<In
 
     private val TAG = "NotificationDataSource"
 
-    val status = MutableLiveData<Status>()
+    val liveState = MutableLiveData<NetworkState>()
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, Notification>
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                status.postValue(Status.RUNNING)
-                val data = api.getNotificationsResponse(1).let { V2exHtmlUtil.getNotificationPage(it) }
-                callback.onResult(data.items, null, let { if (data.isLast()) { null } else { data.current + 1 } })
-                status.postValue(Status.SUCCESS)
-            } catch (e: Exception) {
-                Log.d(TAG, e.message, e)
-                status.postValue(Status.FAILED)
-            }
-        }
+        launchOnIOInGlobal(tryBlock = {
+            liveState.postValue(NetworkState.LOADING)
+            val data = api.getNotificationsResponse(1).let { V2exHtmlUtil.getNotificationPage(it) }
+            callback.onResult(data.items, null, let { if (data.isLast()) { null } else { data.current + 1 } })
+            liveState.postValue(NetworkState.LOADED)
+        }, catchBlock = { e->
+            Log.d(TAG, e.message, e)
+            liveState.postValue(NetworkState.error(e.message))
+        })
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Notification>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                status.postValue(Status.RUNNING)
-                val data = api.getNotificationsResponse(params.key).let { V2exHtmlUtil.getNotificationPage(it) }
-                callback.onResult(data.items, let { if (data.isLast()) { null } else { data.current + 1 } })
-                status.postValue(Status.SUCCESS)
-            } catch (e: Exception) {
-                Log.d(TAG, e.message, e)
-                status.postValue(Status.FAILED)
-            }
-        }
+        launchOnIOInGlobal(tryBlock = {
+            liveState.postValue(NetworkState.LOADING)
+            val data = api.getNotificationsResponse(params.key).let { V2exHtmlUtil.getNotificationPage(it) }
+            callback.onResult(data.items, let { if (data.isLast()) { null } else { data.current + 1 } })
+            liveState.postValue(NetworkState.LOADED)
+        }, catchBlock = { e ->
+            Log.d(TAG, e.message, e)
+            liveState.postValue(NetworkState.error(e.message))
+        })
     }
 
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Notification>) {

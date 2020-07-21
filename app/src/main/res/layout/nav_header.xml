@@ -130,7 +130,7 @@
                         style="@style/CustomMaterialUnelevatedButton"
                         android:layout_width="100dp"
                         android:layout_height="50dp"
-                        android:text="@{vm.isRedeemed? @string/redeem:@string/redeem_done}"
+                        android:text="@{vm.isRedeemed? @string/redeem_done:@string/redeem}"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -16,7 +17,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
+import kotlinx.coroutines.*
 import org.jetbrains.annotations.Nullable
+import java.lang.Exception
 
 
 /**
@@ -93,4 +96,35 @@ fun Context.showToastLong(message: CharSequence) {
 
 fun Context.showToastLong(@StringRes message: Int) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}
+const val TAG = "Extensions"
+
+fun launchOnIOInGlobal(
+    tryBlock: suspend CoroutineScope.() -> Unit,
+    catchBlock: suspend CoroutineScope.(Throwable) -> Unit = { e -> Log.e(TAG, e.message, e) },
+    finalBlock: suspend CoroutineScope.() -> Unit = {}): Job {
+    return GlobalScope.launch(Dispatchers.IO) {
+        try {
+            tryBlock()
+        } catch (e: Exception) {
+            catchBlock(e)
+        } finally {
+            finalBlock()
+        }
+    }
+}
+
+fun launchOnMainInGlobal(
+    tryBlock: suspend CoroutineScope.() -> Unit,
+    catchBlock: suspend CoroutineScope.(Throwable) -> Unit = { e -> Log.e(TAG, e.message, e) },
+    finalBlock: suspend CoroutineScope.() -> Unit = {}): Job {
+    return GlobalScope.launch(Dispatchers.Main) {
+        try {
+            tryBlock()
+        } catch (e: Exception) {
+            catchBlock(e)
+        } finally {
+            finalBlock()
+        }
+    }
 }

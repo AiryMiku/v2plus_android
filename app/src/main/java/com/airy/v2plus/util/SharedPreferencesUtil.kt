@@ -15,4 +15,5 @@ object SharedPreferencesUtil {
 
     fun getSp(): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(getAppContext())
 
+    fun isAutoRedeem(): Boolean = getSp().getBoolean("auto_redeem", false)
 }

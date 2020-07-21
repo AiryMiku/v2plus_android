@@ -14,6 +14,7 @@
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
+    <string name="function_header">Function</string>
 
     <!-- Messages Preferences -->
     <string name="signature_title">Your signature</string>
@@ -24,6 +25,9 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="auto_redeem_title">Auto redeem</string>
+    <string name="auto_redeem_summary_on">Automatically get redeem when launch</string>
+    <string name="auto_redeem_summary_off">Only get redeem when you click button</string>
     <string name="redeem">Redeem</string>
     <string name="login_hint">Click the circle to Login</string>
     <string name="balance">Balance</string>

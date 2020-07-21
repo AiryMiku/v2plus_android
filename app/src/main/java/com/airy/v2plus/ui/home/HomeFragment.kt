@@ -79,6 +79,8 @@ class HomeFragment: BaseLazyFragment() {
         }
 
         subscribeUI()
+
+        viewModel.getMainPageResponse()
     }
 
     private fun subscribeUI() {

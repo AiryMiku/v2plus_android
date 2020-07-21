@@ -3,7 +3,6 @@ package com.airy.v2plus.ui.hot_or_latest
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.Common
 import com.airy.v2plus.R
 import com.airy.v2plus.databinding.ActivityHotestOrLatestBinding

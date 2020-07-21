@@ -5,18 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.airy.v2plus.databinding.NotificationFragmentBinding
-import com.airy.v2plus.event.RequestUserHadLoginEvent
-import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
 import com.airy.v2plus.navToTopicActivity
+import com.airy.v2plus.repository.util.NetworkState
 import com.airy.v2plus.ui.base.BaseLazyFragment
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 class NotificationFragment : BaseLazyFragment() {
 
@@ -26,7 +20,6 @@ class NotificationFragment : BaseLazyFragment() {
 
     private val viewModel: NotificationViewModel by viewModels()
     private lateinit var binding: NotificationFragmentBinding
-//    private lateinit var adapter: NotificationsAdapter
     private lateinit var adapter: NotificationPagedListAdapter
 
 //    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
@@ -57,6 +50,9 @@ class NotificationFragment : BaseLazyFragment() {
             navToTopicActivity(it.topicId, if (it.isReply) it.replyNo else null)
         }
         binding.list.adapter = adapter
+        binding.refresh.setOnRefreshListener {
+            viewModel.refresh()
+        }
 
 //        adapter = NotificationsAdapter(this.context)
 //        viewModel.getNotification(1)
@@ -66,7 +62,18 @@ class NotificationFragment : BaseLazyFragment() {
 //            adapter.submitList(it.items)
 //        })
 
-        viewModel.pagedData.observe(viewLifecycleOwner, Observer {
+        viewModel.networkState.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                NetworkState.LOADING -> {
+                    binding.refresh.isRefreshing = true
+                }
+                NetworkState.LOADED -> {
+                    binding.refresh.isRefreshing = false
+                }
+            }
+        })
+
+        viewModel.notifications.observe(viewLifecycleOwner, Observer {
             if (this::adapter.isInitialized) {
                 binding.refresh.isRefreshing = false
                 adapter.submitList(it)

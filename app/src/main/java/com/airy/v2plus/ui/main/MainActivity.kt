@@ -22,6 +22,7 @@ import com.airy.v2plus.ui.node.NodeFragment
 import com.airy.v2plus.ui.notification.NotificationFragment
 import com.airy.v2plus.ui.settings.SettingsActivity
 import com.airy.v2plus.ui.theme.Theme
+import com.airy.v2plus.util.SharedPreferencesUtil
 import com.airy.v2plus.util.UserCenter
 import com.airy.v2plus.util.setDarkModeStorage
 import com.airy.v2plus.widget.ZoomOutPageTransformer
@@ -134,6 +135,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
         // view page
         viewPage = contentBinding.viewPager
+        viewPage.offscreenPageLimit = fragmentList.size - 1
         fragmentAdapter = FragmentViewPagerAdapter(fragmentList, titleList, supportFragmentManager)
         viewPage.adapter = fragmentAdapter
         viewPage.setPageTransformer(true, ZoomOutPageTransformer())
@@ -172,7 +174,6 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
     override fun loadData() {
         viewModel.getUserInfoById()
-        viewModel.getMainPageResponse()
     }
 
     override fun onDestroy() {
@@ -199,7 +200,6 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
         viewModel.redeemMessages.observe(this, Observer { event ->
             if (event != null) {
-                navHeaderBinding?.redeem?.text = getString(R.string.redeem_done)
                 event.getContentIfNotHandled()?.let {
                     showToastLong(it.toString())
                 }
@@ -214,7 +214,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 if (UserCenter.getUserId() != 0L) {
                     showToastLong("As if your login status is expired, try to re-login~")
                 }
-            } else {
+            } else if (!viewModel.isRedeemed.get() && SharedPreferencesUtil.isAutoRedeem()) {
                 showToastShort("Try to get your redeem now...")
                 viewModel.getDailyMissionRedeem()
             }

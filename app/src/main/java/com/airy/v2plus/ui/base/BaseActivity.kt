@@ -2,6 +2,7 @@ package com.airy.v2plus.ui.base
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View

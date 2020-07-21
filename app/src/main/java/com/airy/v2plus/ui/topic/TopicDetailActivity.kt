@@ -1,15 +1,19 @@
 package com.airy.v2plus.ui.topic
 
 import android.view.View
-import android.view.animation.*
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.RotateAnimation
+import android.view.animation.ScaleAnimation
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.coroutineScope
-import com.airy.v2plus.*
+import com.airy.v2plus.Common
+import com.airy.v2plus.R
 import com.airy.v2plus.bean.official.Reply
 import com.airy.v2plus.databinding.ActivityTopicDetailBinding
+import com.airy.v2plus.showToastLong
+import com.airy.v2plus.showToastShort
 import com.airy.v2plus.ui.base.BaseActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers

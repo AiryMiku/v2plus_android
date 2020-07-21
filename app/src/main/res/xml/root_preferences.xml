@@ -33,18 +33,13 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
+    <PreferenceCategory app:title="@string/function_header">
 
         <SwitchPreferenceCompat
-                app:key="sync"
-                app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-                app:dependency="sync"
-                app:key="attachment"
-                app:summaryOff="@string/attachment_summary_off"
-                app:summaryOn="@string/attachment_summary_on"
-                app:title="@string/attachment_title" />
+                app:key="auto_redeem"
+                app:title="@string/auto_redeem_title"
+                app:summaryOn="@string/auto_redeem_summary_on"
+                app:summaryOff="@string/auto_redeem_summary_off"/>
 
     </PreferenceCategory>
 

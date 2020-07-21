@@ -1,6 +1,8 @@
 package com.airy.v2plus.repository
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.switchMap
 import androidx.paging.Config
 import androidx.paging.DataSource
 import androidx.paging.PagedList
@@ -8,7 +10,9 @@ import androidx.paging.toLiveData
 import com.airy.v2plus.api.V2plusRetrofitService
 import com.airy.v2plus.bean.custom.Notification
 import com.airy.v2plus.bean.custom.Page
+import com.airy.v2plus.dataSource.NotificationDataSource
 import com.airy.v2plus.dataSource.NotificationDataSourceFactory
+import com.airy.v2plus.repository.util.Listing
 import com.airy.v2plus.util.V2exHtmlUtil
 
 
@@ -33,16 +37,24 @@ class NotificationRepository {
         return V2exHtmlUtil.getNotificationPage(r)
     }
 
-    fun getDataSourceNotificationPages() : LiveData<PagedList<Notification>> {
-        val factory = NotificationDataSourceFactory()
-        return factory.toLiveData(Config(
+
+    @MainThread
+    fun getNotificationListing(): Listing<Notification> {
+        val sourceFactory = NotificationDataSourceFactory(V2plusRetrofitService.v2plusApi)
+        val livePagedList = sourceFactory.toLiveData(Config(
             pageSize = 10,
             prefetchDistance = 1,
             enablePlaceholders = true
         ))
-    }
 
-    fun getNotificationDataSource(): DataSource.Factory<Int, Notification> {
-        return NotificationDataSourceFactory()
+        return Listing(
+            pagedList = livePagedList,
+            networkState = sourceFactory.sourceLiveData.switchMap {
+                it.liveState
+            },
+            refresh = {
+                sourceFactory.sourceLiveData.value?.invalidate()
+            }
+        )
     }
 }

@@ -83,8 +83,8 @@ class V2exHtmlUtil {
                         p[0].text()
                     }
                 }
-                val isReplay = payload.contains("收藏")
-                dataList.add(Notification(avatarUrl, userName, title, topicId, replyNo,time, payload, isReplay))
+                val isReply = payload.contains("收藏")
+                dataList.add(Notification(avatarUrl, userName, title, topicId, replyNo,time, payload, isReply))
             }
             val pageInfo = main.getElementsByClass("cell").first().getElementsByTag("input").first()
             val current = pageInfo.attr("value")

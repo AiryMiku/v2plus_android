@@ -1,7 +1,13 @@
 package com.airy.v2plus.ui.settings
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.airy.v2plus.R
 import com.airy.v2plus.ui.base.BaseActivity
 
@@ -24,6 +30,10 @@ class SettingsActivity : BaseActivity() {
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+            findPreference<SwitchPreferenceCompat>("auto_redeem")?.setOnPreferenceChangeListener { preference, newValue ->
+                Toast.makeText(requireContext(), "value: $newValue", Toast.LENGTH_SHORT).show()
+                true
+            }
         }
     }
 }
