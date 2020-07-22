@@ -7,15 +7,17 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.ParcelFileDescriptor
 import android.provider.OpenableColumns
 import com.airy.v2plus.BuildConfig
-import com.airy.v2plus.GlideApp
 import com.airy.v2plus.util.MiscUtil
+import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import java.io.File
 import java.io.IOException
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class ImageViewerProvider: ContentProvider() {
     override fun onCreate(): Boolean = true
 
@@ -75,6 +77,11 @@ class ImageViewerProvider: ContentProvider() {
         throw UnsupportedOperationException("No external deletes")
     }
 
+    override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor? {
+        val file = getFileForUri(uri)
+        return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
+    }
+
     private fun getFileForUri(uri: Uri): File {
         val path = uri.encodedPath
 
@@ -106,10 +113,10 @@ class ImageViewerProvider: ContentProvider() {
         }
 
         fun viewImage(context: Context, url: String) {
-            GlideApp
-                .with(context)
+            val innerUrl = MiscUtil.formatUrl(url)
+            Glide.with(context)
                 .downloadOnly()
-                .load(url)
+                .load(innerUrl)
                 .into(object: CustomTarget<File>() {
                     override fun onLoadCleared(placeholder: Drawable?) { }
                     override fun onResourceReady(resource: File, transition: Transition<in File>?) {

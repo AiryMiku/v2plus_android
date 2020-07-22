@@ -1,7 +1,8 @@
-package com.airy.v2plus.api
+package com.airy.v2plus.network
 
 import com.airy.v2plus.BuildConfig
 import com.airy.v2plus.Config
+import com.airy.v2plus.network.api.V2exApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,21 +22,10 @@ class V2exRetrofitService {
     companion object {
 
         @JvmField
-        val client: OkHttpClient = OkHttpClient.Builder().let {
-            if (BuildConfig.DEBUG) {
-                val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-                    this.level = HttpLoggingInterceptor.Level.BODY
-                }
-                it.addInterceptor(loggingInterceptor)
-            }
-            it.build()
-        }
-
-        @JvmField
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl(Config.BASE_API_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(client)    // add log
+            .client(RequestHelper.client)
             .build()
 
         @JvmField

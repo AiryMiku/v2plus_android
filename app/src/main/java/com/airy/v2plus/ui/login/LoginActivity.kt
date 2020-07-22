@@ -6,7 +6,7 @@ import androidx.core.widget.ContentLoadingProgressBar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.airy.v2plus.R
-import com.airy.v2plus.api.RequestHelper
+import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.databinding.ActivityLoginBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
 import com.airy.v2plus.showToastLong

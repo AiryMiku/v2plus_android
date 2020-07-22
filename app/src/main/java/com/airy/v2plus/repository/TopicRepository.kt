@@ -1,6 +1,6 @@
 package com.airy.v2plus.repository
 
-import com.airy.v2plus.api.V2exRetrofitService
+import com.airy.v2plus.network.V2exRetrofitService
 import com.airy.v2plus.bean.official.Reply
 import com.airy.v2plus.bean.official.Topic
 

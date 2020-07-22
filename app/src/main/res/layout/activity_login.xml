@@ -87,7 +87,7 @@
                                 android:id="@+id/verify_code"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="text"
+                                android:inputType="textNoSuggestions"
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:hint="Verfiy Code"/>
@@ -97,8 +97,8 @@
 
                     <ImageView
                             android:id="@+id/verify_code_image"
-                            android:layout_width="180dp"
-                            android:layout_height="50dp"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
                             android:layout_marginStart="10dp"
                             app:layout_constraintStart_toEndOf="@id/verify_code_layout"
                             app:layout_constraintEnd_toEndOf="parent"

@@ -1,4 +1,4 @@
-package com.airy.v2plus.api
+package com.airy.v2plus.network.api
 
 import com.airy.v2plus.bean.official.Node
 import com.airy.v2plus.bean.official.Reply
@@ -26,7 +26,7 @@ interface V2exApi {
     suspend fun getTopicLatest(): List<Topic>
 
     @GET("nodes/show.json")     // 节点详情
-    suspend fun getNodeDetial(@Query("name") name: String): Node
+    suspend fun getNodeDetail(@Query("name") name: String): Node
 
     @GET("members/show.json")     // 获取用户详情
     suspend fun getUserById(@Query("id") id: Long): User

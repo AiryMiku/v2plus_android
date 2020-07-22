@@ -53,9 +53,9 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onRequestUserInfoFromLoginEvent(e: RequestUserInfoFromLoginEvent) {
         viewModel.getUserInfoByName()
+        viewModel.getMainPageResponse()
         navHeaderBinding?.let { header ->
             header.balanceLayout.visibility = View.VISIBLE
-            viewModel.getMainPageResponse()
         }
     }
 
@@ -172,9 +172,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         EventBus.getDefault().register(this)
     }
 
-    override fun loadData() {
-        viewModel.getUserInfoById()
-    }
+    override fun loadData() { }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -209,7 +207,6 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         viewModel.error.observe(this, Observer { showToastLong(it.toString()) })
 
         viewModel.pageUserInfo.observe(this, Observer {
-            Log.d(TAG, it.toString())
             if (it.isEmpty()) {
                 if (UserCenter.getUserId() != 0L) {
                     showToastLong("As if your login status is expired, try to re-login~")

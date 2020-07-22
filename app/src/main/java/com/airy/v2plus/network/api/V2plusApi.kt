@@ -1,4 +1,4 @@
-package com.airy.v2plus.api
+package com.airy.v2plus.network.api
 
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -22,7 +22,7 @@ interface V2plusApi {
     @POST("/signin")
     suspend fun postLogin(@FieldMap hashMap: HashMap<String, String>): String
 
-    // 获取验证码图片
+    // 获取验证码图片, 绝了, 但没用, 哈哈
     @GET("/_captcha")
     @Headers("referer: https://www.v2ex.com/signin",
         "accept: image/webp,image/apng,image/*,*/*;q=0.8",

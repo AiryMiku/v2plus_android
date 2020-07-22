@@ -2,8 +2,8 @@ package com.airy.v2plus.repository
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.airy.v2plus.api.V2exRetrofitService
-import com.airy.v2plus.api.V2plusRetrofitService
+import com.airy.v2plus.network.V2exRetrofitService
+import com.airy.v2plus.network.V2plusRetrofitService
 import com.airy.v2plus.bean.custom.LoginResult
 import com.airy.v2plus.bean.official.User
 import com.airy.v2plus.ui.login.LoginKey
@@ -32,13 +32,10 @@ class UserRepository {
         return V2exHtmlUtil.getLoginValue(response)
     }
 
+    // 真是绝了
     suspend fun getVerifyPic(key: String): Bitmap {
         val response = V2plusRetrofitService.getV2plusApi().getVerifyPic(key).byteStream()
         return BitmapFactory.decodeStream(response)
-    }
-
-    suspend fun getLoginResponse(params: HashMap<String, String>): String {
-        return V2plusRetrofitService.getV2plusApi().postLogin(params)
     }
 
     suspend fun login(params: HashMap<String, String>): LoginResult {

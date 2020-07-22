@@ -1,20 +1,18 @@
 package com.airy.v2plus
 
 import android.content.Context
-import com.airy.v2plus.api.V2plusRetrofitService
+import com.airy.v2plus.network.RequestHelper
+import com.airy.v2plus.network.V2plusRetrofitService
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
 import com.bumptech.glide.load.engine.bitmap_recycle.LruBitmapPool
-import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory
 import com.bumptech.glide.load.engine.cache.LruResourceCache
 import com.bumptech.glide.load.engine.cache.MemorySizeCalculator
 import com.bumptech.glide.load.model.GlideUrl
-import com.bumptech.glide.load.model.UrlUriLoader
-import com.bumptech.glide.load.model.stream.UrlLoader
 import com.bumptech.glide.module.AppGlideModule
 import java.io.InputStream
 
@@ -42,6 +40,10 @@ class V2plusGlideModule: AppGlideModule() {
     }
 
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
-        registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(V2plusRetrofitService.client))
+        registry.replace(
+            GlideUrl::class.java,
+            InputStream::class.java,
+            OkHttpUrlLoader.Factory(RequestHelper.client)
+        )
     }
 }

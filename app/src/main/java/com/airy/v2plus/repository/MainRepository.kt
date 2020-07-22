@@ -2,7 +2,7 @@ package com.airy.v2plus.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.airy.v2plus.api.V2plusRetrofitService
+import com.airy.v2plus.network.V2plusRetrofitService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

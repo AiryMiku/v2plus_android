@@ -61,7 +61,7 @@ class HomeFragment: BaseLazyFragment() {
                 return Glide.with(requireContext()).load(item).override(Config.ViewSize.AVATAR)
             }
         }
-        preLoader = RecyclerViewPreloader(Glide.with(requireContext()), preLoadModelProvider, preLoadSizeProvider, 4)
+        preLoader = RecyclerViewPreloader(Glide.with(requireContext()), preLoadModelProvider, preLoadSizeProvider, 8)
         binding.list.addOnScrollListener(preLoader)
         adapter = MainPageItemsAdapter(requireContext()) { item, _ ->
             navToTopicActivity(item.topicId)
@@ -79,8 +79,7 @@ class HomeFragment: BaseLazyFragment() {
         }
 
         subscribeUI()
-
-        viewModel.getMainPageResponse()
+//        viewModel.getMainPageResponse()
     }
 
     private fun subscribeUI() {

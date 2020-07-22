@@ -1,16 +1,12 @@
 package com.airy.v2plus.repository
 
 import androidx.annotation.MainThread
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.switchMap
 import androidx.paging.Config
-import androidx.paging.DataSource
-import androidx.paging.PagedList
 import androidx.paging.toLiveData
-import com.airy.v2plus.api.V2plusRetrofitService
+import com.airy.v2plus.network.V2plusRetrofitService
 import com.airy.v2plus.bean.custom.Notification
 import com.airy.v2plus.bean.custom.Page
-import com.airy.v2plus.dataSource.NotificationDataSource
 import com.airy.v2plus.dataSource.NotificationDataSourceFactory
 import com.airy.v2plus.repository.util.Listing
 import com.airy.v2plus.util.V2exHtmlUtil

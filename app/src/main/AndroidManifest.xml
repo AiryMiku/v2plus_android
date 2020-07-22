@@ -25,13 +25,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.topic.TopicDetailActivity" />
+        <activity android:name=".ui.topic.TopicDetailActivity">
+
+        </activity>
         <activity android:name=".ui.about.AboutActivity" />
         <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.main.MainActivity"/>
         <activity
                 android:name=".ui.settings.SettingsActivity"
                 android:label="@string/title_activity_settings" />
+
+        <provider
+                android:name="com.airy.v2plus.provider.ImageViewerProvider"
+                android:authorities="${applicationId}.viewer"
+                android:exported="false"
+                android:grantUriPermissions="true" />
     </application>
 
 </manifest>

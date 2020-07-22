@@ -9,6 +9,10 @@ class NodeViewModel : BaseViewModel() {
 
     val nodes: MutableLiveData<List<Node>> = MutableLiveData()
 
+    init {
+        getAllNode()
+    }
+
     fun getAllNode() {
         launchOnIO({
             val result = NodeRepository.getInstance().getAllNode()
