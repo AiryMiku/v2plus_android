@@ -7,6 +7,8 @@ import com.airy.v2plus.ui.base.BaseViewModel
 
 class NodeViewModel : BaseViewModel() {
 
+    val repository by lazy { NodeRepository.getInstance()  }
+
     val nodes: MutableLiveData<List<Node>> = MutableLiveData()
 
     init {
@@ -15,7 +17,15 @@ class NodeViewModel : BaseViewModel() {
 
     fun getAllNode() {
         launchOnIO({
-            val result = NodeRepository.getInstance().getAllNode()
+            val result = repository.fetchAllNode()
+            nodes.postValue(result)
+        })
+    }
+
+    fun getNodesByName(value: String) {
+        launchOnIO({
+            val fuzzyValue = "%$value%"
+            val result = repository.fetchNodesByName(fuzzyValue)
             nodes.postValue(result)
         })
     }

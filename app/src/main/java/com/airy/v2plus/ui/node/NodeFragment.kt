@@ -41,7 +41,8 @@ class NodeFragment : BaseLazyFragment() {
         }
 
         viewModel.nodes.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it)
+//            adapter.submitList(it)
+            adapter.setNodes(it)
             binding.refresh.isRefreshing = false
         })
     }

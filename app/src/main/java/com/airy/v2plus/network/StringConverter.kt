@@ -1,4 +1,4 @@
-package com.airy.v2plus.util
+package com.airy.v2plus.network
 
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody

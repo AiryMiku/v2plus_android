@@ -18,6 +18,8 @@ import com.airy.v2plus.databinding.ItemNodeBinding
 class NodesAdapter(private val onClickCallback: (Node) -> Unit = {})
     : ListAdapter<Node, NodesAdapter.ViewHolder>(TaskDiffCallback()){
 
+    private var cacheList = emptyList<Node>()
+
     class TaskDiffCallback: DiffUtil.ItemCallback<Node>() {
         override fun areItemsTheSame(oldItem: Node, newItem: Node): Boolean {
             return oldItem.id == newItem.id
@@ -33,11 +35,18 @@ class NodesAdapter(private val onClickCallback: (Node) -> Unit = {})
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val node = getItem(position)
+        val node = cacheList[position]
         holder.binding.node = node
         holder.binding.root.setOnClickListener {
             onClickCallback(node)
         }
+    }
+
+    override fun getItemCount(): Int = cacheList.size
+
+    fun setNodes(nodes: List<Node>) {
+        cacheList = nodes
+        notifyDataSetChanged()
     }
 
     class ViewHolder(val binding: ItemNodeBinding): RecyclerView.ViewHolder(binding.root)

@@ -1,7 +1,9 @@
 package com.airy.v2plus.repository
 
+import com.airy.v2plus.App
 import com.airy.v2plus.network.V2exRetrofitService
 import com.airy.v2plus.bean.official.Node
+import com.airy.v2plus.db.V2plusDb
 
 
 /**
@@ -11,6 +13,7 @@ import com.airy.v2plus.bean.official.Node
  */
 
 class NodeRepository {
+
     companion object {
         @Volatile
         private var instance: NodeRepository? = null
@@ -20,7 +23,19 @@ class NodeRepository {
         }
     }
 
-    suspend fun getAllNode(): List<Node> {
-        return V2exRetrofitService.getV2exApi().getAllNode()
+    private val nodeDao by lazy { V2plusDb.getDb(App.getAppContext()).nodeDao() }
+
+    suspend fun fetchAllNode(updateFromNetwork: Boolean = false): List<Node> {
+        var nodes = nodeDao.getAllNodesList()
+        if (nodes.isEmpty() || updateFromNetwork) {
+            nodes = V2exRetrofitService.getV2exApi().getAllNode()
+            nodeDao.insert(nodes)
+        }
+        return nodes
+    }
+
+    suspend fun fetchNodesByName(value: String): List<Node> {
+        val nodes = nodeDao.getNodesListByName(value)
+        return nodes
     }
 }
