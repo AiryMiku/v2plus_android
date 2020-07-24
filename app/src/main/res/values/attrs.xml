@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TweetLikeView">
+        <attr format="color" name="defaultColor" />
+        <attr format="color" name="checkedColor" />
+        <attr format="color" name="ringColor" />
+        <attr format="dimension" name="cirRadius" />
+        <attr format="integer" name="cycleTime" />
+        <attr format="integer" name="unSelectCycleTime" />
+        <attr format="reference" name="defaultLikeIconRes" />
+        <attr format="reference" name="checkedLikeIconRes" />
+        <attr format="float" name="lrGroupCRatio" />
+        <attr format="float" name="lrGroupBRatio" />
+        <attr format="float" name="bGroupACRatio" />
+        <attr format="float" name="tGroupBRatio" />
+        <attr format="integer" name="innerShapeScale" />
+        <attr format="integer" name="dotSizeScale" />
+        <attr format="boolean" name="allowRandomDotColor" />
+    </declare-styleable>
+
+
+</resources>

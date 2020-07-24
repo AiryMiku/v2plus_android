@@ -1,15 +1,14 @@
 package com.airy.v2plus.util
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.Html
 import android.util.Log
+import android.view.View
 import android.widget.TextView
+import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import com.airy.v2plus.App
 import com.airy.v2plus.R
@@ -31,8 +30,9 @@ import java.lang.ref.WeakReference
  * Github: AiryMiku
  */
 
-class GlideImageGetter(private val context: Context,
-                       private val textViewReference: WeakReference<TextView>
+class GlideImageGetter(
+    private val context: Context,
+    private val textViewReference: WeakReference<TextView>
 ): Html.ImageGetter {
 
     override fun getDrawable(source: String?): Drawable {
@@ -44,6 +44,99 @@ class GlideImageGetter(private val context: Context,
             .load(source)
             .thumbnail(0.3f).into(placeholder)
         return placeholder
+    }
+
+    class LoadingDrawable: Drawable() {
+
+        private var DRAWABLE_LOADING: Drawable?
+        private var DRAWABLE_BOUNS: Rect
+        private val PAINT by lazy { Paint() }
+
+        private var targetDrawable: Drawable? = null
+
+        init {
+            DRAWABLE_LOADING = ContextCompat.getDrawable(App.getAppContext(), R.drawable.ic_baseline_sync_blue_24dp)
+            Preconditions.checkNotNull(DRAWABLE_LOADING)
+            DRAWABLE_BOUNS = Rect(0, 0, DRAWABLE_LOADING!!.intrinsicWidth, DRAWABLE_LOADING!!.intrinsicHeight)
+            DRAWABLE_LOADING!!.bounds = DRAWABLE_BOUNS
+            PAINT.setColor(Color.LTGRAY)
+            setBounds(DRAWABLE_BOUNS)
+        }
+
+        override fun draw(canvas: Canvas) {
+
+            targetDrawable?.let {
+                it.draw(canvas)
+                return
+            }
+
+            canvas.drawRect(bounds, PAINT)
+            DRAWABLE_LOADING?.draw(canvas)
+        }
+
+
+        override fun getOpacity(): Int {
+            // todo fixed deprecated
+            targetDrawable?.let {
+                return it.opacity
+            }
+
+            return DRAWABLE_LOADING!!.opacity
+        }
+
+        fun setDrawable(drawable: Drawable?) {
+            targetDrawable = drawable
+            val bouns = if (targetDrawable == null) {
+                DRAWABLE_BOUNS
+            } else {
+                targetDrawable!!.bounds
+            }
+            setBounds(bounds)
+        }
+
+        override fun setAlpha(alpha: Int) { }
+
+        override fun setColorFilter(colorFilter: ColorFilter?) { }
+    }
+
+    class LoadingDrawableTarget(@NonNull protected val view: View,
+                                private val drawable: LoadingDrawable): Target<Drawable> {
+
+        private var request: Request? = null
+
+        override fun onLoadStarted(placeholder: Drawable?) {
+            drawable.setDrawable(placeholder)
+        }
+
+        override fun onLoadFailed(errorDrawable: Drawable?) {
+            // todo
+        }
+
+        override fun getSize(cb: SizeReadyCallback) {
+            TODO("Not yet implemented")
+        }
+
+        override fun getRequest(): Request? = this.request
+
+        override fun setRequest(request: Request?) {
+            this.request = request
+        }
+
+        override fun removeCallback(cb: SizeReadyCallback) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onLoadCleared(placeholder: Drawable?) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onStart() { Log.d("GlideImageGetter", "onStart") }
+        override fun onStop() { Log.d("GlideImageGetter", "onStop") }
+        override fun onDestroy() { Log.d("GlideImageGetter", "onDestroy") }
     }
 
     inner class BitmapDrawablePlaceholder:

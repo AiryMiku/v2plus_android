@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.airy.v2plus.databinding.NodeFragmentBinding
+import com.airy.v2plus.showToastShort
 import com.airy.v2plus.ui.base.BaseLazyFragment
 
 class NodeFragment : BaseLazyFragment() {
@@ -29,7 +30,11 @@ class NodeFragment : BaseLazyFragment() {
     }
 
     override fun lazyLoad() {
-        adapter = NodesAdapter()
+        adapter = NodesAdapter(onClickCallback = { node ->
+            node.name?.let {
+                requireContext().showToastShort(it)
+            }
+        })
         binding.list.adapter = adapter
 
         binding.refresh.let {

@@ -15,7 +15,8 @@ import com.airy.v2plus.databinding.ItemNodeBinding
  * Github: AiryMiku
  */
 
-class NodesAdapter(private val onClickCallback: (Node) -> Unit = {})
+class NodesAdapter(private val onClickCallback: (Node) -> Unit = {},
+                   private val onLongClickCallback: (Node) -> Unit = {})
     : ListAdapter<Node, NodesAdapter.ViewHolder>(TaskDiffCallback()){
 
     private var cacheList = emptyList<Node>()
@@ -37,8 +38,14 @@ class NodesAdapter(private val onClickCallback: (Node) -> Unit = {})
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val node = cacheList[position]
         holder.binding.node = node
-        holder.binding.root.setOnClickListener {
-            onClickCallback(node)
+        holder.binding.root.apply {
+            setOnClickListener {
+                onClickCallback(node)
+            }
+            setOnLongClickListener {
+                onLongClickCallback(node)
+                true
+            }
         }
     }
 
