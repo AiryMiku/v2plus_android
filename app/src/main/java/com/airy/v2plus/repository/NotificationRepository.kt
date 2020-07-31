@@ -39,8 +39,7 @@ class NotificationRepository {
         val sourceFactory = NotificationDataSourceFactory(V2plusRetrofitService.v2plusApi)
         val livePagedList = sourceFactory.toLiveData(Config(
             pageSize = 10,
-            prefetchDistance = 1,
-            enablePlaceholders = true
+            prefetchDistance = 1
         ))
 
         return Listing(

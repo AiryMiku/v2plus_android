@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'dagger.hilt.android.plugin'
 apply from: '../dependencies.gradle'
 
 android {
@@ -133,6 +134,8 @@ dependencies {
     // dagger
     implementation "com.google.dagger:dagger:$versions.daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$versions.daggerVersion"
+    implementation "com.google.dagger:hilt-android:$versions.daggerHiltAndroidVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$versions.daggerHiltAndroidVersion"
 
     // eventbus
     implementation 'org.greenrobot:eventbus:3.1.1'

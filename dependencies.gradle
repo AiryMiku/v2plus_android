@@ -10,6 +10,7 @@ ext.versions = [
 
         // di
         daggerVersion           : '2.28',
+        daggerHiltAndroidVersion: '2.28.1-alpha',
 
         // glide
         glideVersion            : '4.11.0',

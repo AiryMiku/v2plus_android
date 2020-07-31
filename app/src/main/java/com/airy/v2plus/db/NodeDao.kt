@@ -18,7 +18,7 @@ interface NodeDao {
     @Query("DELETE from nodes")
     suspend fun deleteAll()
 
-    @Query("SELECT * from nodes order by title asc")
+    @Query("SELECT * from nodes")
     suspend fun getAllNodesList(): List<Node>
 
     @Query("SELECT * from nodes WHERE name like :value")

@@ -1,9 +1,14 @@
 package com.airy.v2plus.repository
 
+import android.util.Log
 import com.airy.v2plus.App
 import com.airy.v2plus.network.V2exRetrofitService
 import com.airy.v2plus.bean.official.Node
 import com.airy.v2plus.db.V2plusDb
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 
 /**
@@ -13,6 +18,8 @@ import com.airy.v2plus.db.V2plusDb
  */
 
 class NodeRepository {
+
+    private val TAG = "NodeRepository"
 
     companion object {
         @Volatile
@@ -32,6 +39,21 @@ class NodeRepository {
             nodeDao.insert(nodes)
         }
         return nodes
+    }
+
+    suspend fun fetchAllNodesFlow(updateFromNetwork: Boolean = false): Flow<List<Node>> {
+        return flow {
+            try {
+                var nodes = nodeDao.getAllNodesList()
+                if (nodes.isEmpty() || updateFromNetwork) {
+                    nodes = V2exRetrofitService.getV2exApi().getAllNode()
+                    nodeDao.insert(nodes)
+                }
+                emit(nodes)
+            } catch (e: Exception) {
+                Log.e(TAG, e.message, e)
+            }
+        }.flowOn(Dispatchers.IO)
     }
 
     suspend fun fetchNodesByName(value: String): List<Node> {

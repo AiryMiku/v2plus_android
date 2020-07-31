@@ -50,7 +50,6 @@ class NotificationFragment : BaseLazyFragment() {
         binding.refresh.setOnRefreshListener {
             viewModel.refresh()
         }
-
         viewModel.networkState.observe(viewLifecycleOwner, Observer {
             when(it) {
                 NetworkState.LOADING -> {
