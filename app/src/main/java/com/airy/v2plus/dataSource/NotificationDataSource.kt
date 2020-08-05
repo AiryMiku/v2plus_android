@@ -7,6 +7,7 @@ import com.airy.v2plus.network.api.V2plusApi
 import com.airy.v2plus.bean.custom.Notification
 import com.airy.v2plus.launchOnIOInGlobal
 import com.airy.v2plus.repository.util.NetworkState
+import com.airy.v2plus.util.UserCenter
 import com.airy.v2plus.util.V2exHtmlUtil
 
 
@@ -27,6 +28,9 @@ class NotificationDataSource(private val api: V2plusApi): PageKeyedDataSource<In
         callback: LoadInitialCallback<Int, Notification>
     ) {
         launchOnIOInGlobal(tryBlock = {
+            if (UserCenter.getUserId() == 0L) {
+                return@launchOnIOInGlobal
+            }
             liveState.postValue(NetworkState.LOADING)
             val data = api.getNotificationsResponse(1).let { V2exHtmlUtil.getNotificationPage(it) }
             callback.onResult(data.items, null, let { if (data.isLast()) { null } else { data.current + 1 } })

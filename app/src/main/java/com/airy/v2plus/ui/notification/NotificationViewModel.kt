@@ -18,22 +18,16 @@ class NotificationViewModel : BaseViewModel() {
     val networkState = listing.networkState
 
     init {
-        if (UserCenter.getUserId() != 0L) {     // todo better use cookie
-            showLoginHint.set(true)
-            refresh()
-        }
+        refresh()
     }
 
     fun refresh() {
-        listing.refresh.invoke()
+        if (UserCenter.getUserId() == 0L) {     // todo better use cookie
+            showLoginHint.set(true)
+        } else {
+            showLoginHint.set(false)
+            listing.refresh.invoke()
+        }
     }
-
-//    val notificationPage = MutableLiveData<Page<Notification>>()
-//    fun getNotification(page: Int) {
-//        launchOnIO({
-//            val r = repository.getNotificationPages(page)
-//            notificationPage.postValue(r)
-//        })
-//    }
 
 }

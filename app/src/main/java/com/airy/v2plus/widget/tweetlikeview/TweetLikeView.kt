@@ -1,5 +1,7 @@
 package com.airy.v2plus.widget.tweetlikeview
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -7,11 +9,19 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.view.animation.LinearInterpolator
+import android.view.animation.OvershootInterpolator
 import android.widget.Checkable
 import androidx.annotation.ColorInt
 import com.airy.v2plus.R
+import com.airy.v2plus.TAG
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.random.Random
 
 
 /**
@@ -62,40 +72,42 @@ class TweetLikeView @JvmOverloads constructor(
      * custom attrs
      */
     // heart radius
-    private var mRadius: Float
+    var mRadius: Float
 
     // view selected time
-    private var cycleTime: Int
+    var cycleTime: Int
 
     // view un selected time
-    private var unSelectedCycleTime: Int
+    var unSelectedCycleTime: Int
 
     @ColorInt
-    private var defaultColor: Int
+    var defaultColor: Int
 
     @ColorInt
-    private var checkedColor: Int
+    var checkedColor: Int
 
     @ColorInt
-    private var ringColor: Int
+    var ringColor: Int
 
-    private var lrGroupCRation: Float
+    var lrGroupCRation: Float
 
-    private var lrGroupBRation: Float
+    var lrGroupBRation: Float
 
-    private var bGroupACRation: Float
+    var bGroupACRation: Float
 
-    private var tGroupBRation: Float
+    var tGroupBRation: Float
 
-    private var innerShapeScale: Int
+    var innerShapeScale: Int
 
-    private var dotSizeScale: Int
+    var dotSizeScale: Int
 
-    private var isRandomDotColor: Boolean
+    var isRandomDotColor: Boolean
 
-    private var defaultIcon: Drawable? = null
+    var defaultIcon: Drawable? = null
 
-    private var checkedIcon: Drawable? = null
+    var checkedIcon: Drawable? = null
+
+    private var likeChecked: Boolean = false
 
     /**
      * view attrs
@@ -106,9 +118,11 @@ class TweetLikeView @JvmOverloads constructor(
 
     private val paint by lazy { Paint() }
 
-    private var animatorTime: ValueAnimator? = null
+    private lateinit var animatorTime: ValueAnimator
 
-    private var animatorArgb: ValueAnimator? = null
+    private lateinit var animatorArgb: ValueAnimator
+
+    private lateinit var unSelectedAnimator: ObjectAnimator
 
     private var animatorUpdateListener: ValueAnimator.AnimatorUpdateListener? = null
 
@@ -132,6 +146,7 @@ class TweetLikeView @JvmOverloads constructor(
     private var offS = 0f
     private var offL = 0f
     private var isMax = false
+
 
 
     init {
@@ -246,8 +261,8 @@ class TweetLikeView @JvmOverloads constructor(
 
         // ring center
         val innerR = radius - ringWidth/2 + dotR
-        val angleA = 0f
-        val angleB = -Math.PI / 20
+        var angleA = 0.0
+        var angleB = -Math.PI / 20
         if (rDotL <= SIZE_RATIO * mRadius/2) {
             offS += dotR / 17
             offL += dotR / 14
@@ -256,33 +271,197 @@ class TweetLikeView @JvmOverloads constructor(
         }
 
         paint.style = Paint.Style.FILL
+        for (i in 0 until 7) {
+            canvas.drawCircle((rDotS * sin(angleA)).toFloat(), (rDotS * cos(angleA)).toFloat(), dotR , paint)
+            angleA += 2 * PI / 7
+            canvas.drawCircle((rDotL * sin(angleB)).toFloat(), (rDotL * cos(angleB)).toFloat(), dotR , paint)
+            angleB += 2 * PI / 7
+        }
+        curRadius = (mRadius / innerShapeScale + (innerShapeScale * 2 - 2) * mRadius * curPercent / innerShapeScale).toInt()
+        drawInnerShape(canvas, curRadius, true)
+    }
 
+    private fun drawDot(canvas: Canvas, radius: Int,@ColorInt color: Int) {
+        paint.isAntiAlias = true
+        paint.style = Paint.Style.FILL
+
+        var angleA = 0.0
+        var angleB = -PI / 20
+        var dotRS = 0f
+        var dotRL = 0f
+        if (rDotL <= SIZE_RATIO * mRadius / 2) {
+            rDotS += dotR / 17
+            rDotL += dotR /14
+        }
+        if (!isMax && curRadius <= 1.1 * mRadius) {
+            offL += dotR / 14;
+            curRadius = (mRadius / 3 + offL * 4).toInt()
+        } else {
+            isMax = true
+        }
+
+        if (isMax && curRadius > mRadius) {
+            curRadius = (curRadius - dotR / 16).toInt()
+        }
+        drawInnerShape(canvas, curRadius, true)
+
+        dotRS = dotR * (1 - curPercent)
+        dotRL = if (dotR * (1 - curPercent) * 3 > dotR ) dotR else (dotR * (1 - curPercent)) * 2
+        for (i in dotColors.indices) {
+            paint.color = dotColors[i]
+            canvas.drawCircle((rDotS * sin(angleA)).toFloat(), (rDotS * cos(angleA)).toFloat(), dotRS, paint)
+            angleA += 2 * PI / 7
+            canvas.drawCircle((rDotL * sin(angleB)).toFloat(), (rDotL * cos(angleB)).toFloat(), dotRL , paint)
+            angleB += 2 * PI / 7
+        }
+    }
+
+    private fun randomDotColors() {
+        val seed = dotColors.size
+        for (i in dotColors.indices) {
+            val r = Random.nextInt(seed)
+            val curColor = dotColors[i]
+            dotColors[i] = dotColors[r]
+            dotColors[r] = curColor
+        }
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        cX = w / 2f
+        cY = h / 2f
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val widthOrHeight = (SIZE_RATIO * mRadius + 2 * dotR).toInt()
+        setMeasuredDimension(widthOrHeight, widthOrHeight)
+    }
+
+    private fun resetState() {
+        curPercent = 0f
+        curRadius = 0
+        isMax = false
+        rDotS = 0f
+        rDotL = 0f
+        offS = 0f
+        offL = 0f
+    }
+
+    private fun calcPercent(start: Float, end: Float, current: Float): Float {
+        return (current - start) / (end - start)
+    }
+
+    private fun restoreDefaultView() {
+        curColor = defaultColor
+        curRadius = mRadius.toInt()
+        curState = State.HEART_VIEW
+        invalidate()
+    }
+
+    private fun restoreDefaultViewChecked() {
+        curColor = checkedColor
+        curRadius = mRadius.toInt()
+        curState = State.HEART_VIEW
+        invalidate()
+    }
+
+    private fun cancelAnimator() {
+        if (isAnimatorTimeRunning()) {
+            animatorTime.cancel()
+        }
+    }
+
+    private fun isAnimatorTimeRunning():Boolean = this::animatorTime.isInitialized && animatorTime.isRunning
+
+    private fun startSelectViewMotion() {
+        resetState()
+        if (isRandomDotColor) {
+            randomDotColors()
+        }
+        if (!this::animatorTime.isInitialized) {
+            animatorTime = ValueAnimator.ofInt(0, 1200)
+            animatorTime.duration = cycleTime.toLong()
+            animatorTime.interpolator = LinearInterpolator()
+        }
+        if (animatorUpdateListener == null) {
+            animatorUpdateListener = LvAnimatorUpdateListener()
+            animatorTime.addUpdateListener(animatorUpdateListener)
+        }
+        animatorTime.start()
+    }
+
+    private fun startUnselectedViewMotion() {
+        if (!this::unSelectedAnimator.isInitialized) {
+            val holderX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.8f, 1.0f)
+            val holderY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.8f, 1.0f)
+            unSelectedAnimator = ObjectAnimator.ofPropertyValuesHolder(this, holderX, holderY)
+            unSelectedAnimator.duration = unSelectedCycleTime.toLong()
+            unSelectedAnimator.interpolator = OvershootInterpolator()
+        }
+        unSelectedAnimator.start()
+    }
+
+    private fun selectLike(isSetChecked: Boolean) {
+        likeChecked = isSetChecked
+        if (isSetChecked) {
+            cancelAnimator()
+            startSelectViewMotion()
+        } else {
+            if (!isAnimatorTimeRunning()) {
+                restoreDefaultView()
+                startUnselectedViewMotion()
+            }
+        }
+    }
+
+    private fun selectLikeViewWithoutAnimator(isSetChecked: Boolean) {
+        likeChecked = isSetChecked
+        cancelAnimator()
+        if (isSetChecked) {
+            restoreDefaultViewChecked()
+        } else {
+            restoreDefaultView()
+        }
+    }
+
+    private fun releaseAnimator(animator: ValueAnimator) {
+        try {
+            animator.end()
+            animator.removeAllListeners()
+            animator.removeAllUpdateListeners()
+        } catch (e: Exception) {
+            Log.d(TAG, e.message, e)
+        }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        // todo release animator
-    }
-
-    private fun releaseAnimator(animator: ValueAnimator){
-        animator.end()
-        animator.removeAllListeners()
-        animator.removeAllUpdateListeners()
+        releaseAnimator(animatorTime)
+        releaseAnimator(animatorArgb)
+        releaseAnimator(unSelectedAnimator)
+        animatorUpdateListener = null
     }
 
     /**
      * check
      */
     override fun isChecked(): Boolean {
-        TODO("Not yet implemented")
+        return likeChecked
     }
 
     override fun toggle() {
-        TODO("Not yet implemented")
+        selectLike(!likeChecked)
     }
 
     override fun setChecked(checked: Boolean) {
-        TODO("Not yet implemented")
+        selectLike(checked)
+    }
+
+    /**
+     * public method
+     */
+    fun toggleWithoutAnimator() {
+        selectLikeViewWithoutAnimator(!likeChecked)
     }
 
     /**
@@ -296,4 +475,68 @@ class TweetLikeView @JvmOverloads constructor(
                 resources.displayMetrics
             )
     }
+
+    private inner class LvAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener {
+        override fun onAnimationUpdate(animation: ValueAnimator?) {
+            val animatedValue = animation?.animatedValue as Int
+            if (animatedValue == 0) {
+                if (!this@TweetLikeView::animatorArgb.isInitialized || !animatorArgb.isRunning) {
+                    animatorArgb = ValueAnimator.ofArgb(defaultColor, 0xf74769, checkedColor)
+                    animatorArgb.duration = (cycleTime * 28 / 120).toLong()
+                    animatorArgb.interpolator = LinearInterpolator()
+                    animatorArgb.start()
+                }
+            } else if (animatedValue <= 100) {
+                val percent = calcPercent(0f, 100f, animatedValue.toFloat())
+                curRadius = (mRadius - mRadius * percent).toInt()
+                if (this@TweetLikeView::animatorArgb.isInitialized && animatorArgb.isRunning) {
+                    curColor = animatorArgb.animatedValue as Int
+                }
+                curState = State.HEART_VIEW
+                invalidate()
+
+            } else if (animatedValue <= 280) {
+                val percent = calcPercent(100f, 340f, animatedValue.toFloat())
+                curRadius = (2 * mRadius * percent).toInt()
+                if (this@TweetLikeView::animatorArgb.isInitialized && animatorArgb.isRunning) {
+                    curColor = animatorArgb.animatedValue as Int
+                }
+                curState = State.CIRCLE_VIEW
+                invalidate()
+
+            } else if (animatedValue <= 340) {
+                val percent = calcPercent(100f, 340f, animatedValue.toFloat())
+                curPercent = if (1f - percent + 0.2f > 1f) 1f else 1f - percent + 0.2f
+                if (this@TweetLikeView::animatorArgb.isInitialized && animatorArgb.isRunning) {
+                    curColor = animatorArgb.animatedValue as Int
+                }
+                curState = State.RING_VIEW
+                invalidate()
+
+            } else if (animatedValue <= 480) {
+                val percent = calcPercent(340f, 480f, animatedValue.toFloat())
+                curPercent = percent
+                curRadius = (2 * mRadius).toInt()
+                curState = State.RING_DOT_HEART_VIEW
+                invalidate()
+
+            } else if (animatedValue <= 1200) {
+                val percent = calcPercent(480f, 1200f, animatedValue.toFloat())
+                curPercent = percent
+                curState = State.DOT_HEART_VIEW
+                invalidate()
+
+                if (animatedValue == 1200) {
+                    animatorTime.cancel()
+                    if (!isChecked) {
+                        restoreDefaultView()
+                    } else {
+                        restoreDefaultViewChecked()
+                    }
+                }
+            }
+        }
+
+    }
 }
+

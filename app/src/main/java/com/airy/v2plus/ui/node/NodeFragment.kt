@@ -30,7 +30,7 @@ class NodeFragment : BaseLazyFragment() {
     }
 
     override fun lazyLoad() {
-        adapter = NodesAdapter(onClickCallback = { node ->
+        adapter = NodesAdapter(onLongClickCallback = { node ->
             node.name?.let {
                 requireContext().showToastShort(it)
             }
@@ -40,15 +40,16 @@ class NodeFragment : BaseLazyFragment() {
         binding.refresh.let {
             it.isRefreshing = true
             it.setOnRefreshListener {
-                viewModel.getAllNode()
                 it.isRefreshing = true
+                viewModel.getAllNode()
             }
         }
 
         viewModel.nodes.observe(viewLifecycleOwner, Observer {
 //            adapter.submitList(it)
-            adapter.setNodes(it)
             binding.refresh.isRefreshing = false
+            adapter.setNodes(it)
+
         })
     }
 

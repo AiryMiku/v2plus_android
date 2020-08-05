@@ -119,6 +119,7 @@ class MainViewModel :BaseViewModel() {
                 userRepository.getDailyMissionRedeemResponse(param)
             } else {
                 redeemResponse.postValue(response)
+                isRedeemed.set(true)
             }
         }, {
                 t -> Log.e("MainViewModel", t.message, t)
@@ -128,7 +129,6 @@ class MainViewModel :BaseViewModel() {
     private fun parseBalance(response: String): Balance {
         return V2exHtmlUtil.getBalance(response).apply {
             UserCenter.setLastBalance(this)
-            isRedeemed.set(true)
         }
     }
 

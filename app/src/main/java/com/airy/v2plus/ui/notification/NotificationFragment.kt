@@ -43,6 +43,8 @@ class NotificationFragment : BaseLazyFragment() {
 
     override fun lazyLoad() {
 
+        binding.vm = viewModel
+
         adapter = NotificationPagedListAdapter(requireContext()) {
             navToTopicActivity(it.topicId, if (it.isReply) it.replyNo else null)
         }
@@ -56,6 +58,9 @@ class NotificationFragment : BaseLazyFragment() {
                     binding.refresh.isRefreshing = true
                 }
                 NetworkState.LOADED -> {
+                    binding.refresh.isRefreshing = false
+                }
+                else -> {
                     binding.refresh.isRefreshing = false
                 }
             }
