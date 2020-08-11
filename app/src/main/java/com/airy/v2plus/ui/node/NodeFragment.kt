@@ -1,5 +1,6 @@
 package com.airy.v2plus.ui.node
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -30,8 +31,12 @@ class NodeFragment : BaseLazyFragment() {
     }
 
     override fun lazyLoad() {
-        adapter = NodesAdapter(onLongClickCallback = { node ->
-            node.name?.let {
+        adapter = NodesAdapter(
+            onClickCallback = {
+                startActivity(Intent(requireActivity(), NodeActivity::class.java))
+            },
+            onLongClickCallback = { node ->
+            node.title?.let {
                 requireContext().showToastShort(it)
             }
         })

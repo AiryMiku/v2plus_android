@@ -21,8 +21,8 @@ class HeartShapePath(
         const val BEZIER_C = 0.551915024494f
         const val LR_GROUP_C_RATIO = 0.92f
         const val LR_GROUP_B_RATIO = 1.0f
-        const val B_GROUP_AC_RATIO =0.7f
-        const val T_GROUP_B_RATIO =0.5f
+        const val B_GROUP_AC_RATIO = 0.7f
+        const val T_GROUP_B_RATIO = 0.5f
     }
 
     private var tPointA: PointF? = null
@@ -55,7 +55,7 @@ class HeartShapePath(
         bPointC = PointF(offset, radius * bGroupLRRation)
 
         lPointA = PointF(-radius, -offset)
-        lPointB = PointF(-radius * lrGroupBRation, offset)
+        lPointB = PointF(-radius * lrGroupBRation, 0f)
         lPointC = PointF(-radius * lrGroupCRation, offset)
     }
 
@@ -64,8 +64,8 @@ class HeartShapePath(
         return Path().apply {
             moveTo(tPointB!!.x, tPointB!!.y)
             cubicTo(tPointC!!.x, tPointC!!.y, rPointA!!.x, rPointA!!.y, rPointB!!.x, rPointB!!.y)
-            cubicTo(rPointC!!.x, rPointC!!.y, bPointA!!.x, bPointA!!.y, bPointB!!.x, bPointB!!.y)
-            cubicTo(bPointA!!.x, bPointA!!.y, lPointA!!.x, lPointA!!.y, lPointB!!.x, lPointB!!.y)
+            cubicTo(rPointC!!.x, rPointC!!.y, bPointC!!.x, bPointC!!.y, bPointB!!.x, bPointB!!.y)
+            cubicTo(bPointA!!.x, bPointA!!.y, lPointC!!.x, lPointC!!.y, lPointB!!.x, lPointB!!.y)
             cubicTo(lPointA!!.x, lPointA!!.y, tPointA!!.x, tPointA!!.y, tPointB!!.x, tPointB!!.y)
         }
     }

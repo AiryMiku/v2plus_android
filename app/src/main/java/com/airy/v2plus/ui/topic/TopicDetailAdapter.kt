@@ -79,8 +79,9 @@ internal class TopicDetailAdapter(private val context: Context,
                     }
                 }
                 holder.binding.replyContent.movementMethod = LinkMovementMethod.getInstance()
-                holder.binding.thankNum.let { tv ->
-                    tv.setOnClickListener {
+                holder.binding.likeLayout.let { ll ->
+                    ll.setOnClickListener {
+                        holder.binding.likeView.toggle()
                         viewOnClickListener.onThankClickListener(reply)
                     }
                 }

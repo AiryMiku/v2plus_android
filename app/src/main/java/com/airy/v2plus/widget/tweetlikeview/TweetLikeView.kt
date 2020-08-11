@@ -5,6 +5,7 @@ import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
@@ -33,7 +34,7 @@ class TweetLikeView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-    ): View(context, attrs, defStyleAttr), Checkable {
+) : View(context, attrs, defStyleAttr), Checkable {
 
     companion object {
         object State {
@@ -48,17 +49,26 @@ class TweetLikeView @JvmOverloads constructor(
          * const for view
          */
         @ColorInt
-        const val CHECKED_COLOR = 0xe53a42
+        const val CHECKED_COLOR = (0xffe53a42).toInt()
+
         @ColorInt
-        const val DEFAULT_COLOR = 0x657487
+        const val DEFAULT_COLOR = (0xff657487).toInt()
+
         @ColorInt
-        const val DEFAULT_RING_COLOR = 0xde7bcc
+        const val DEFAULT_RING_COLOR = (0xffde7bcc).toInt()
 
         const val DEFAULT_CYCLE_TIME = 2000
         const val DEFAULT_UN_SELECT_CYCLE_TIME = 200
 
-        val DEFAULT_DOT_COLORS = arrayOf(0xdaa9fa, 0xf2bf4b, 0xe3bca6, 0x329aed,
-            0xb1eb99, 0x67c9ad, 0xde6bac)
+        val DEFAULT_DOT_COLORS = arrayOf(
+            (0xffdaa9fa).toInt(),
+            (0xfff2bf4b).toInt(),
+            (0xffe3bca6).toInt(),
+            (0xff329aed).toInt(),
+            (0xffb1eb99).toInt(),
+            (0xff67c9ad).toInt(),
+            (0xffde6bac).toInt()
+        )
 
         const val RADIUS_INNER_SHAPE_SCALE = 6
         const val DOT_SIZE_SCALE = 7
@@ -101,7 +111,7 @@ class TweetLikeView @JvmOverloads constructor(
 
     var dotSizeScale: Int
 
-    var isRandomDotColor: Boolean
+    var isRandomDotColor: Boolean = true
 
     var defaultIcon: Drawable? = null
 
@@ -116,13 +126,13 @@ class TweetLikeView @JvmOverloads constructor(
 
     private var cY: Float
 
-    private val paint by lazy { Paint() }
+    private val paint = Paint()
 
-    private lateinit var animatorTime: ValueAnimator
+    private var animatorTime: ValueAnimator? = null
 
-    private lateinit var animatorArgb: ValueAnimator
+    private var animatorArgb: ValueAnimator? = null
 
-    private lateinit var unSelectedAnimator: ObjectAnimator
+    private var unSelectedAnimator: ObjectAnimator? = null
 
     private var animatorUpdateListener: ValueAnimator.AnimatorUpdateListener? = null
 
@@ -130,7 +140,7 @@ class TweetLikeView @JvmOverloads constructor(
 
     private var curColor: Int
 
-    private var curState: Int? = null
+    private var curState: Int = State.HEART_VIEW
 
     private var dotColors = DEFAULT_DOT_COLORS
 
@@ -148,26 +158,39 @@ class TweetLikeView @JvmOverloads constructor(
     private var isMax = false
 
 
-
     init {
-        context.
-        theme.
-        obtainStyledAttributes(attrs,
+        context.theme.obtainStyledAttributes(
+            attrs,
             R.styleable.TweetLikeView,
-            defStyleAttr, 0).apply {
+            defStyleAttr, 0
+        ).apply {
 
             try {
                 mRadius = getDimension(R.styleable.TweetLikeView_cirRadius, dp2px(10))
                 cycleTime = getInt(R.styleable.TweetLikeView_cycleTime, DEFAULT_CYCLE_TIME)
-                unSelectedCycleTime = getInt(R.styleable.TweetLikeView_unSelectCycleTime, DEFAULT_UN_SELECT_CYCLE_TIME)
+                unSelectedCycleTime = getInt(
+                    R.styleable.TweetLikeView_unSelectCycleTime,
+                    DEFAULT_UN_SELECT_CYCLE_TIME
+                )
                 defaultColor = getColor(R.styleable.TweetLikeView_defaultColor, DEFAULT_COLOR)
                 checkedColor = getColor(R.styleable.TweetLikeView_checkedColor, CHECKED_COLOR)
                 ringColor = getColor(R.styleable.TweetLikeView_ringColor, DEFAULT_RING_COLOR)
-                lrGroupCRation = getFloat(R.styleable.TweetLikeView_lrGroupCRatio, HeartShapePath.LR_GROUP_C_RATIO)
-                lrGroupBRation = getFloat(R.styleable.TweetLikeView_lrGroupBRatio, HeartShapePath.LR_GROUP_B_RATIO)
-                bGroupACRation = getFloat(R.styleable.TweetLikeView_bGroupACRatio, HeartShapePath.B_GROUP_AC_RATIO)
-                tGroupBRation = getFloat(R.styleable.TweetLikeView_tGroupBRatio, HeartShapePath.T_GROUP_B_RATIO)
-                innerShapeScale = getInteger(R.styleable.TweetLikeView_innerShapeScale, RADIUS_INNER_SHAPE_SCALE)
+                lrGroupCRation = getFloat(
+                    R.styleable.TweetLikeView_lrGroupCRatio,
+                    HeartShapePath.LR_GROUP_C_RATIO
+                )
+                lrGroupBRation = getFloat(
+                    R.styleable.TweetLikeView_lrGroupBRatio,
+                    HeartShapePath.LR_GROUP_B_RATIO
+                )
+                bGroupACRation = getFloat(
+                    R.styleable.TweetLikeView_bGroupACRatio,
+                    HeartShapePath.B_GROUP_AC_RATIO
+                )
+                tGroupBRation =
+                    getFloat(R.styleable.TweetLikeView_tGroupBRatio, HeartShapePath.T_GROUP_B_RATIO)
+                innerShapeScale =
+                    getInteger(R.styleable.TweetLikeView_innerShapeScale, RADIUS_INNER_SHAPE_SCALE)
                 dotSizeScale = getInteger(R.styleable.TweetLikeView_dotSizeScale, DOT_SIZE_SCALE)
                 isRandomDotColor = getBoolean(R.styleable.TweetLikeView_allowRandomDotColor, true)
 
@@ -193,11 +216,23 @@ class TweetLikeView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        curState?.let { state ->
-            canvas?.let {
-                when(state) {
-//                State.HEART_VIEW
-                    else -> {}
+        canvas?.let {
+            it.translate(cX, cY)
+            when (curState) {
+                State.HEART_VIEW -> {
+                    drawInnerShape(canvas, curRadius, isChecked)
+                }
+                State.CIRCLE_VIEW -> {
+                    drawCircle(canvas, curRadius, curColor)
+                }
+                State.RING_VIEW -> {
+                    drawRing(canvas, curRadius, curColor, curPercent)
+                }
+                State.RING_DOT_HEART_VIEW -> {
+                    drawDotWithRing(canvas, curRadius, curColor)
+                }
+                State.DOT_HEART_VIEW -> {
+                    drawDot(canvas, curRadius, curColor)
                 }
             }
         }
@@ -208,17 +243,30 @@ class TweetLikeView @JvmOverloads constructor(
     // draw heart shape
     private fun drawInnerShape(canvas: Canvas, radius: Int, isChecked: Boolean) {
         if (hasIcon()) {
-            val icon = if (isChecked) { checkedIcon } else { defaultIcon }
+            val icon = if (isChecked) {
+                checkedIcon
+            } else {
+                defaultIcon
+            }
             icon?.setBounds(-radius, -radius, radius, radius)
             icon?.draw(canvas)
         } else {
-            val color = if (isChecked) { checkedColor } else { curColor }
-            paint.color = color
-            paint.isAntiAlias = true
-            paint.isDither = true
-            paint.style = Paint.Style.FILL
-            shapePath = HeartShapePath(lrGroupCRation, lrGroupBRation, bGroupACRation, tGroupBRation)
-            canvas.drawPath(shapePath!!.getPath(radius.toFloat()), paint)
+            val color = if (isChecked) {
+                checkedColor
+            } else {
+                curColor
+            }
+            with(paint) {
+                this.color = color
+                isAntiAlias = true
+                isDither = true
+                style = Paint.Style.FILL
+            }
+            shapePath =
+                HeartShapePath(lrGroupCRation, lrGroupBRation, bGroupACRation, tGroupBRation)
+            shapePath?.let {
+                canvas.drawPath(it.getPath(radius.toFloat()), paint)
+            }
         }
     }
 
@@ -260,10 +308,10 @@ class TweetLikeView @JvmOverloads constructor(
         }
 
         // ring center
-        val innerR = radius - ringWidth/2 + dotR
+        val innerR = radius - ringWidth / 2 + dotR
         var angleA = 0.0
         var angleB = -Math.PI / 20
-        if (rDotL <= SIZE_RATIO * mRadius/2) {
+        if (rDotL <= SIZE_RATIO * mRadius / 2) {
             offS += dotR / 17
             offL += dotR / 14
             rDotS = radius - mRadius / 12 / 2 + offS
@@ -272,16 +320,27 @@ class TweetLikeView @JvmOverloads constructor(
 
         paint.style = Paint.Style.FILL
         for (i in 0 until 7) {
-            canvas.drawCircle((rDotS * sin(angleA)).toFloat(), (rDotS * cos(angleA)).toFloat(), dotR , paint)
+            canvas.drawCircle(
+                (rDotS * sin(angleA)).toFloat(),
+                (rDotS * cos(angleA)).toFloat(),
+                dotR,
+                paint
+            )
             angleA += 2 * PI / 7
-            canvas.drawCircle((rDotL * sin(angleB)).toFloat(), (rDotL * cos(angleB)).toFloat(), dotR , paint)
+            canvas.drawCircle(
+                (rDotL * sin(angleB)).toFloat(),
+                (rDotL * cos(angleB)).toFloat(),
+                dotR,
+                paint
+            )
             angleB += 2 * PI / 7
         }
-        curRadius = (mRadius / innerShapeScale + (innerShapeScale * 2 - 2) * mRadius * curPercent / innerShapeScale).toInt()
+        curRadius =
+            (mRadius / innerShapeScale + (innerShapeScale * 2 - 2) * mRadius * curPercent / innerShapeScale).toInt()
         drawInnerShape(canvas, curRadius, true)
     }
 
-    private fun drawDot(canvas: Canvas, radius: Int,@ColorInt color: Int) {
+    private fun drawDot(canvas: Canvas, radius: Int, @ColorInt color: Int) {
         paint.isAntiAlias = true
         paint.style = Paint.Style.FILL
 
@@ -291,7 +350,7 @@ class TweetLikeView @JvmOverloads constructor(
         var dotRL = 0f
         if (rDotL <= SIZE_RATIO * mRadius / 2) {
             rDotS += dotR / 17
-            rDotL += dotR /14
+            rDotL += dotR / 14
         }
         if (!isMax && curRadius <= 1.1 * mRadius) {
             offL += dotR / 14;
@@ -306,12 +365,22 @@ class TweetLikeView @JvmOverloads constructor(
         drawInnerShape(canvas, curRadius, true)
 
         dotRS = dotR * (1 - curPercent)
-        dotRL = if (dotR * (1 - curPercent) * 3 > dotR ) dotR else (dotR * (1 - curPercent)) * 2
+        dotRL = if (dotR * (1 - curPercent) * 3 > dotR) dotR else (dotR * (1 - curPercent)) * 2
         for (i in dotColors.indices) {
             paint.color = dotColors[i]
-            canvas.drawCircle((rDotS * sin(angleA)).toFloat(), (rDotS * cos(angleA)).toFloat(), dotRS, paint)
+            canvas.drawCircle(
+                (rDotS * sin(angleA)).toFloat(),
+                (rDotS * cos(angleA)).toFloat(),
+                dotRS,
+                paint
+            )
             angleA += 2 * PI / 7
-            canvas.drawCircle((rDotL * sin(angleB)).toFloat(), (rDotL * cos(angleB)).toFloat(), dotRL , paint)
+            canvas.drawCircle(
+                (rDotL * sin(angleB)).toFloat(),
+                (rDotL * cos(angleB)).toFloat(),
+                dotRL,
+                paint
+            )
             angleB += 2 * PI / 7
         }
     }
@@ -367,38 +436,43 @@ class TweetLikeView @JvmOverloads constructor(
 
     private fun cancelAnimator() {
         if (isAnimatorTimeRunning()) {
-            animatorTime.cancel()
+            animatorTime?.cancel()
         }
     }
 
-    private fun isAnimatorTimeRunning():Boolean = this::animatorTime.isInitialized && animatorTime.isRunning
+    private fun isAnimatorTimeRunning(): Boolean = animatorTime != null && animatorTime!!.isRunning
 
     private fun startSelectViewMotion() {
         resetState()
         if (isRandomDotColor) {
             randomDotColors()
         }
-        if (!this::animatorTime.isInitialized) {
-            animatorTime = ValueAnimator.ofInt(0, 1200)
-            animatorTime.duration = cycleTime.toLong()
-            animatorTime.interpolator = LinearInterpolator()
+        if (animatorTime == null) {
+            animatorTime = ValueAnimator.ofInt(0, 1200).apply {
+                duration = cycleTime.toLong()
+                interpolator = LinearInterpolator()
+            }
+
         }
         if (animatorUpdateListener == null) {
             animatorUpdateListener = LvAnimatorUpdateListener()
-            animatorTime.addUpdateListener(animatorUpdateListener)
+            animatorTime?.addUpdateListener(animatorUpdateListener)
         }
-        animatorTime.start()
+        animatorTime?.start()
     }
 
     private fun startUnselectedViewMotion() {
-        if (!this::unSelectedAnimator.isInitialized) {
+        if (unSelectedAnimator == null) {
             val holderX = PropertyValuesHolder.ofFloat("scaleX", 1.0f, 0.8f, 1.0f)
             val holderY = PropertyValuesHolder.ofFloat("scaleY", 1.0f, 0.8f, 1.0f)
-            unSelectedAnimator = ObjectAnimator.ofPropertyValuesHolder(this, holderX, holderY)
-            unSelectedAnimator.duration = unSelectedCycleTime.toLong()
-            unSelectedAnimator.interpolator = OvershootInterpolator()
+            unSelectedAnimator =
+                ObjectAnimator.ofPropertyValuesHolder(this, holderX, holderY).apply {
+                    duration = unSelectedCycleTime.toLong()
+                    interpolator = OvershootInterpolator()
+                }
+
         }
-        unSelectedAnimator.start()
+        unSelectedAnimator?.start()
     }
 
     private fun selectLike(isSetChecked: Boolean) {
@@ -424,18 +498,16 @@ class TweetLikeView @JvmOverloads constructor(
         }
     }
 
-    private fun releaseAnimator(animator: ValueAnimator) {
-        try {
-            animator.end()
-            animator.removeAllListeners()
-            animator.removeAllUpdateListeners()
-        } catch (e: Exception) {
-            Log.d(TAG, e.message, e)
-        }
+    private fun releaseAnimator(animator: ValueAnimator?) {
+        animator?.end()
+        animator?.removeAllListeners()
+        animator?.removeAllUpdateListeners()
     }
+
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+
         releaseAnimator(animatorTime)
         releaseAnimator(animatorArgb)
         releaseAnimator(unSelectedAnimator)
@@ -476,21 +548,23 @@ class TweetLikeView @JvmOverloads constructor(
             )
     }
 
-    private inner class LvAnimatorUpdateListener: ValueAnimator.AnimatorUpdateListener {
+    private inner class LvAnimatorUpdateListener : ValueAnimator.AnimatorUpdateListener {
         override fun onAnimationUpdate(animation: ValueAnimator?) {
             val animatedValue = animation?.animatedValue as Int
             if (animatedValue == 0) {
-                if (!this@TweetLikeView::animatorArgb.isInitialized || !animatorArgb.isRunning) {
-                    animatorArgb = ValueAnimator.ofArgb(defaultColor, 0xf74769, checkedColor)
-                    animatorArgb.duration = (cycleTime * 28 / 120).toLong()
-                    animatorArgb.interpolator = LinearInterpolator()
-                    animatorArgb.start()
+                if (animatorArgb == null || !animatorArgb!!.isRunning) {
+                    animatorArgb =
+                        ValueAnimator.ofArgb(defaultColor, 0xf74769, checkedColor).apply {
+                            duration = (cycleTime * 28 / 120).toLong()
+                            interpolator = LinearInterpolator()
+                            start()
+                        }
                 }
             } else if (animatedValue <= 100) {
                 val percent = calcPercent(0f, 100f, animatedValue.toFloat())
                 curRadius = (mRadius - mRadius * percent).toInt()
-                if (this@TweetLikeView::animatorArgb.isInitialized && animatorArgb.isRunning) {
-                    curColor = animatorArgb.animatedValue as Int
+                if (animatorArgb != null && animatorArgb!!.isRunning) {
+                    curColor = animatorArgb!!.animatedValue as Int
                 }
                 curState = State.HEART_VIEW
                 invalidate()
@@ -498,8 +572,8 @@ class TweetLikeView @JvmOverloads constructor(
             } else if (animatedValue <= 280) {
                 val percent = calcPercent(100f, 340f, animatedValue.toFloat())
                 curRadius = (2 * mRadius * percent).toInt()
-                if (this@TweetLikeView::animatorArgb.isInitialized && animatorArgb.isRunning) {
-                    curColor = animatorArgb.animatedValue as Int
+                if (animatorArgb != null && animatorArgb!!.isRunning) {
+                    curColor = animatorArgb!!.animatedValue as Int
                 }
                 curState = State.CIRCLE_VIEW
                 invalidate()
@@ -507,8 +581,8 @@ class TweetLikeView @JvmOverloads constructor(
             } else if (animatedValue <= 340) {
                 val percent = calcPercent(100f, 340f, animatedValue.toFloat())
                 curPercent = if (1f - percent + 0.2f > 1f) 1f else 1f - percent + 0.2f
-                if (this@TweetLikeView::animatorArgb.isInitialized && animatorArgb.isRunning) {
-                    curColor = animatorArgb.animatedValue as Int
+                if (animatorArgb != null && animatorArgb!!.isRunning) {
+                    curColor = animatorArgb!!.animatedValue as Int
                 }
                 curState = State.RING_VIEW
                 invalidate()
@@ -527,7 +601,7 @@ class TweetLikeView @JvmOverloads constructor(
                 invalidate()
 
                 if (animatedValue == 1200) {
-                    animatorTime.cancel()
+                    animatorTime?.cancel()
                     if (!isChecked) {
                         restoreDefaultView()
                     } else {
