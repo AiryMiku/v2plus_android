@@ -1,5 +1,6 @@
 package com.airy.v2plus.db
 
+import androidx.paging.DataSource
 import androidx.room.*
 import com.airy.v2plus.bean.official.Node
 
@@ -21,6 +22,12 @@ interface NodeDao {
     @Query("SELECT * from nodes")
     suspend fun getAllNodesList(): List<Node>
 
+    @Query("SELECT * from nodes")
+    fun getAllNodesDataSource(): DataSource.Factory<Int, Node>
+
     @Query("SELECT * from nodes WHERE name like :value")
     suspend fun getNodesListByName(value: String): List<Node>
+
+    @Query("SELECT COUNT(id) from nodes")
+    suspend fun getNodesCount(): Int
 }

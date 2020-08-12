@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.airy.v2plus.bean.custom.Notification
 import com.airy.v2plus.databinding.ItemNotificationBinding
 import com.airy.v2plus.loadAvatar
-import com.airy.v2plus.loadTopicImage
 
 
 /**
@@ -19,9 +18,9 @@ import com.airy.v2plus.loadTopicImage
  * Github: AiryMiku
  */
 
-class NotificationPagedListAdapter(private val context: Context,
-                                   private val onClickCallback: (Notification) -> Unit = {})
-    : PagedListAdapter<Notification, NotificationPagedListAdapter.ViewHolder>(TaskDiffCallback()) {
+class NotificationsAdapter(private val context: Context,
+                           private val onClickCallback: ((Notification) -> Unit)? = null)
+    : PagedListAdapter<Notification, NotificationsAdapter.ViewHolder>(TaskDiffCallback()) {
 
 
     class TaskDiffCallback: DiffUtil.ItemCallback<Notification>() {
@@ -46,7 +45,7 @@ class NotificationPagedListAdapter(private val context: Context,
             holder.binding.notification = n
             holder.binding.avatar.loadAvatar(context, n.avatarUrl)
             holder.binding.root.setOnClickListener {
-                onClickCallback(n)
+                onClickCallback?.invoke(n)
             }
         } else {
             Log.d("NotificationAdapter", "null data found")

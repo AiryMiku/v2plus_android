@@ -20,7 +20,7 @@ class NotificationFragment : BaseLazyFragment() {
 
     private val viewModel: NotificationViewModel by viewModels()
     private lateinit var binding: NotificationFragmentBinding
-    private lateinit var adapter: NotificationPagedListAdapter
+    private lateinit var adapter: NotificationsAdapter
 
 //    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
 //    fun onRequestUserHadLoginEvent(e: RequestUserHadLoginEvent) {
@@ -45,7 +45,7 @@ class NotificationFragment : BaseLazyFragment() {
 
         binding.vm = viewModel
 
-        adapter = NotificationPagedListAdapter(requireContext()) {
+        adapter = NotificationsAdapter(requireContext()) {
             navToTopicActivity(it.topicId, if (it.isReply) it.replyNo else null)
         }
         binding.list.adapter = adapter

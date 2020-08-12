@@ -46,15 +46,14 @@ class NodeFragment : BaseLazyFragment() {
             it.isRefreshing = true
             it.setOnRefreshListener {
                 it.isRefreshing = true
-                viewModel.getAllNode()
             }
         }
 
         viewModel.nodes.observe(viewLifecycleOwner, Observer {
-//            adapter.submitList(it)
-            binding.refresh.isRefreshing = false
-            adapter.setNodes(it)
-
+            if (this::adapter.isInitialized) {
+                adapter.submitList(it)
+                binding.refresh.isRefreshing = false
+            }
         })
     }
 

@@ -1,10 +1,17 @@
 package com.airy.v2plus.repository
 
 import android.util.Log
+import androidx.annotation.MainThread
+import androidx.lifecycle.LiveData
+import androidx.paging.Config
+import androidx.paging.PagedList
+import androidx.paging.toLiveData
 import com.airy.v2plus.App
 import com.airy.v2plus.network.V2exRetrofitService
 import com.airy.v2plus.bean.official.Node
+import com.airy.v2plus.db.NodeDao
 import com.airy.v2plus.db.V2plusDb
+import com.airy.v2plus.launchOnIOInGlobal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -59,5 +66,33 @@ class NodeRepository {
     suspend fun fetchNodesByName(value: String): List<Node> {
         val nodes = nodeDao.getNodesListByName(value)
         return nodes
+    }
+
+    @MainThread
+    fun fetchAllNodesPagedListLiveData(updateFromNetwork: Boolean = false): LiveData<PagedList<Node>> {
+        if (updateFromNetwork) {
+            launchOnIOInGlobal({
+                nodeDao.insert(V2exRetrofitService.getV2exApi().getAllNode())
+            })
+        }
+        val callback = NodeBoundaryCallback(nodeDao)
+        return nodeDao.getAllNodesDataSource().toLiveData(
+            Config(
+                pageSize = 64,
+                prefetchDistance = 4,
+                enablePlaceholders = true
+            ),
+            boundaryCallback = callback
+        )
+    }
+}
+
+class NodeBoundaryCallback(private val dao: NodeDao): PagedList.BoundaryCallback<Node>() {
+    override fun onZeroItemsLoaded() {
+        Log.d(this::class.simpleName, "onZeroItemsLoaded")
+        launchOnIOInGlobal({
+            val nodes = V2exRetrofitService.getV2exApi().getAllNode()
+            dao.insert(nodes)
+        })
     }
 }
