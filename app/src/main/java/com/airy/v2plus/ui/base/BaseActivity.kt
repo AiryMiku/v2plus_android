@@ -83,7 +83,7 @@ abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() 
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
-            android.R.id.home -> finish()
+            android.R.id.home -> onBackPressed()
         }
         return super.onOptionsItemSelected(item)
     }

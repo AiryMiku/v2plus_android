@@ -15,12 +15,13 @@ import com.airy.v2plus.databinding.ItemNodeBinding
  * Github: AiryMiku
  */
 
-class NodesAdapter(private val onClickCallback: ((Node) -> Unit)? = null,
-                   private val onLongClickCallback: ((Node) -> Unit)? = null)
-    : PagedListAdapter<Node, NodesAdapter.ViewHolder>(diffCallback){
+class NodesAdapter(
+    private val onClickCallback: ((Node) -> Unit)? = null,
+    private val onLongClickCallback: ((Node) -> Unit)? = null
+) : PagedListAdapter<Node, NodesAdapter.ViewHolder>(diffCallback) {
 
     companion object {
-        private val diffCallback = object: DiffUtil.ItemCallback<Node>() {
+        private val diffCallback = object : DiffUtil.ItemCallback<Node>() {
             override fun areItemsTheSame(oldItem: Node, newItem: Node): Boolean {
                 return oldItem.id == newItem.id
             }
@@ -33,7 +34,13 @@ class NodesAdapter(private val onClickCallback: ((Node) -> Unit)? = null,
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemNodeBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ViewHolder(
+            ItemNodeBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -51,5 +58,5 @@ class NodesAdapter(private val onClickCallback: ((Node) -> Unit)? = null,
         }
     }
 
-    class ViewHolder(val binding: ItemNodeBinding): RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemNodeBinding) : RecyclerView.ViewHolder(binding.root)
 }

@@ -22,7 +22,7 @@ import kotlinx.coroutines.withContext
  * Github: AiryMiku
  */
 
-class MainViewModel :BaseViewModel() {
+class MainViewModel : BaseViewModel() {
 
     private val userRepository by lazy { UserRepository.getInstance() }
     private val mainRepository by lazy { MainRepository.getInstance() }
@@ -78,8 +78,8 @@ class MainViewModel :BaseViewModel() {
     fun getMainPageResponse() {
         launchOnIO({
             mainRepository.fetchMainPageResponse().let { mainPageResponse.postValue(it.value) }
-        }, {
-            t -> Log.e("MainViewModel", t.message, t)
+        }, { t ->
+            Log.e("MainViewModel", t.message, t)
         })
     }
 
@@ -91,8 +91,8 @@ class MainViewModel :BaseViewModel() {
             }
             val result = userRepository.getUserInfoByName(userName)
             user.postValue(result)
-        }, {
-            t -> Log.e("MainViewModel", t.message, t)
+        }, { t ->
+            Log.e("MainViewModel", t.message, t)
         })
     }
 
@@ -106,8 +106,8 @@ class MainViewModel :BaseViewModel() {
             withContext(Dispatchers.Main) {
                 user.value = result
             }
-        }, {
-            t -> Log.e("MainViewModel", t.message, t)
+        }, { t ->
+            Log.e("MainViewModel", t.message, t)
         })
     }
 
@@ -121,8 +121,8 @@ class MainViewModel :BaseViewModel() {
                 redeemResponse.postValue(response)
                 isRedeemed.set(true)
             }
-        }, {
-                t -> Log.e("MainViewModel", t.message, t)
+        }, { t ->
+            Log.e("MainViewModel", t.message, t)
         })
     }
 

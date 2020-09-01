@@ -22,7 +22,7 @@ object RequestHelper {
     private const val READ_TIME_OUT = 30L
     private val cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.getAppContext()))
 
-    private val networkScope = CoroutineScope(Dispatchers.IO)
+    val networkScope = CoroutineScope(Dispatchers.IO)
 
     @JvmField
     val headersInterceptor: Interceptor = object : Interceptor {

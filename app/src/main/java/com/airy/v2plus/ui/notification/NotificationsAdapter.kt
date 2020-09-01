@@ -18,12 +18,13 @@ import com.airy.v2plus.loadAvatar
  * Github: AiryMiku
  */
 
-class NotificationsAdapter(private val context: Context,
-                           private val onClickCallback: ((Notification) -> Unit)? = null)
-    : PagedListAdapter<Notification, NotificationsAdapter.ViewHolder>(TaskDiffCallback()) {
+class NotificationsAdapter(
+    private val context: Context,
+    private val onClickCallback: ((Notification) -> Unit)? = null
+) : PagedListAdapter<Notification, NotificationsAdapter.ViewHolder>(TaskDiffCallback()) {
 
 
-    class TaskDiffCallback: DiffUtil.ItemCallback<Notification>() {
+    class TaskDiffCallback : DiffUtil.ItemCallback<Notification>() {
         override fun areItemsTheSame(oldItem: Notification, newItem: Notification): Boolean {
             return oldItem.title == newItem.title
         }
@@ -43,7 +44,6 @@ class NotificationsAdapter(private val context: Context,
         val n = getItem(position)
         if (n != null) {
             holder.binding.notification = n
-            holder.binding.avatar.loadAvatar(context, n.avatarUrl)
             holder.binding.root.setOnClickListener {
                 onClickCallback?.invoke(n)
             }
@@ -53,5 +53,5 @@ class NotificationsAdapter(private val context: Context,
 
     }
 
-    class ViewHolder(val binding: ItemNotificationBinding): RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemNotificationBinding) : RecyclerView.ViewHolder(binding.root)
 }

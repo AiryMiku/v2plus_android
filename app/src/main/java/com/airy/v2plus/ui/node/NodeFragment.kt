@@ -19,7 +19,7 @@ class NodeFragment : BaseLazyFragment() {
 
     private val viewModel: NodeViewModel by viewModels()
     private lateinit var binding: NodeFragmentBinding
-    private lateinit var adapter: NodesAdapter
+    private lateinit var nodesAdapter: NodesAdapter
 
     override fun setContentView(
         inflater: LayoutInflater,
@@ -31,16 +31,19 @@ class NodeFragment : BaseLazyFragment() {
     }
 
     override fun lazyLoad() {
-        adapter = NodesAdapter(
+        nodesAdapter = NodesAdapter(
             onClickCallback = {
                 startActivity(Intent(requireActivity(), NodeActivity::class.java))
             },
             onLongClickCallback = { node ->
-            node.title?.let {
-                requireContext().showToastShort(it)
-            }
-        })
-        binding.list.adapter = adapter
+                node.title?.let {
+                    requireContext().showToastShort(it)
+                }
+            })
+        binding.list.apply {
+            adapter = adapter
+            setHasFixedSize(true)
+        }
 
         binding.refresh.let {
             it.isRefreshing = true
@@ -50,8 +53,8 @@ class NodeFragment : BaseLazyFragment() {
         }
 
         viewModel.nodes.observe(viewLifecycleOwner, Observer {
-            if (this::adapter.isInitialized) {
-                adapter.submitList(it)
+            if (this::nodesAdapter.isInitialized) {
+                nodesAdapter.submitList(it)
                 binding.refresh.isRefreshing = false
             }
         })

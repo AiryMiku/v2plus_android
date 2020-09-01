@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import com.airy.v2plus.remote.Broadcasts
 import com.airy.v2plus.ui.share.ShareViewModel
 import com.airy.v2plus.util.getDarkModeStorage
 import kotlin.properties.Delegates
@@ -42,6 +43,7 @@ class App: Application(), ViewModelStoreOwner {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
 
+        Broadcasts.init(this)
     }
 
     override fun getViewModelStore(): ViewModelStore {

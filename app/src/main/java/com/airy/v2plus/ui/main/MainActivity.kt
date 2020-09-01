@@ -1,5 +1,7 @@
 package com.airy.v2plus.ui.main
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.MenuItem
@@ -14,6 +16,8 @@ import com.airy.v2plus.*
 import com.airy.v2plus.databinding.ActivityMainBinding
 import com.airy.v2plus.databinding.NavHeaderBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
+import com.airy.v2plus.remote.Broadcasts
+import com.airy.v2plus.service.RedeemService
 import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.ui.home.HomeFragment
 import com.airy.v2plus.ui.hot_or_latest.HotOrLatestActivity
@@ -45,6 +49,12 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     private lateinit var navigation: BottomNavigationView
     private var navHeaderBinding: NavHeaderBinding? = null
     private lateinit var nightModeSwitch: SwitchMaterial
+
+    private val receiver = object: Broadcasts.Receiver {
+        override fun onRedeemSuccess() {
+            viewModel.isRedeemed.set(true)
+        }
+    }
 
     private lateinit var fragmentList: MutableList<Fragment>
     private lateinit var titleList: MutableList<String>
@@ -102,7 +112,9 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                     showToastShort("You has been redeemed, Congratulation~")
                 } else {
                     header.redeem.text = getString(R.string.working)
-                    viewModel.getDailyMissionRedeem()
+//                    viewModel.getDailyMissionRedeem()
+                    val intent = Intent(this, RedeemService::class.java)
+                    startService(intent)
                 }
             }
 
@@ -121,7 +133,6 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 shareViewModel?.theme?.postValue(Theme.LIGHT)
             }
             setDarkModeStorage(isChecked)
-            Log.d(TAG, "now app theme mode ${delegate.localNightMode}")
         }
 
         // init fragments
@@ -170,12 +181,14 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         subscribeUI()
 
         EventBus.getDefault().register(this)
+        Broadcasts.register(receiver)
     }
 
     override fun loadData() { }
 
     override fun onDestroy() {
         super.onDestroy()
+        Broadcasts.unregister(receiver)
         EventBus.getDefault().unregister(this)
     }
 

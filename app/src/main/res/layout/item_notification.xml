@@ -35,6 +35,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/title"
                     android:contentDescription="@string/avatar"
+                    imageUrl="@{notification.avatarUrl}"
                     tools:src="@mipmap/ic_launcher_round"/>
 
             <TextView

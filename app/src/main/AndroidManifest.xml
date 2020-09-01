@@ -4,6 +4,7 @@
         package="com.airy.v2plus">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
     <application
             android:name=".App"
@@ -15,7 +16,7 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning"
             tools:replace="android:label">
-        <activity android:name=".ui.node.NodeActivity"></activity>
+        <activity android:name=".ui.node.NodeActivity" />
         <activity android:name=".ui.hot_or_latest.HotOrLatestActivity" />
         <activity
                 android:name=".ui.launch.LaunchActivity"
@@ -26,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.topic.TopicDetailActivity"></activity>
+        <activity android:name=".ui.topic.TopicDetailActivity" />
         <activity android:name=".ui.about.AboutActivity" />
         <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.main.MainActivity" />
@@ -39,6 +40,8 @@
                 android:authorities="${applicationId}.viewer"
                 android:exported="false"
                 android:grantUriPermissions="true" />
+
+        <service android:name=".service.RedeemService" android:exported="false"/>
     </application>
 
 </manifest>

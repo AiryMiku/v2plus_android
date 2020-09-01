@@ -204,8 +204,6 @@ object V2exHtmlUtil {
         val doc = Jsoup.parse(response)
         val main = doc.getElementById("Main")
         val list = ArrayList<String>()
-//            val message = main.getElementsByClass("message").first().text()
-//            list.add(message)
         main.getElementsByClass("cell").forEach {
             list.add(it.text())
         }
