@@ -194,7 +194,7 @@ object V2exHtmlUtil {
     }
 
     /**
-     * like this
+     * @return like this
      * 请重新点击一次以领取每日登录奖励 message
      * V2EX › 日常任务
      * 每日登录奖励已领取

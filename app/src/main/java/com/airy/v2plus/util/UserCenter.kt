@@ -41,7 +41,7 @@ class UserCenter {
         fun getLastBalance(): Balance {
             val b = getSp().getString(KEY_LAST_BALANCE, "")
             return if (b == null || b.isBlank()) {
-                Balance("0", "0", "0")
+                Balance()
             } else {
                 val list = b.split("-")
                 Balance(list[0], list[1], list[2])

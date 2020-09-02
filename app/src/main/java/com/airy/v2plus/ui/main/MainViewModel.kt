@@ -44,28 +44,14 @@ class MainViewModel : BaseViewModel() {
             value = V2exHtmlUtil.getTopUserInfo(it)
         }
     }
-    private val redeemResponse: MutableLiveData<String> = MutableLiveData()
 
     val balance: MediatorLiveData<Balance> = MediatorLiveData()
 
     val isRedeemed: ObservableBoolean = ObservableBoolean(false)
 
-    val redeemMessages: LiveData<Event<List<String>>> = redeemResponse.switchMap {
-        launchOnViewModelScope {
-            MutableLiveData<Event<List<String>>>().apply {
-                postValue(Event(V2exHtmlUtil.getDailyMissionRedeemResult(it)))
-            }
-        }
-    }
-
     init {
         balance.postValue(UserCenter.getLastBalance())
         balance.addSource(mainPageResponse) {
-            launchOnIO({
-                balance.postValue(parseBalance(it))
-            })
-        }
-        balance.addSource(redeemResponse) {
             launchOnIO({
                 balance.postValue(parseBalance(it))
             })
@@ -105,21 +91,6 @@ class MainViewModel : BaseViewModel() {
             val result = userRepository.getUserInfoById(userId)
             withContext(Dispatchers.Main) {
                 user.value = result
-            }
-        }, { t ->
-            Log.e("MainViewModel", t.message, t)
-        })
-    }
-
-    fun getDailyMissionRedeem() {
-        launchOnIO({
-            val response = userRepository.getDailyMissionResponse()
-            val param = V2exHtmlUtil.getDailyMissionParam(response)
-            if (param.isNotBlank()) {
-                userRepository.getDailyMissionRedeemResponse(param)
-            } else {
-                redeemResponse.postValue(response)
-                isRedeemed.set(true)
             }
         }, { t ->
             Log.e("MainViewModel", t.message, t)

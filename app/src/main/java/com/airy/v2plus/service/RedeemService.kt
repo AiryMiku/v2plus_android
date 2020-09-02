@@ -6,14 +6,18 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
+import androidx.core.app.BundleCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.airy.v2plus.Intents
 import com.airy.v2plus.R
+import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.repository.UserRepository
 import com.airy.v2plus.sendBroadcastBySelf
+import com.airy.v2plus.util.UserCenter
 import com.airy.v2plus.util.V2exHtmlUtil
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -59,12 +63,25 @@ class RedeemService: IntentService("RedeemService") {
                 val message = V2exHtmlUtil.getDailyMissionRedeemResult(response)
                 showFinishNotification("${message.getOrNull(1)}\n${message.getOrNull(2)}")
 
-                sendBroadcastBySelf(Intent(Intents.REDEEM_SUCCESS))
+                @Suppress("NAME_SHADOWING")
+                val intent = Intent(Intents.REDEEM_SUCCESS).apply {
+                    val balance = parseBalance(response)
+                    val bundle = Bundle()
+                    bundle.putParcelable("balance", balance)
+                    putExtras(bundle)
+                }
+                sendBroadcastBySelf(intent)
                 // todo need refactor by checking process
             } catch (e: Exception) {
                 Log.e(TAG, e.message, e)
                 showFailedNotification()
             }
+        }
+    }
+
+    private fun parseBalance(response: String): Balance {
+        return V2exHtmlUtil.getBalance(response).apply {
+            UserCenter.setLastBalance(this)
         }
     }
 

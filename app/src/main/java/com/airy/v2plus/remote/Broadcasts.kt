@@ -9,6 +9,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.airy.v2plus.Intents
+import com.airy.v2plus.bean.custom.Balance
 
 /**
  * Created by Airy on 2020/9/1
@@ -17,7 +18,7 @@ import com.airy.v2plus.Intents
  */
 object Broadcasts {
     interface Receiver {
-        fun onRedeemSuccess()
+        fun onRedeemSuccess(balance: Balance?)
     }
 
     private val receivers = mutableListOf<Receiver>()
@@ -31,7 +32,8 @@ object Broadcasts {
             when(intent?.action) {
                 Intents.REDEEM_SUCCESS -> {
                     receivers.forEach {
-                        it.onRedeemSuccess()
+                        val balance = intent.getParcelableExtra<Balance?>("balance")
+                        it.onRedeemSuccess(balance)
                     }
                 }
             }

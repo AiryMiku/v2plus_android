@@ -1,9 +1,6 @@
 package com.airy.v2plus.ui.main
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
@@ -13,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.airy.v2plus.*
+import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.databinding.ActivityMainBinding
 import com.airy.v2plus.databinding.NavHeaderBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
@@ -51,8 +49,11 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     private lateinit var nightModeSwitch: SwitchMaterial
 
     private val receiver = object: Broadcasts.Receiver {
-        override fun onRedeemSuccess() {
+        override fun onRedeemSuccess(balance: Balance?) {
             viewModel.isRedeemed.set(true)
+            balance?.let {
+                viewModel.balance.postValue(it)
+            }
         }
     }
 
@@ -112,9 +113,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                     showToastShort("You has been redeemed, Congratulation~")
                 } else {
                     header.redeem.text = getString(R.string.working)
-//                    viewModel.getDailyMissionRedeem()
-                    val intent = Intent(this, RedeemService::class.java)
-                    startService(intent)
+                    startRedeemService()
                 }
             }
 
@@ -209,14 +208,6 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
         viewModel.balance.observe(this, Observer { navHeaderBinding?.balance = it })
 
-        viewModel.redeemMessages.observe(this, Observer { event ->
-            if (event != null) {
-                event.getContentIfNotHandled()?.let {
-                    showToastLong(it.toString())
-                }
-            }
-        })
-
         viewModel.error.observe(this, Observer { showToastLong(it.toString()) })
 
         viewModel.pageUserInfo.observe(this, Observer {
@@ -226,9 +217,14 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
                 }
             } else if (!viewModel.isRedeemed.get() && SharedPreferencesUtil.isAutoRedeem()) {
                 showToastShort("Try to get your redeem now...")
-                viewModel.getDailyMissionRedeem()
+                startRedeemService()
             }
         })
+    }
+
+    private fun startRedeemService() {
+        val intent = Intent(this, RedeemService::class.java)
+        startService(intent)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
