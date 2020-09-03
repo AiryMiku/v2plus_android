@@ -38,6 +38,7 @@
         <SwitchPreferenceCompat
                 app:key="auto_redeem"
                 app:title="@string/auto_redeem_title"
+                app:icon="@drawable/ic_redeem_small"
                 app:summaryOn="@string/auto_redeem_summary_on"
                 app:summaryOff="@string/auto_redeem_summary_off"/>
 
@@ -52,5 +53,10 @@
                 app:entryValues="@array/theme_mode_values"
                 app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
+
+    <Preference
+            app:key="log"
+            app:layout="@layout/log_layout">
+    </Preference>
 
 </PreferenceScreen>

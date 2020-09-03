@@ -7,14 +7,15 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import com.airy.v2plus.*
 import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.databinding.ActivityMainBinding
 import com.airy.v2plus.databinding.NavHeaderBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
+import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.remote.Broadcasts
+import com.airy.v2plus.remote.ShortcutHelper
 import com.airy.v2plus.service.RedeemService
 import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.ui.home.HomeFragment
@@ -36,7 +37,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val TAG = "MainActivity"
 
@@ -48,7 +49,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
     private var navHeaderBinding: NavHeaderBinding? = null
     private lateinit var nightModeSwitch: SwitchMaterial
 
-    private val receiver = object: Broadcasts.Receiver {
+    private val receiver = object : Broadcasts.Receiver {
         override fun onRedeemSuccess(balance: Balance?) {
             viewModel.isRedeemed.set(true)
             balance?.let {
@@ -68,6 +69,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         navHeaderBinding?.let { header ->
             header.balanceLayout.visibility = View.VISIBLE
         }
+        ShortcutHelper.addRedeemShortcut()
     }
 
     override val toolbarLabel: CharSequence? = "Home"
@@ -82,7 +84,13 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         contentBinding.navigationView.setNavigationItemSelectedListener(this)
 
         // action bar
-        val actionBarDrawerToggle = ActionBarDrawerToggle(this, contentBinding.drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        val actionBarDrawerToggle = ActionBarDrawerToggle(
+            this,
+            contentBinding.drawer,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
         contentBinding.drawer.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
@@ -123,7 +131,8 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         }
 
         // night switch
-        nightModeSwitch = contentBinding.navigationView.menu.findItem(R.id.night_mode).actionView as SwitchMaterial
+        nightModeSwitch =
+            contentBinding.navigationView.menu.findItem(R.id.night_mode).actionView as SwitchMaterial
         nightModeSwitch.isChecked = this.isNightMode()
         nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -160,7 +169,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         navigation = contentBinding.bottomNavigation
         // navigation.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
         navigation.setOnNavigationItemSelectedListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.Home -> {
                     viewPage.currentItem = 0
                     true
@@ -183,7 +192,11 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
         Broadcasts.register(receiver)
     }
 
-    override fun loadData() { }
+    override fun loadData() {
+        if (!RequestHelper.isExpired()) {
+            ShortcutHelper.addRedeemShortcut()
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -193,7 +206,7 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
 
     private fun subscribeUI() {
 
-        viewModel.user.observe(this, Observer { u->
+        viewModel.user.observe(this, { u ->
             navHeaderBinding?.let {
                 Glide.with(this).load(u.avatarNormalUrl).into(it.avatar)
                 it.userName.text = u.username
@@ -206,20 +219,26 @@ class MainActivity :BaseActivity(), NavigationView.OnNavigationItemSelectedListe
             }
         })
 
-        viewModel.balance.observe(this, Observer { navHeaderBinding?.balance = it })
+        viewModel.balance.observe(this, { navHeaderBinding?.balance = it })
 
-        viewModel.error.observe(this, Observer { showToastLong(it.toString()) })
+        viewModel.error.observe(this, { showToastLong(it.toString()) })
 
-        viewModel.pageUserInfo.observe(this, Observer {
+        viewModel.pageUserInfo.observe(this, {
             if (it.isEmpty()) {
-                if (UserCenter.getUserId() != 0L) {
+                if (UserCenter.getUserId() != 0L && RequestHelper.isExpired()) {
                     showToastLong("As if your login status is expired, try to re-login~")
                 }
-            } else if (!viewModel.isRedeemed.get() && SharedPreferencesUtil.isAutoRedeem()) {
-                showToastShort("Try to get your redeem now...")
-                startRedeemService()
+            } else {
+                autoRedeem()
             }
         })
+    }
+
+    private fun autoRedeem() {
+        if (!viewModel.isRedeemed.get() && SharedPreferencesUtil.isAutoRedeem()) {
+            showToastShort("Try to get your redeem now...")
+            startRedeemService()
+        }
     }
 
     private fun startRedeemService() {

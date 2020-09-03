@@ -7,6 +7,7 @@ import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.bean.custom.MainPageItem
 import com.airy.v2plus.bean.official.User
 import com.airy.v2plus.component.Event
+import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.repository.MainRepository
 import com.airy.v2plus.repository.UserRepository
 import com.airy.v2plus.ui.base.BaseViewModel
@@ -73,7 +74,7 @@ class MainViewModel : BaseViewModel() {
         launchOnIO({
             val userName = UserCenter.getUserName()
             if (userName.isEmpty()) {
-                throw NullPointerException("User name has not been saved!")
+                return@launchOnIO
             }
             val result = userRepository.getUserInfoByName(userName)
             user.postValue(result)
@@ -82,16 +83,14 @@ class MainViewModel : BaseViewModel() {
         })
     }
 
-    fun getUserInfoById() {
+    private fun getUserInfoById() {
         launchOnIO({
             val userId = UserCenter.getUserId()
             if (userId == 0L) {
-                throw NullPointerException("User id has not been saved!")
+                return@launchOnIO
             }
             val result = userRepository.getUserInfoById(userId)
-            withContext(Dispatchers.Main) {
-                user.value = result
-            }
+            user.postValue(result)
         }, { t ->
             Log.e("MainViewModel", t.message, t)
         })

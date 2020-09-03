@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.core.app.BundleCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.airy.v2plus.Intents
@@ -54,6 +53,10 @@ class RedeemService: IntentService("RedeemService") {
     override fun onHandleIntent(intent: Intent?) {
         networkScope.launch {
             try {
+                if (RequestHelper.isExpired() && UserCenter.getUserId() != 0L) {
+                    showFailedNotification("Session Timeout, please re-login.")
+                }
+
                 var response = repository.getDailyMissionResponse()
                 val param = V2exHtmlUtil.getDailyMissionParam(response)
                 delay(2000L)
@@ -91,7 +94,7 @@ class RedeemService: IntentService("RedeemService") {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = CHANNEL_NAME
             val descriptionText = "This channel is for redeem"
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
@@ -124,10 +127,10 @@ class RedeemService: IntentService("RedeemService") {
         }
     }
 
-    private fun showFailedNotification() {
+    private fun showFailedNotification(cause: String = "Failed to get your redeem") {
         val builder = createBaseNotificationBuilder(
             subText = "Redeem Failed",
-            contentText = "Failed to get your redeem"
+            contentText = cause
         )
 
         with(NotificationManagerCompat.from(this)) {
@@ -142,7 +145,7 @@ class RedeemService: IntentService("RedeemService") {
     ): NotificationCompat.Builder =
         NotificationCompat.Builder(this, CHANNEL_ID)
             .apply {
-                setSmallIcon(R.drawable.ic_redeem_notification_small)
+                setSmallIcon(R.drawable.ic_redeem_small)
                 setSubText(subText)
                 setContentTitle(contentTitle)
                 setContentText(contentText)

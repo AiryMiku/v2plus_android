@@ -16,8 +16,6 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning"
             tools:replace="android:label">
-        <activity android:name=".ui.node.NodeActivity" />
-        <activity android:name=".ui.hot_or_latest.HotOrLatestActivity" />
         <activity
                 android:name=".ui.launch.LaunchActivity"
                 android:theme="@style/AppTheme.Launcher">
@@ -26,7 +24,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+<!--            <meta-data-->
+<!--                    android:name="android.app.shortcuts"-->
+<!--                    android:resource="@xml/shortcuts" />-->
         </activity>
+        <activity android:name=".service.ServiceActivity" />
+        <activity android:name=".ui.node.NodeActivity" />
+        <activity android:name=".ui.hot_or_latest.HotOrLatestActivity" />
+
         <activity android:name=".ui.topic.TopicDetailActivity" />
         <activity android:name=".ui.about.AboutActivity" />
         <activity android:name=".ui.login.LoginActivity" />
@@ -41,7 +47,8 @@
                 android:exported="false"
                 android:grantUriPermissions="true" />
 
-        <service android:name=".service.RedeemService" android:exported="false"/>
+        <service
+                android:name=".service.RedeemService"
+                android:exported="false" />
     </application>
-
 </manifest>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+            android:shortcutId="redeem"
+            android:enabled="true"
+            android:icon="@drawable/ic_redeem_small"
+            android:shortcutShortLabel="@string/app_name"
+            android:shortcutLongLabel="@string/app_name">
+        <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="com.airy.v2plus.debug"
+                android:targetClass="com.airy.v2plus.service.ServiceActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>

@@ -4,11 +4,10 @@ import android.graphics.drawable.Drawable
 import androidx.activity.viewModels
 import androidx.core.widget.ContentLoadingProgressBar
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.airy.v2plus.R
-import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.databinding.ActivityLoginBinding
 import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
+import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.showToastLong
 import com.airy.v2plus.showToastShort
 import com.airy.v2plus.ui.base.BaseActivity
@@ -21,7 +20,7 @@ import com.bumptech.glide.request.target.Target
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.greenrobot.eventbus.EventBus
 
-class LoginActivity : BaseActivity(){
+class LoginActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private val viewModel: LoginViewModel by viewModels()
@@ -101,7 +100,7 @@ class LoginActivity : BaseActivity(){
 
     private fun subscribeUI() {
 
-        viewModel.loginKey.observe(this, Observer {
+        viewModel.loginKey.observe(this, {
             if (hasRequestLoginKey) {
                 binding.submit.isEnabled = true
             } else {
@@ -115,7 +114,7 @@ class LoginActivity : BaseActivity(){
                 .into(binding.verifyCodeImage)
         })
 
-        viewModel.loginResult.observe(this, Observer {
+        viewModel.loginResult.observe(this, {
             progressBar.hide()
             if (it.problems.isNotEmpty()) {
                 MaterialAlertDialogBuilder(this)
@@ -140,7 +139,7 @@ class LoginActivity : BaseActivity(){
             }
         })
 
-        viewModel.error.observe(this, Observer {
+        viewModel.error.observe(this, {
             showToastLong(it.toString())
             binding.submit.isEnabled = true
         })

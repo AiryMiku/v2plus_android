@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import com.airy.v2plus.remote.Broadcasts
+import com.airy.v2plus.remote.ShortcutHelper
 import com.airy.v2plus.ui.share.ShareViewModel
 import com.airy.v2plus.util.getDarkModeStorage
 import kotlin.properties.Delegates
@@ -44,6 +45,7 @@ class App: Application(), ViewModelStoreOwner {
         }
 
         Broadcasts.init(this)
+        ShortcutHelper.init(this)
     }
 
     override fun getViewModelStore(): ViewModelStore {
