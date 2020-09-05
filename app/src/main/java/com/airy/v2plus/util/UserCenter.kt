@@ -1,6 +1,7 @@
 package com.airy.v2plus.util
 
 import com.airy.v2plus.bean.custom.Balance
+import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.util.SharedPreferencesUtil.getSp
 
 
@@ -41,6 +42,12 @@ class UserCenter {
 
         fun setLastBalance(balance: Balance) {
             getSp().edit().putString(KEY_LAST_BALANCE, "${balance.gold}-${balance.silver}-${balance.bronze}").apply()
+        }
+
+        fun logout() {
+            RequestHelper.clearCookieSession()
+            RequestHelper.clearCookieAll()
+            getSp().edit().clear().apply()
         }
     }
 

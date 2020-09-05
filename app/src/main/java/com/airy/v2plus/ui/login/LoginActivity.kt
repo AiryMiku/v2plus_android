@@ -6,7 +6,7 @@ import androidx.core.widget.ContentLoadingProgressBar
 import androidx.databinding.DataBindingUtil
 import com.airy.v2plus.R
 import com.airy.v2plus.databinding.ActivityLoginBinding
-import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
+import com.airy.v2plus.event.LoginEvent
 import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.showToastLong
 import com.airy.v2plus.showToastShort
@@ -134,7 +134,7 @@ class LoginActivity : BaseActivity() {
             } else {
                 UserCenter.setUserName(it.userName)
                 showToastShort("Login Success")
-                EventBus.getDefault().post(RequestUserInfoFromLoginEvent())
+                EventBus.getDefault().post(LoginEvent())
                 finish()
             }
         })

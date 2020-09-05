@@ -14,7 +14,9 @@
   ~ limitations under the License.
   -->
 
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <PreferenceCategory app:title="@string/messages_header">
 
@@ -56,7 +58,8 @@
 
     <Preference
             app:key="log"
-            app:layout="@layout/log_layout">
+            app:layout="@layout/log_layout"
+            tools:title="Logout">
     </Preference>
 
 </PreferenceScreen>

@@ -12,7 +12,8 @@ import com.airy.v2plus.*
 import com.airy.v2plus.bean.custom.Balance
 import com.airy.v2plus.databinding.ActivityMainBinding
 import com.airy.v2plus.databinding.NavHeaderBinding
-import com.airy.v2plus.event.RequestUserInfoFromLoginEvent
+import com.airy.v2plus.event.LoginEvent
+import com.airy.v2plus.event.LogoutEvent
 import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.remote.Broadcasts
 import com.airy.v2plus.remote.ShortcutHelper
@@ -61,16 +62,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var fragmentList: MutableList<Fragment>
     private lateinit var titleList: MutableList<String>
     private lateinit var iconIdList: MutableList<Int>
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onRequestUserInfoFromLoginEvent(e: RequestUserInfoFromLoginEvent) {
-        viewModel.getUserInfoByName()
-        viewModel.getMainPageResponse()
-        navHeaderBinding?.let { header ->
-            header.balanceLayout.visibility = View.VISIBLE
-        }
-        ShortcutHelper.addRedeemShortcut()
-    }
 
     override val toolbarLabel: CharSequence? = "Home"
     override var displayHomeAsUpEnabled: Boolean? = null
@@ -190,6 +181,21 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         EventBus.getDefault().register(this)
         Broadcasts.register(receiver)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLoginEvent(e: LoginEvent) {
+        viewModel.getUserInfoByName()
+        viewModel.getMainPageResponse()
+        navHeaderBinding?.let { header ->
+            header.balanceLayout.visibility = View.VISIBLE
+        }
+        ShortcutHelper.addRedeemShortcut()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLogoutEvent(e: LogoutEvent) {
+        recreate()
     }
 
     override fun loadData() {

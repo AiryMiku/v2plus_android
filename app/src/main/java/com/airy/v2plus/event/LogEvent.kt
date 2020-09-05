@@ -7,4 +7,6 @@ package com.airy.v2plus.event
  * Github: AiryMiku
  */
 
-class RequestUserInfoFromLoginEvent
+class LoginEvent
+
+class LogoutEvent
