@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.airy.v2plus.databinding.NodeFragmentBinding
 import com.airy.v2plus.showToastShort
 import com.airy.v2plus.ui.base.BaseLazyFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NodeFragment : BaseLazyFragment() {
 
@@ -17,7 +16,7 @@ class NodeFragment : BaseLazyFragment() {
         fun newInstance() = NodeFragment()
     }
 
-    private val viewModel: NodeViewModel by viewModels()
+    private val viewModel: NodeViewModel by viewModel()
     private lateinit var binding: NodeFragmentBinding
     private lateinit var nodesAdapter: NodesAdapter
 
@@ -41,7 +40,7 @@ class NodeFragment : BaseLazyFragment() {
                 }
             })
         binding.list.apply {
-            adapter = adapter
+            adapter = nodesAdapter
             setHasFixedSize(true)
         }
 
@@ -52,7 +51,7 @@ class NodeFragment : BaseLazyFragment() {
             }
         }
 
-        viewModel.nodes.observe(viewLifecycleOwner, Observer {
+        viewModel.nodes.observe(viewLifecycleOwner, {
             if (this::nodesAdapter.isInitialized) {
                 nodesAdapter.submitList(it)
                 binding.refresh.isRefreshing = false

@@ -137,6 +137,12 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$versions.daggerHiltAndroidVersion"
     kapt "com.google.dagger:hilt-android-compiler:$versions.daggerHiltAndroidVersion"
 
+    // koin
+    implementation "org.koin:koin-androidx-scope:$versions.koinVersion"
+    implementation "org.koin:koin-androidx-viewmodel:$versions.koinVersion"
+    implementation "org.koin:koin-androidx-fragment:$versions.koinVersion"
+    implementation "org.koin:koin-androidx-ext:$versions.koinVersion"
+
     // eventbus
     implementation 'org.greenrobot:eventbus:3.1.1'
 

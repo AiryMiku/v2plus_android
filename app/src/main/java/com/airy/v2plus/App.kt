@@ -8,10 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import com.airy.v2plus.di.allModules
 import com.airy.v2plus.remote.Broadcasts
 import com.airy.v2plus.remote.ShortcutHelper
 import com.airy.v2plus.ui.share.ShareViewModel
 import com.airy.v2plus.util.getDarkModeStorage
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import kotlin.properties.Delegates
 
 
@@ -46,6 +51,12 @@ class App: Application(), ViewModelStoreOwner {
 
         Broadcasts.init(this)
         ShortcutHelper.init(this)
+
+        startKoin {
+            androidLogger(Level.ERROR)
+            androidContext(this@App)
+            modules(allModules)
+        }
     }
 
     override fun getViewModelStore(): ViewModelStore {

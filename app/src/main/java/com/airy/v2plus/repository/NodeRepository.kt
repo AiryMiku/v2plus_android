@@ -28,14 +28,14 @@ class NodeRepository {
 
     private val TAG = "NodeRepository"
 
-    companion object {
-        @Volatile
-        private var instance: NodeRepository? = null
-
-        fun getInstance(): NodeRepository = instance ?: synchronized(this) {
-            instance ?: NodeRepository().also { instance = it }
-        }
-    }
+//    companion object {
+//        @Volatile
+//        private var instance: NodeRepository? = null
+//
+//        fun getInstance(): NodeRepository = instance ?: synchronized(this) {
+//            instance ?: NodeRepository().also { instance = it }
+//        }
+//    }
 
     private val nodeDao by lazy { V2plusDb.getDb(App.getAppContext()).nodeDao() }
 
