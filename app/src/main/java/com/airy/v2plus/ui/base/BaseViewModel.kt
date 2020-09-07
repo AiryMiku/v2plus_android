@@ -3,6 +3,7 @@ package com.airy.v2plus.ui.base
 import android.util.Log
 import androidx.lifecycle.*
 import com.airy.v2plus.App
+import com.airy.v2plus.TAG
 import com.airy.v2plus.showToastShort
 import com.google.gson.JsonParseException
 import kotlinx.coroutines.*
@@ -16,7 +17,7 @@ import java.net.SocketTimeoutException
  * Github: AiryMiku
  */
 
-open class BaseViewModel: ViewModel() {
+open class BaseViewModel : ViewModel() {
 
     @ExperimentalCoroutinesApi
     override fun onCleared() {
@@ -32,9 +33,11 @@ open class BaseViewModel: ViewModel() {
         }
     }
 
-    private suspend fun baseLaunch(tryBlock: suspend CoroutineScope.() -> Unit,
-                                   catchBlock: suspend CoroutineScope.(Throwable) -> Unit,
-                                   finalBlock: suspend CoroutineScope.() -> Unit): Job {
+    private suspend fun baseLaunch(
+        tryBlock: suspend CoroutineScope.() -> Unit,
+        catchBlock: suspend CoroutineScope.(Throwable) -> Unit,
+        finalBlock: suspend CoroutineScope.() -> Unit
+    ): Job {
         return viewModelScope.launch {
             try {
                 tryBlock()
@@ -46,23 +49,27 @@ open class BaseViewModel: ViewModel() {
         }
     }
 
-    fun launchOnIO(tryBlock: suspend CoroutineScope.() -> Unit,
-                           catchBlock: suspend CoroutineScope.(Throwable) -> Unit = { t-> handleException(t as Exception)},
-                           finalBlock: suspend CoroutineScope.() -> Unit = {}): Job {
+    fun launchOnIO(
+        tryBlock: suspend CoroutineScope.() -> Unit,
+        catchBlock: suspend CoroutineScope.(Throwable) -> Unit = { t -> handleException(t as Exception) },
+        finalBlock: suspend CoroutineScope.() -> Unit = {}
+    ): Job {
         return viewModelScope.launch(Dispatchers.IO) {
             baseLaunch(tryBlock, catchBlock, finalBlock)
         }
     }
 
-    fun launchOnMain(tryBlock: suspend CoroutineScope.() -> Unit,
-                           catchBlock: suspend CoroutineScope.(Throwable) -> Unit = {},
-                           finalBlock: suspend CoroutineScope.() -> Unit = {}): Job {
+    fun launchOnMain(
+        tryBlock: suspend CoroutineScope.() -> Unit,
+        catchBlock: suspend CoroutineScope.(Throwable) -> Unit = {},
+        finalBlock: suspend CoroutineScope.() -> Unit = {}
+    ): Job {
         return viewModelScope.launch(Dispatchers.Main) {
             baseLaunch(tryBlock, catchBlock, finalBlock)
         }
     }
 
-    private fun handleException(e: Exception){
+    private fun handleException(e: Exception) {
         Log.e(this.javaClass.simpleName, e.message, e)
 //        error.postValue(e)
         when (e) {  //todo
@@ -77,6 +84,9 @@ open class BaseViewModel: ViewModel() {
             is JsonParseException -> {
                 // 数据解析错误
                 App.getAppContext().showToastShort("JsonParse failed")
+            }
+            is CancellationException -> {
+                // 取消了 job
             }
             else -> {
                 // 其他错误

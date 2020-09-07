@@ -53,7 +53,7 @@ class RedeemService: IntentService("RedeemService") {
     override fun onHandleIntent(intent: Intent?) {
         networkScope.launch {
             try {
-                if (RequestHelper.isExpired() && UserCenter.getUserId() != 0L) {
+                if (RequestHelper.isCookieExpired() && UserCenter.getUserId() != 0L) {
                     showFailedNotification("Session Timeout, please re-login.")
                 }
 

@@ -21,6 +21,7 @@ import com.airy.v2plus.service.RedeemService
 import com.airy.v2plus.ui.base.BaseActivity
 import com.airy.v2plus.ui.home.HomeFragment
 import com.airy.v2plus.ui.hot_or_latest.HotOrLatestActivity
+import com.airy.v2plus.ui.launch.LaunchActivity
 import com.airy.v2plus.ui.login.LoginActivity
 import com.airy.v2plus.ui.node.NodeFragment
 import com.airy.v2plus.ui.notification.NotificationFragment
@@ -107,6 +108,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 navToActivity(this, LoginActivity::class.java)
             }
 
+            if (UserCenter.getUserId() != 0L) {
+                header.balanceLayout.visibility = View.VISIBLE
+            }
+
             header.redeem.setOnClickListener {
                 if (viewModel.isRedeemed.get()) {
                     showToastShort("You has been redeemed, Congratulation~")
@@ -114,10 +119,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     header.redeem.text = getString(R.string.working)
                     startRedeemService()
                 }
-            }
-
-            if (UserCenter.getUserId() != 0L) {
-                header.balanceLayout.visibility = View.VISIBLE
             }
         }
 
@@ -195,11 +196,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLogoutEvent(e: LogoutEvent) {
-        recreate()
+        startActivity(Intent(this, LaunchActivity::class.java))
+        finish()
     }
 
     override fun loadData() {
-        if (!RequestHelper.isExpired()) {
+        if (!RequestHelper.isCookieExpired()) {
             ShortcutHelper.addRedeemShortcut()
         }
     }
@@ -231,7 +233,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         viewModel.pageUserInfo.observe(this, {
             if (it.isEmpty()) {
-                if (UserCenter.getUserId() != 0L && RequestHelper.isExpired()) {
+                if (UserCenter.getUserId() != 0L && RequestHelper.isCookieExpired()) {
                     showToastLong("As if your login status is expired, try to re-login~")
                 }
             } else {

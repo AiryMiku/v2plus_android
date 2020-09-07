@@ -2,7 +2,6 @@ package com.airy.v2plus.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -41,14 +40,14 @@ class SettingsActivity : BaseActivity() {
             }
             findPreference<Preference>("log")?.run {
                 setOnPreferenceClickListener {
-                    if (RequestHelper.isExpired()) {
+                    if (RequestHelper.isCookieExpired()) {
                         startActivity(Intent(requireActivity(), LoginActivity::class.java))
                     } else {
                         showLogOutDialog()
                     }
                     true
                 }
-                title = if (RequestHelper.isExpired()) {
+                title = if (RequestHelper.isCookieExpired()) {
                     "Go to login"
                 } else {
                     "Logout"
@@ -68,17 +67,6 @@ class SettingsActivity : BaseActivity() {
                     dialog.dismiss()
                 }.show()
         }
-
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-            EventBus.getDefault().register(this)
-        }
-
-        override fun onDestroy() {
-            super.onDestroy()
-            EventBus.getDefault().unregister(this)
-        }
-
 
     }
 }

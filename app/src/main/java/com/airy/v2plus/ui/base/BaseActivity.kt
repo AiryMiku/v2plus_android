@@ -2,29 +2,23 @@ package com.airy.v2plus.ui.base
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.airy.v2plus.App
 import com.airy.v2plus.R
 import com.airy.v2plus.ui.share.ShareViewModel
-import com.airy.v2plus.ui.theme.Theme
 import com.airy.v2plus.updateForTheme
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import java.lang.IllegalArgumentException
 
 
 /**
@@ -81,8 +75,8 @@ abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() 
         startActivity(Intent(context, clazz))
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
             android.R.id.home -> onBackPressed()
         }
         return super.onOptionsItemSelected(item)
@@ -109,7 +103,7 @@ abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() 
 
     private fun updateForTheme() {
         shareViewModel?.let {
-            it.theme.observe(this, Observer { t ->
+            it.theme.observe(this, { t ->
                 this.updateForTheme(t)
             })
         }

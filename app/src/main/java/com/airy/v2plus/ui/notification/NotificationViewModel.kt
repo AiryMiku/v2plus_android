@@ -1,9 +1,9 @@
 package com.airy.v2plus.ui.notification
 
 import androidx.databinding.ObservableBoolean
+import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.repository.NotificationRepository
 import com.airy.v2plus.ui.base.BaseViewModel
-import com.airy.v2plus.util.UserCenter
 
 class NotificationViewModel : BaseViewModel() {
 
@@ -22,7 +22,7 @@ class NotificationViewModel : BaseViewModel() {
     }
 
     fun refresh() {
-        if (UserCenter.getUserId() == 0L) {     // todo better use cookie
+        if (RequestHelper.isCookieExpired()) {
             showLoginHint.set(true)
         } else {
             showLoginHint.set(false)

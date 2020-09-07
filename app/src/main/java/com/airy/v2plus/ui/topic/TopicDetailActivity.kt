@@ -57,17 +57,16 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
     }
 
     private fun subscribeUI() {
-        viewModel.error.observe(this, Observer {
+        viewModel.error.observe(this, {
             showToastLong(it.toString())
         })
-        viewModel.topicDetails.observe(this, Observer {
+        viewModel.topicDetails.observe(this, {
             adapter.submitList(it)
             binding.refresh.isRefreshing = false
             handlingReplyPositionItem()
         })
     }
 
-    // Todo out of index, because recycle only show display item view, so that way to find adapter position item is not correct
     private fun handlingReplyPositionItem() {
         val replyNo = intent.getLongExtra(Common.KEY_ID.REPLY_NO, -1L)
         if (replyNo == -1L) {

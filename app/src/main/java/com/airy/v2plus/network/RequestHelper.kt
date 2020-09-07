@@ -78,13 +78,13 @@ object RequestHelper {
 
     fun clearCookieSession() = cookieJar.clearSession()
 
-    fun isExpired(): Boolean {
+    fun isCookieExpired(): Boolean {
         val url = Config.BASE_URL.toHttpUrlOrNull()
         url?.let {
             val cookies = cookieJar.loadForRequest(it)
             for (c in cookies) {
                 if (c.name == "A2") {
-                    return false
+                    return System.currentTimeMillis() <= c.expiresAt
                 }
             }
         }
