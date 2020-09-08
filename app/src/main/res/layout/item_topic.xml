@@ -6,7 +6,7 @@
     <data>
         <variable
                 name="topic"
-                type="com.airy.v2plus.bean.official.Topic" />
+                type="com.airy.v2plus.model.official.Topic" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

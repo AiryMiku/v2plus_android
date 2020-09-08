@@ -1,6 +1,6 @@
 package com.airy.v2plus.util
 
-import com.airy.v2plus.bean.custom.*
+import com.airy.v2plus.model.custom.*
 import com.airy.v2plus.ui.login.LoginKey
 import org.jsoup.Jsoup
 

@@ -9,7 +9,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.airy.v2plus.Intents
-import com.airy.v2plus.bean.custom.Balance
+import com.airy.v2plus.model.custom.Balance
 
 /**
  * Created by Airy on 2020/9/1

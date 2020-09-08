@@ -6,10 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.airy.v2plus.bean.custom.MainPageItem
+import com.airy.v2plus.model.custom.MainPageItem
 import com.airy.v2plus.databinding.ItemPageCellBinding
 import com.airy.v2plus.loadAvatar
-import com.airy.v2plus.loadTopicImage
 
 
 /**

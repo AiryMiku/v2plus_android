@@ -1,7 +1,10 @@
-package com.airy.v2plus.bean.official
+package com.airy.v2plus.model.official
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -12,30 +15,35 @@ import java.io.Serializable
  * Github: AiryMiku
  */
 
-data class User(
+@Entity(
+    tableName = "nodes",
+    indices = [Index(value = ["name"], unique = true)]
+)
+data class Node(
+    @PrimaryKey
     val id: Long,
-    val username: String?,
-    val website: String?,
-    val github: String?,
-    val psn: String?,
-    val btc: String?,
-    val bio: String?,
-    @SerializedName("tagline")
-    val tagLine: String?,
-    val twitter: String?,
-    val location: String?,
-    val created: Long,
+    val topics: Long,
+    val title: String?,
+    val name: String?,
+    val header: String?,
+    @SerializedName("parent_node_name")
+    val parentNodeName: String?,
+    @SerializedName("title_alternative")
+    val titleAlternative: String?,
     @SerializedName("avatar_mini")
     val avatarMiniUrl: String?,
     @SerializedName("avatar_normal")
     val avatarNormalUrl: String?,
     @SerializedName("avatar_large")
     val avatarLargeUrl: String?,
-    val url: String?
+    val starts: Long,
+    val root: Boolean,
+    val url: String?,
+    val footer: String?
 ) : Serializable, Parcelable {
     constructor(source: Parcel) : this(
         source.readLong(),
-        source.readString(),
+        source.readLong(),
         source.readString(),
         source.readString(),
         source.readString(),
@@ -45,8 +53,7 @@ data class User(
         source.readString(),
         source.readString(),
         source.readLong(),
-        source.readString(),
-        source.readString(),
+        1 == source.readInt(),
         source.readString(),
         source.readString()
     )
@@ -55,27 +62,26 @@ data class User(
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeLong(id)
-        writeString(username)
-        writeString(website)
-        writeString(github)
-        writeString(psn)
-        writeString(btc)
-        writeString(bio)
-        writeString(tagLine)
-        writeString(twitter)
-        writeString(location)
-        writeLong(created)
+        writeLong(topics)
+        writeString(title)
+        writeString(name)
+        writeString(header)
+        writeString(parentNodeName)
+        writeString(titleAlternative)
         writeString(avatarMiniUrl)
         writeString(avatarNormalUrl)
         writeString(avatarLargeUrl)
+        writeLong(starts)
+        writeInt((if (root) 1 else 0))
         writeString(url)
+        writeString(footer)
     }
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<User> = object : Parcelable.Creator<User> {
-            override fun createFromParcel(source: Parcel): User = User(source)
-            override fun newArray(size: Int): Array<User?> = arrayOfNulls(size)
+        val CREATOR: Parcelable.Creator<Node> = object : Parcelable.Creator<Node> {
+            override fun createFromParcel(source: Parcel): Node = Node(source)
+            override fun newArray(size: Int): Array<Node?> = arrayOfNulls(size)
         }
     }
 }

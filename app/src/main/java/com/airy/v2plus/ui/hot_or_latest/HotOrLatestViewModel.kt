@@ -2,7 +2,7 @@ package com.airy.v2plus.ui.hot_or_latest
 
 import androidx.lifecycle.MutableLiveData
 import com.airy.v2plus.network.V2exRetrofitService
-import com.airy.v2plus.bean.official.Topic
+import com.airy.v2plus.model.official.Topic
 import com.airy.v2plus.ui.base.BaseViewModel
 
 class HotOrLatestViewModel: BaseViewModel() {

@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.airy.v2plus.Intents
 import com.airy.v2plus.R
-import com.airy.v2plus.bean.custom.Balance
+import com.airy.v2plus.model.custom.Balance
 import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.repository.UserRepository
 import com.airy.v2plus.sendBroadcastBySelf

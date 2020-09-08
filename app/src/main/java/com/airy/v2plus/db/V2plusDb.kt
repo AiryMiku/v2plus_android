@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.airy.v2plus.BuildConfig
-import com.airy.v2plus.bean.official.Node
+import com.airy.v2plus.model.official.Node
 
 /**
  * Created by Airy on 2020/7/23
@@ -40,7 +40,7 @@ abstract class V2plusDb: RoomDatabase() {
             }
         }
 
-        fun create(context: Context, inMemory: Boolean): V2plusDb {
+        private fun create(context: Context, inMemory: Boolean): V2plusDb {
             val databaseBuilder = if (inMemory) {
                 Room.inMemoryDatabaseBuilder(context, V2plusDb::class.java)
             } else {

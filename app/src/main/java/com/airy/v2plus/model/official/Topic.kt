@@ -1,7 +1,11 @@
-package com.airy.v2plus.bean.official
+package com.airy.v2plus.model.official
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.Index
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -31,7 +35,7 @@ data class Topic(
     val node: Node,
     val member: User
 ) : Serializable, Parcelable {
-        constructor(source: Parcel) : this(
+    constructor(source: Parcel) : this(
         source.readLong(),
         source.readString(),
         source.readString(),

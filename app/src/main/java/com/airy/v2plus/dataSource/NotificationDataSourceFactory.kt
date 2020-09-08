@@ -3,7 +3,7 @@ package com.airy.v2plus.dataSource
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import com.airy.v2plus.network.api.V2plusApi
-import com.airy.v2plus.bean.custom.Notification
+import com.airy.v2plus.model.custom.Notification
 
 
 /**

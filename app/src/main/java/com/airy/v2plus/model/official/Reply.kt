@@ -1,4 +1,4 @@
-package com.airy.v2plus.bean.official
+package com.airy.v2plus.model.official
 
 import android.os.Parcel
 import android.os.Parcelable

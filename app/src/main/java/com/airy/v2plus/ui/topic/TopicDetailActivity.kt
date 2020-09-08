@@ -7,10 +7,9 @@ import android.view.animation.RotateAnimation
 import android.view.animation.ScaleAnimation
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.airy.v2plus.Common
 import com.airy.v2plus.R
-import com.airy.v2plus.bean.official.Reply
+import com.airy.v2plus.model.official.Reply
 import com.airy.v2plus.databinding.ActivityTopicDetailBinding
 import com.airy.v2plus.showToastLong
 import com.airy.v2plus.showToastShort

@@ -1,9 +1,9 @@
 package com.airy.v2plus.network.api
 
-import com.airy.v2plus.bean.official.Node
-import com.airy.v2plus.bean.official.Reply
-import com.airy.v2plus.bean.official.Topic
-import com.airy.v2plus.bean.official.User
+import com.airy.v2plus.model.official.Node
+import com.airy.v2plus.model.official.Reply
+import com.airy.v2plus.model.official.Topic
+import com.airy.v2plus.model.official.User
 import retrofit2.http.GET
 import retrofit2.http.Query
 

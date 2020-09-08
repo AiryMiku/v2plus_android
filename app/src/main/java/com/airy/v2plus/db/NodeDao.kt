@@ -2,7 +2,7 @@ package com.airy.v2plus.db
 
 import androidx.paging.DataSource
 import androidx.room.*
-import com.airy.v2plus.bean.official.Node
+import com.airy.v2plus.model.official.Node
 
 /**
  * Created by Airy on 2020/7/23
@@ -23,7 +23,7 @@ interface NodeDao {
     suspend fun getAllNodesList(): List<Node>
 
     @Query("SELECT * from nodes")
-    fun getAllNodesDataSource(): DataSource.Factory<Int, Node>
+    fun getNodesDataSource(): DataSource.Factory<Int, Node>
 
     @Query("SELECT * from nodes WHERE name like :value")
     suspend fun getNodesListByName(value: String): List<Node>

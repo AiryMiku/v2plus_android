@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.airy.v2plus.R
-import com.airy.v2plus.bean.official.Reply
-import com.airy.v2plus.bean.official.Topic
+import com.airy.v2plus.model.official.Reply
+import com.airy.v2plus.model.official.Topic
 import com.airy.v2plus.databinding.ItemTopicDetailBinding
 import com.airy.v2plus.databinding.ItemTopicReplyBinding
 import com.airy.v2plus.loadAvatar
-import com.airy.v2plus.loadTopicImage
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.HeaderItemHolder
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.ReplyItemHolder
 import com.airy.v2plus.util.DateUtil

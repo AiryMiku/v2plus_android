@@ -3,18 +3,14 @@ package com.airy.v2plus.ui.main
 import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.*
-import com.airy.v2plus.bean.custom.Balance
-import com.airy.v2plus.bean.custom.MainPageItem
-import com.airy.v2plus.bean.official.User
-import com.airy.v2plus.component.Event
-import com.airy.v2plus.network.RequestHelper
+import com.airy.v2plus.model.custom.Balance
+import com.airy.v2plus.model.custom.MainPageItem
+import com.airy.v2plus.model.official.User
 import com.airy.v2plus.repository.MainRepository
 import com.airy.v2plus.repository.UserRepository
 import com.airy.v2plus.ui.base.BaseViewModel
 import com.airy.v2plus.util.V2exHtmlUtil
 import com.airy.v2plus.util.UserCenter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 
 /**

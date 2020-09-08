@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.airy.v2plus.network.api.V2plusApi
-import com.airy.v2plus.bean.custom.Notification
+import com.airy.v2plus.model.custom.Notification
 import com.airy.v2plus.launchOnIOInGlobal
 import com.airy.v2plus.repository.util.NetworkState
 import com.airy.v2plus.util.UserCenter

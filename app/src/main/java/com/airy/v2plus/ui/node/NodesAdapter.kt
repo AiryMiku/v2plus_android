@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.airy.v2plus.bean.official.Node
+import com.airy.v2plus.model.official.Node
 import com.airy.v2plus.databinding.ItemNodeBinding
 
 

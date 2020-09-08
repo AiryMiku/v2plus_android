@@ -5,8 +5,8 @@ import androidx.lifecycle.switchMap
 import androidx.paging.Config
 import androidx.paging.toLiveData
 import com.airy.v2plus.network.V2plusRetrofitService
-import com.airy.v2plus.bean.custom.Notification
-import com.airy.v2plus.bean.custom.Page
+import com.airy.v2plus.model.custom.Notification
+import com.airy.v2plus.model.custom.Page
 import com.airy.v2plus.dataSource.NotificationDataSourceFactory
 import com.airy.v2plus.repository.util.Listing
 import com.airy.v2plus.util.V2exHtmlUtil

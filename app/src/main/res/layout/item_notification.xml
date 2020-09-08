@@ -6,7 +6,7 @@
     <data>
         <variable
                 name="notification"
-                type="com.airy.v2plus.bean.custom.Notification" />
+                type="com.airy.v2plus.model.custom.Notification" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

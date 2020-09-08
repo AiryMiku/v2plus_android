@@ -1,6 +1,6 @@
 package com.airy.v2plus.util
 
-import com.airy.v2plus.bean.custom.Balance
+import com.airy.v2plus.model.custom.Balance
 import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.util.SharedPreferencesUtil.getSp
 

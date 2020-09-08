@@ -6,18 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.airy.v2plus.bean.official.Topic
+import com.airy.v2plus.model.official.Topic
 import com.airy.v2plus.databinding.ItemTopicBinding
 import com.airy.v2plus.loadAvatar
-import com.airy.v2plus.loadTopicImage
 
-class HotOrLatestAdapter(private val context: Context,
-                         private val onClickCallback: (Topic) -> Unit = {})
-    : ListAdapter<Topic, HotOrLatestAdapter.ViewHolder>(
+class HotOrLatestAdapter(
+    private val context: Context,
+    private val onClickCallback: (Topic) -> Unit = {}
+) : ListAdapter<Topic, HotOrLatestAdapter.ViewHolder>(
     TaskDiffCallback()
-){
+) {
 
-    class TaskDiffCallback: DiffUtil.ItemCallback<Topic>() {
+    class TaskDiffCallback : DiffUtil.ItemCallback<Topic>() {
         override fun areItemsTheSame(oldItem: Topic, newItem: Topic): Boolean {
             return oldItem.id == newItem.id
         }
@@ -42,5 +42,5 @@ class HotOrLatestAdapter(private val context: Context,
         }
     }
 
-    class ViewHolder(val binding: ItemTopicBinding): RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root)
 }

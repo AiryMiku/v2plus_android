@@ -1,8 +1,7 @@
 package com.airy.v2plus.ui.login
 
-import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
-import com.airy.v2plus.bean.custom.LoginResult
+import com.airy.v2plus.model.custom.LoginResult
 import com.airy.v2plus.repository.UserRepository
 import com.airy.v2plus.ui.base.BaseViewModel
 

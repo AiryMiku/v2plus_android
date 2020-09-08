@@ -1,4 +1,4 @@
-package com.airy.v2plus.bean.custom
+package com.airy.v2plus.model.custom
 
 
 /**

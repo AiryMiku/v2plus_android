@@ -6,7 +6,7 @@
     <data>
         <variable
                 name="reply"
-                type="com.airy.v2plus.bean.official.Reply" />
+                type="com.airy.v2plus.model.official.Reply" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

@@ -9,7 +9,7 @@
                 type="com.airy.v2plus.ui.main.MainViewModel" />
         <variable
                 name="balance"
-                type="com.airy.v2plus.bean.custom.Balance" />
+                type="com.airy.v2plus.model.custom.Balance" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

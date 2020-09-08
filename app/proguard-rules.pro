@@ -21,7 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 # Gson model
--keepclassmembernames class com.airy.v2plus.bean.* {
+-keepclassmembernames class com.airy.v2plus.model.* {
     !static <fields>;
 }
 

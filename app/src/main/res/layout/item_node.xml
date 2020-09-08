@@ -6,7 +6,7 @@
     <data>
         <variable
                 name="node"
-                type="com.airy.v2plus.bean.official.Node" />
+                type="com.airy.v2plus.model.official.Node" />
     </data>
 
 

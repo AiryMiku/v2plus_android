@@ -1,14 +1,19 @@
 package com.airy.v2plus.network
 
-import android.util.Log
-import com.airy.v2plus.*
+import com.airy.v2plus.App
+import com.airy.v2plus.BuildConfig
+import com.airy.v2plus.Config
+import com.airy.v2plus.showToastLong
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
@@ -16,7 +21,8 @@ object RequestHelper {
 
     private const val CONNECT_TIME_OUT = 30L //连接超时时间
     private const val READ_TIME_OUT = 30L
-    private val cookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.getAppContext()))
+    private val cookieJar =
+        PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(App.getAppContext()))
 
     val networkScope = CoroutineScope(Dispatchers.IO)
 
@@ -84,7 +90,7 @@ object RequestHelper {
             val cookies = cookieJar.loadForRequest(it)
             for (c in cookies) {
                 if (c.name == "A2") {
-                    return System.currentTimeMillis() <= c.expiresAt
+                    return System.currentTimeMillis() > c.expiresAt
                 }
             }
         }

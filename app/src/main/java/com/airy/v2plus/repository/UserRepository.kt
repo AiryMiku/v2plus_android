@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.airy.v2plus.network.V2exRetrofitService
 import com.airy.v2plus.network.V2plusRetrofitService
-import com.airy.v2plus.bean.custom.LoginResult
-import com.airy.v2plus.bean.official.User
+import com.airy.v2plus.model.custom.LoginResult
+import com.airy.v2plus.model.official.User
 import com.airy.v2plus.ui.login.LoginKey
 import com.airy.v2plus.util.V2exHtmlUtil
 
