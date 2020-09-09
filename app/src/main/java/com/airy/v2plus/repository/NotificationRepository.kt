@@ -28,12 +28,6 @@ class NotificationRepository {
         }
     }
 
-    suspend fun getNotificationPages(page: Int): Page<Notification> {
-        val r = V2plusRetrofitService.getV2plusApi().getNotificationsResponse(page)
-        return V2exHtmlUtil.getNotificationPage(r)
-    }
-
-
     @MainThread
     fun getNotificationListing(): Listing<Notification> {
         val sourceFactory = NotificationDataSourceFactory(V2plusRetrofitService.v2plusApi)

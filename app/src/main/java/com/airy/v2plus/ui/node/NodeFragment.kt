@@ -32,7 +32,7 @@ class NodeFragment : BaseLazyFragment() {
     override fun lazyLoad() {
         nodesAdapter = NodesAdapter(
             onClickCallback = {
-                startActivity(Intent(requireActivity(), NodeActivity::class.java))
+//                startActivity(Intent(requireActivity(), NodeActivity::class.java))
             },
             onLongClickCallback = { node ->
                 node.title?.let {

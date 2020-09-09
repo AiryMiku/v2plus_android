@@ -7,6 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.airy.v2plus.BuildConfig
+import com.airy.v2plus.model.custom.Notification
 import com.airy.v2plus.model.official.Node
 
 /**
@@ -15,13 +16,11 @@ import com.airy.v2plus.model.official.Node
  * Github: AiryMiku
  */
 @Database(
-    entities = [Node::class],
-    version = 1,
-    exportSchema = false
+    entities = [Node::class, Notification::class],
+    version = 2,
+    exportSchema = true
 )
 abstract class V2plusDb: RoomDatabase() {
-
-    private val TAG = "V2plusDb"
 
     companion object {
 
@@ -40,6 +39,10 @@ abstract class V2plusDb: RoomDatabase() {
             }
         }
 
+        /**
+         * attention, every update in the schema need to define a migration!!!
+         * i think i might don't like room o(╥﹏╥)o
+         */
         private fun create(context: Context, inMemory: Boolean): V2plusDb {
             val databaseBuilder = if (inMemory) {
                 Room.inMemoryDatabaseBuilder(context, V2plusDb::class.java)
@@ -47,19 +50,21 @@ abstract class V2plusDb: RoomDatabase() {
                 Room.databaseBuilder(context, V2plusDb::class.java, "v2plus.db")
             }
             return databaseBuilder.apply {
-                fallbackToDestructiveMigrationFrom()
+                // Destructive update database
+                fallbackToDestructiveMigration()
+                fallbackToDestructiveMigrationOnDowngrade()
+
                 if (BuildConfig.DEBUG) {
+                    setJournalMode(JournalMode.WRITE_AHEAD_LOGGING)
                     addCallback(DbCallBack())
                 }
             }.build()
         }
     }
 
-    abstract fun nodeDao(): NodeDao
+    internal class DbCallBack : RoomDatabase.Callback() {
 
-    private class DbCallBack : RoomDatabase.Callback() {
-
-        private val TAG = "DbCallBack"
+        private val TAG = "V2plusDb"
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
@@ -76,4 +81,10 @@ abstract class V2plusDb: RoomDatabase() {
             Log.d(TAG, "onDestructiveMigration")
         }
     }
+
+    // for dao
+    abstract fun nodeDao(): NodeDao
+
+    abstract fun notificationDao(): NotificationDao
+
 }

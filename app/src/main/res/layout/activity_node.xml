@@ -8,17 +8,17 @@
         tools:context="com.airy.v2plus.ui.node.NodeActivity">
 
     <include layout="@layout/toolbar"/>
+    <com.airy.v2plus.widget.tweetlikeview.TweetLikeView
+            android:id="@+id/like_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
 
-    <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/test_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="test notification"/>
 
-
-        <com.airy.v2plus.widget.tweetlikeview.TweetLikeView
-                android:id="@+id/like_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
-
-    </FrameLayout>
 </LinearLayout>

@@ -27,9 +27,10 @@ import kotlinx.coroutines.cancel
  * Github: AiryMiku
  */
 
-abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() {
+abstract class BaseActivity : AppCompatActivity(), CoroutineScope by MainScope() {
 
     protected var toolbar: Toolbar? = null
+
     // default label
     abstract val toolbarLabel: CharSequence?
     abstract val displayHomeAsUpEnabled: Boolean? //Todo: need refactor
@@ -76,7 +77,7 @@ abstract class BaseActivity: AppCompatActivity(), CoroutineScope by MainScope() 
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> onBackPressed()
         }
         return super.onOptionsItemSelected(item)

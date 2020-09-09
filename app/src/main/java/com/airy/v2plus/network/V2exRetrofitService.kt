@@ -17,22 +17,18 @@ import retrofit2.converter.gson.GsonConverterFactory
  * official api
  */
 
-class V2exRetrofitService {
+object V2exRetrofitService {
 
-    companion object {
+    @JvmField
+    val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(Config.BASE_API_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(RequestHelper.client)
+        .build()
 
-        @JvmField
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl(Config.BASE_API_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(RequestHelper.client)
-            .build()
+    @JvmField
+    val v2exApi: V2exApi = retrofit.create(V2exApi::class.java)
 
-        @JvmField
-        val v2exApi: V2exApi = retrofit.create(V2exApi::class.java)
-
-        fun getV2exApi(): V2exApi = v2exApi
-
-    }
+    fun getV2exApi(): V2exApi = v2exApi
 
 }
