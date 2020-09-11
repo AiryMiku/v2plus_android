@@ -166,7 +166,7 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$versions.glideVersion"
 
     // ui component
-    implementation 'de.hdodenhof:circleimageview:3.0.1'
+//    implementation 'de.hdodenhof:circleimageview:3.0.1'
     // implementation 'com.facebook.shimmer:shimmer:0.5.0'
     // implementation "com.github.skydoves:rainbow:1.0.1"
 

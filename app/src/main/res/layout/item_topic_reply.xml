@@ -20,10 +20,11 @@
                 android:layout_height="wrap_content"
                 android:padding="5dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/avatar"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 

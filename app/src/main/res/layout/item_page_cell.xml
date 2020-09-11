@@ -25,15 +25,16 @@
                 android:padding="10dp"
                 android:background="@null">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/avatar"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@mipmap/ic_launcher_round"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:contentDescription="@string/avatar"
-                    android:transitionName="avatarView"/>
+                    android:transitionName="avatarView"
+                    tools:src="@mipmap/ic_launcher_round"/>
 
             <TextView
                     android:layout_width="wrap_content"
