@@ -22,16 +22,6 @@ class NotificationFragment : BaseLazyFragment() {
     private lateinit var binding: NotificationFragmentBinding
     private lateinit var adapter: NotificationsAdapter
 
-//    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
-//    fun onRequestUserHadLoginEvent(e: RequestUserHadLoginEvent) {
-//        if (this::adapter.isInitialized) {
-//            adapter = NotificationPagedListAdapter(requireContext()) {
-//                navToTopicActivity(it.topicId, if (it.isReply) it.replyNo else null)
-//            }
-//            binding.list.adapter = adapter
-//        }
-//    }
-
     override fun setContentView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,7 +42,7 @@ class NotificationFragment : BaseLazyFragment() {
         binding.refresh.setOnRefreshListener {
             viewModel.refresh()
         }
-        viewModel.networkState.observe(viewLifecycleOwner, Observer {
+        viewModel.networkState.observe(viewLifecycleOwner) {
             when(it) {
                 NetworkState.LOADING -> {
                     binding.refresh.isRefreshing = true
@@ -64,19 +54,19 @@ class NotificationFragment : BaseLazyFragment() {
                     binding.refresh.isRefreshing = false
                 }
             }
-        })
+        }
 
-        viewModel.notifications.observe(viewLifecycleOwner, Observer {
+        viewModel.notifications.observe(viewLifecycleOwner) {
             if (this::adapter.isInitialized) {
                 binding.refresh.isRefreshing = false
                 adapter.submitList(it)
             }
-        })
+        }
 
-        viewModel.error.observe(viewLifecycleOwner, Observer {
+        viewModel.error.observe(viewLifecycleOwner) {
             binding.refresh.isRefreshing = false
             Toast.makeText(this.context, it.message, Toast.LENGTH_LONG).show()
-        })
+        }
     }
 
 }

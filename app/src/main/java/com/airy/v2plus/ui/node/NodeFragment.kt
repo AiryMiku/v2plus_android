@@ -1,6 +1,5 @@
 package com.airy.v2plus.ui.node
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

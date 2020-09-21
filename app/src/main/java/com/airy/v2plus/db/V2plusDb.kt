@@ -1,14 +1,16 @@
 package com.airy.v2plus.db
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.airy.v2plus.BuildConfig
+import com.airy.v2plus.db.dao.NodeDao
+import com.airy.v2plus.db.dao.NotificationDao
 import com.airy.v2plus.model.custom.Notification
 import com.airy.v2plus.model.official.Node
+import com.orhanobut.logger.Logger
 
 /**
  * Created by Airy on 2020/7/23
@@ -68,17 +70,17 @@ abstract class V2plusDb: RoomDatabase() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            Log.d(TAG, "onCreate")
+            Logger.d(TAG, "onCreate")
         }
 
         override fun onOpen(db: SupportSQLiteDatabase) {
             super.onOpen(db)
-            Log.d(TAG, "onOpen")
+            Logger.d(TAG, "onOpen")
         }
 
         override fun onDestructiveMigration(db: SupportSQLiteDatabase) {
             super.onDestructiveMigration(db)
-            Log.d(TAG, "onDestructiveMigration")
+            Logger.d(TAG, "onDestructiveMigration")
         }
     }
 

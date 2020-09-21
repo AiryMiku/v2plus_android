@@ -48,8 +48,7 @@ class HomeFragment: BaseLazyFragment() {
         preLoadSizeProvider = ViewPreloadSizeProvider<String>()
         preLoadModelProvider = object: ListPreloader.PreloadModelProvider<String> {
             override fun getPreloadItems(position: Int): MutableList<String> {
-                var url: String? = null
-                url = viewModel.mainListItem.value?.getOrNull(position)?.avatarUrl
+                val url: String? = viewModel.mainListItem.value?.getOrNull(position)?.avatarUrl
                 return if (url == null) {
                     emptyList<String>().toMutableList()
                 } else {

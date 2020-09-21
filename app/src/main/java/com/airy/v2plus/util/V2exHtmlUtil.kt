@@ -2,6 +2,7 @@ package com.airy.v2plus.util
 
 import com.airy.v2plus.model.custom.*
 import com.airy.v2plus.ui.login.LoginKey
+import com.orhanobut.logger.Logger
 import org.jsoup.Jsoup
 
 
@@ -73,7 +74,7 @@ object V2exHtmlUtil {
             val replyNo = notificationInfo.let { n ->
                 val regex = Regex("#reply[0-9]+")
                 val m = regex.find(n)
-                m?.groupValues?.first()?.split("#reply")?.getOrNull(1)?.toLong()
+                m?.groupValues?.first()?.split("#reply")?.getOrNull(1)?.toLongOrNull()
             } ?: -1L
             val time = tds[1].getElementsByTag("span")[1].text()
             val payload = tds[1].getElementsByClass("payload").let { p ->
@@ -83,7 +84,7 @@ object V2exHtmlUtil {
                     p[0].text()
                 }
             }
-            val isReply = payload.contains("收藏")
+            val isReply = !payload.contains("收藏")
             dataList.add(
                 Notification(
                     avatarUrl,
@@ -101,6 +102,7 @@ object V2exHtmlUtil {
         val current = pageInfo.attr("value")
         val min = pageInfo.attr("min")
         val max = pageInfo.attr("max")
+        Logger.d("Notification list: $dataList")
         return Page(current.toInt(), min.toInt(), max.toInt(), dataList)
     }
 

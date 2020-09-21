@@ -1,4 +1,4 @@
-package com.airy.v2plus.db
+package com.airy.v2plus.db.dao
 
 import androidx.paging.DataSource
 import androidx.room.*

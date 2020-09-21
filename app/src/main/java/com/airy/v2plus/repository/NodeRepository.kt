@@ -1,17 +1,15 @@
 package com.airy.v2plus.repository
 
-import android.util.Log
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.paging.Config
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
-import com.airy.v2plus.App
 import com.airy.v2plus.network.V2exRetrofitService
 import com.airy.v2plus.model.official.Node
-import com.airy.v2plus.db.NodeDao
-import com.airy.v2plus.db.V2plusDb
+import com.airy.v2plus.db.dao.NodeDao
 import com.airy.v2plus.launchOnIOInGlobal
+import com.orhanobut.logger.Logger
 
 
 /**
@@ -19,10 +17,9 @@ import com.airy.v2plus.launchOnIOInGlobal
  * Mail: a532710813@gmail.com
  * Github: AiryMiku
  */
+private const val TAG = "NodeRepository"
 
 class NodeRepository(private val dao: NodeDao) {
-
-    private val TAG = "NodeRepository"
 
     @MainThread
     fun fetchNodesPagedListAsLiveData(updateFromNetwork: Boolean = false): LiveData<PagedList<Node>> {
@@ -45,7 +42,7 @@ class NodeRepository(private val dao: NodeDao) {
 
 class NodeBoundaryCallback(private val dao: NodeDao): PagedList.BoundaryCallback<Node>() {
     override fun onZeroItemsLoaded() {
-        Log.d(this::class.simpleName, "onZeroItemsLoaded")
+        Logger.d(TAG, "onZeroItemsLoaded")
         launchOnIOInGlobal({
             val nodes = V2exRetrofitService.getV2exApi().getAllNode()
             dao.insert(nodes)

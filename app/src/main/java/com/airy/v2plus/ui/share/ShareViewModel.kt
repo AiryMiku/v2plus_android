@@ -28,4 +28,8 @@ class ShareViewModel: ViewModel() {
         MutableLiveData(RequestHelper.isCookieExpired())
     }
 
+    fun refreshCookie() {
+        isUserCookieExpired.postValue(RequestHelper.isCookieExpired())
+    }
+
 }

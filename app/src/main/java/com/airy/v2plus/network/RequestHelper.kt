@@ -13,7 +13,6 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
@@ -27,36 +26,32 @@ object RequestHelper {
     val networkScope = CoroutineScope(Dispatchers.IO)
 
     @JvmField
-    val headersInterceptor: Interceptor = object : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val original = chain.request()
+    val headersInterceptor: Interceptor = Interceptor { chain ->
+        val original = chain.request()
 
-            val request = original.newBuilder().apply {
-                header("User-Agent", Config.USER_AGENT)
-            }.build()
+        val request = original.newBuilder().apply {
+            header("User-Agent", Config.USER_AGENT)
+        }.build()
 
-            return chain.proceed(request)
-        }
+        chain.proceed(request)
     }
 
     @JvmField
-    val errorInterceptor = object : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val response = chain.proceed(chain.request())
-            if (response.code != 200) {
-                App.getAppContext().showToastLong("Network error: ${response.message}")
-            }
-            return response
+    val errorInterceptor = Interceptor { chain ->
+        val response = chain.proceed(chain.request())
+        if (response.code != 200) {
+            App.getAppContext().showToastLong("Network error: ${response.message}")
         }
+        response
     }
 
     @JvmField
     val client: OkHttpClient = OkHttpClient.Builder().apply {
         if (BuildConfig.DEBUG) {
-            val loggingInterceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+            val loggingInterceptor = HttpLoggingInterceptor().apply {
                 this.level = HttpLoggingInterceptor.Level.BODY
             }
-            addInterceptor(loggingInterceptor)
+            addNetworkInterceptor(loggingInterceptor)
         }
         connectTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)
         writeTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)

@@ -47,4 +47,8 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+    <style name="AppTheme.Transparent">
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
 </resources>

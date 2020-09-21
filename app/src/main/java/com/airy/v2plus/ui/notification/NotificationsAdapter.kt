@@ -1,14 +1,14 @@
 package com.airy.v2plus.ui.notification
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.airy.v2plus.model.custom.Notification
 import com.airy.v2plus.databinding.ItemNotificationBinding
+import com.airy.v2plus.model.custom.Notification
+import com.orhanobut.logger.Logger
 
 
 /**
@@ -47,7 +47,7 @@ class NotificationsAdapter(
                 onClickCallback?.invoke(n)
             }
         } else {
-            Log.d("NotificationAdapter", "null data found")
+            Logger.d("NotificationAdapter", "null data found")
         }
 
     }

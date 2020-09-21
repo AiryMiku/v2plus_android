@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.airy.v2plus.Intents
@@ -18,9 +17,9 @@ import com.airy.v2plus.repository.UserRepository
 import com.airy.v2plus.sendBroadcastBySelf
 import com.airy.v2plus.util.UserCenter
 import com.airy.v2plus.util.V2exHtmlUtil
+import com.orhanobut.logger.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 /**
  * Created by Airy on 2020/8/29
@@ -76,7 +75,7 @@ class RedeemService: IntentService("RedeemService") {
                 sendBroadcastBySelf(intent)
                 // todo need refactor by checking process
             } catch (e: Exception) {
-                Log.e(TAG, e.message, e)
+                Logger.e(TAG, e.message, e)
                 showFailedNotification()
             }
         }

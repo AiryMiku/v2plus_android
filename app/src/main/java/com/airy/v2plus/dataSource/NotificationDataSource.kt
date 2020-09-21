@@ -1,14 +1,14 @@
 package com.airy.v2plus.dataSource
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import com.airy.v2plus.network.api.V2plusApi
-import com.airy.v2plus.model.custom.Notification
 import com.airy.v2plus.launchOnIOInGlobal
+import com.airy.v2plus.model.custom.Notification
+import com.airy.v2plus.network.api.V2plusApi
 import com.airy.v2plus.repository.util.NetworkState
 import com.airy.v2plus.util.UserCenter
 import com.airy.v2plus.util.V2exHtmlUtil
+import com.orhanobut.logger.Logger
 
 
 /**
@@ -36,7 +36,7 @@ class NotificationDataSource(private val api: V2plusApi): PageKeyedDataSource<In
             callback.onResult(data.items, null, let { if (data.isLast()) { null } else { data.current + 1 } })
             liveState.postValue(NetworkState.LOADED)
         }, catchBlock = { e->
-            Log.d(TAG, e.message, e)
+            Logger.d(TAG, e.message, e)
             liveState.postValue(NetworkState.error(e.message))
         })
     }
@@ -48,7 +48,7 @@ class NotificationDataSource(private val api: V2plusApi): PageKeyedDataSource<In
             callback.onResult(data.items, let { if (data.isLast()) { null } else { data.current + 1 } })
             liveState.postValue(NetworkState.LOADED)
         }, catchBlock = { e ->
-            Log.d(TAG, e.message, e)
+            Logger.d(TAG, e.message, e)
             liveState.postValue(NetworkState.error(e.message))
         })
     }

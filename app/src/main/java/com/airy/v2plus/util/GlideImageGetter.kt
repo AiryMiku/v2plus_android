@@ -5,7 +5,6 @@ import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.Html
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.NonNull
@@ -21,6 +20,7 @@ import com.bumptech.glide.request.target.SizeReadyCallback
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.util.Preconditions
+import com.orhanobut.logger.Logger
 import java.lang.ref.WeakReference
 
 
@@ -29,6 +29,8 @@ import java.lang.ref.WeakReference
  * Mail: a532710813@gmail.com
  * Github: AiryMiku
  */
+
+const val TAG = "GlideImageGetter"
 
 class GlideImageGetter(
     private val context: Context,
@@ -99,8 +101,9 @@ class GlideImageGetter(
         override fun setColorFilter(colorFilter: ColorFilter?) { }
     }
 
-    class LoadingDrawableTarget(@NonNull protected val view: View,
-                                private val drawable: LoadingDrawable): Target<Drawable> {
+    class LoadingDrawableTarget(
+        @NonNull protected val view: View,
+        private val drawable: LoadingDrawable): Target<Drawable> {
 
         private var request: Request? = null
 
@@ -134,9 +137,9 @@ class GlideImageGetter(
             TODO("Not yet implemented")
         }
 
-        override fun onStart() { Log.d("GlideImageGetter", "onStart") }
-        override fun onStop() { Log.d("GlideImageGetter", "onStop") }
-        override fun onDestroy() { Log.d("GlideImageGetter", "onDestroy") }
+        override fun onStart() { Logger.d(TAG, "onStart") }
+        override fun onStop() { Logger.d(TAG, "onStop") }
+        override fun onDestroy() { Logger.d(TAG, "onDestroy") }
     }
 
     inner class BitmapDrawablePlaceholder:
@@ -213,21 +216,21 @@ class GlideImageGetter(
         override fun getRequest(): Request? = null
 
         override fun onStart() {
-            Log.d("GlideImageGetter", "onStart")
+            Logger.d(TAG, "onStart")
         }
 
         override fun onDestroy() {
-            Log.d("GlideImageGetter", "onDestroy")
+            Logger.d(TAG, "onDestroy")
         }
 
         override fun onStop() {
-            Log.d("GlideImageGetter", "onStop")
+            Logger.d(TAG, "onStop")
         }
 
         override fun setRequest(request: Request?) {}
 
         override fun removeCallback(cb: SizeReadyCallback) {
-            Log.d("GlideImageGetter", "removeCallback")
+            Logger.d(TAG, "removeCallback")
         }
     }
 }

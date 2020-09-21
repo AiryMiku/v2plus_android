@@ -1,4 +1,4 @@
-package com.airy.v2plus.db
+package com.airy.v2plus.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query

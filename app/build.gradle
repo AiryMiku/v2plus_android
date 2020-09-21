@@ -105,11 +105,11 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
 
     // network
-    implementation 'com.squareup.okhttp3:okhttp:4.1.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.1.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.6.1'
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
@@ -172,6 +172,8 @@ dependencies {
 
     // debugging
     implementation "com.jakewharton.timber:timber:$versions.timberVersion"
+    // logger
+    implementation 'com.orhanobut:logger:2.2.0'
 }
 
 static def releaseTime() {

@@ -11,8 +11,9 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.airy.v2plus.di.allModules
 import com.airy.v2plus.remote.Broadcasts
 import com.airy.v2plus.remote.ShortcutHelper
-import com.airy.v2plus.ui.share.ShareViewModel
 import com.airy.v2plus.util.getDarkModeStorage
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -39,23 +40,38 @@ class App: Application(), ViewModelStoreOwner {
 
     override fun onCreate() {
         super.onCreate()
+
         instance = this
 
         viewModelStore = ViewModelStore()
 
-        if (getDarkModeStorage()) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
-        Broadcasts.init(this)
-        ShortcutHelper.init(this)
-
+        // inject
         startKoin {
             androidLogger(Level.ERROR)
             androidContext(this@App)
             modules(allModules)
+        }
+
+        initComponents()
+
+        initThemeMode()
+    }
+
+    private fun initComponents() {
+        Broadcasts.init(this)
+        ShortcutHelper.init(this)
+        Logger.addLogAdapter(object: AndroidLogAdapter(){
+            override fun isLoggable(priority: Int, tag: String?): Boolean {
+                return BuildConfig.DEBUG
+            }
+        })
+    }
+
+    private fun initThemeMode() {
+        if (getDarkModeStorage()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 

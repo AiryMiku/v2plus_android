@@ -1,16 +1,18 @@
 package com.airy.v2plus.ui.main
 
-import android.util.Log
 import androidx.databinding.ObservableBoolean
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.switchMap
 import com.airy.v2plus.model.custom.Balance
 import com.airy.v2plus.model.custom.MainPageItem
 import com.airy.v2plus.model.official.User
 import com.airy.v2plus.repository.MainRepository
 import com.airy.v2plus.repository.UserRepository
 import com.airy.v2plus.ui.base.BaseViewModel
-import com.airy.v2plus.util.V2exHtmlUtil
 import com.airy.v2plus.util.UserCenter
+import com.airy.v2plus.util.V2exHtmlUtil
 
 
 /**
@@ -61,8 +63,6 @@ class MainViewModel : BaseViewModel() {
     fun getMainPageResponse() {
         launchOnIO({
             mainRepository.fetchMainPageResponse().let { mainPageResponse.postValue(it.value) }
-        }, { t ->
-            Log.e("MainViewModel", t.message, t)
         })
     }
 
@@ -74,8 +74,6 @@ class MainViewModel : BaseViewModel() {
             }
             val result = userRepository.getUserInfoByName(userName)
             user.postValue(result)
-        }, { t ->
-            Log.e("MainViewModel", t.message, t)
         })
     }
 
@@ -87,8 +85,6 @@ class MainViewModel : BaseViewModel() {
             }
             val result = userRepository.getUserInfoById(userId)
             user.postValue(result)
-        }, { t ->
-            Log.e("MainViewModel", t.message, t)
         })
     }
 

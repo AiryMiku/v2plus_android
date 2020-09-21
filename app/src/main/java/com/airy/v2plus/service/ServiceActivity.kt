@@ -7,10 +7,8 @@ import android.os.Bundle
 class ServiceActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val intent = Intent(this, RedeemService::class.java)
         startService(intent)
-
         finish()
     }
 }

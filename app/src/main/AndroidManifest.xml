@@ -9,12 +9,12 @@
     <application
             android:name=".App"
             android:allowBackup="false"
+            android:hardwareAccelerated="true"
             android:icon="@mipmap/ic_launcher"
             android:label="${APP_NAME}"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            android:hardwareAccelerated="true"
             tools:ignore="GoogleAppIndexingWarning"
             tools:replace="android:label">
         <activity
@@ -26,18 +26,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-<!--            <meta-data-->
-<!--                    android:name="android.app.shortcuts"-->
-<!--                    android:resource="@xml/shortcuts" />-->
+            <!--            <meta-data-->
+            <!--                    android:name="android.app.shortcuts"-->
+            <!--                    android:resource="@xml/shortcuts" />-->
         </activity>
-        <activity android:name=".service.ServiceActivity" />
+        <activity
+                android:name=".service.ServiceActivity"
+                android:theme="@style/AppTheme.Transparent" />
+
         <activity android:name=".ui.node.NodeActivity" />
+
         <activity android:name=".ui.hot_or_latest.HotOrLatestActivity" />
 
         <activity android:name=".ui.topic.TopicDetailActivity" />
+
         <activity android:name=".ui.about.AboutActivity" />
+
         <activity android:name=".ui.login.LoginActivity" />
+
         <activity android:name=".ui.main.MainActivity" />
+
         <activity
                 android:name=".ui.settings.SettingsActivity"
                 android:label="@string/title_activity_settings" />

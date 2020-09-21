@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -17,9 +16,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
+import com.orhanobut.logger.Logger
 import kotlinx.coroutines.*
 import org.jetbrains.annotations.Nullable
-import java.lang.Exception
 
 
 /**
@@ -106,7 +105,9 @@ const val TAG = "Extensions"
 
 fun launchOnIOInGlobal(
     tryBlock: suspend CoroutineScope.() -> Unit,
-    catchBlock: suspend CoroutineScope.(Throwable) -> Unit = { e -> Log.e(TAG, e.message, e) },
+    catchBlock: suspend CoroutineScope.(Throwable) -> Unit = { e ->
+        Logger.e(TAG, e.message, e)
+    },
     finalBlock: suspend CoroutineScope.() -> Unit = {}
 ): Job {
     return GlobalScope.launch(Dispatchers.IO) {
@@ -122,7 +123,9 @@ fun launchOnIOInGlobal(
 
 fun launchOnMainInGlobal(
     tryBlock: suspend CoroutineScope.() -> Unit,
-    catchBlock: suspend CoroutineScope.(Throwable) -> Unit = { e -> Log.e(TAG, e.message, e) },
+    catchBlock: suspend CoroutineScope.(Throwable) -> Unit = { e ->
+        Logger.e(TAG, e.message, e)
+    },
     finalBlock: suspend CoroutineScope.() -> Unit = {}
 ): Job {
     return GlobalScope.launch(Dispatchers.Main) {
