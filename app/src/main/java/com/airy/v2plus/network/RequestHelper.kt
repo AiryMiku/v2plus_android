@@ -51,6 +51,7 @@ object RequestHelper {
             val loggingInterceptor = HttpLoggingInterceptor().apply {
                 this.level = HttpLoggingInterceptor.Level.BODY
             }
+            addInterceptor(loggingInterceptor)
             addNetworkInterceptor(loggingInterceptor)
         }
         connectTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)

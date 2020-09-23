@@ -23,7 +23,7 @@ import com.airy.v2plus.ui.home.HomeFragment
 import com.airy.v2plus.ui.hot_or_latest.HotOrLatestActivity
 import com.airy.v2plus.ui.launch.LaunchActivity
 import com.airy.v2plus.ui.login.LoginActivity
-import com.airy.v2plus.ui.node.NodeFragment
+import com.airy.v2plus.ui.node.NodesFragment
 import com.airy.v2plus.ui.notification.NotificationFragment
 import com.airy.v2plus.ui.settings.SettingsActivity
 import com.airy.v2plus.ui.theme.Theme
@@ -139,7 +139,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         fragmentList = mutableListOf<Fragment>().apply {
             add(HomeFragment.newInstance())
             add(NotificationFragment.newInstance())
-            add(NodeFragment.newInstance())
+            add(NodesFragment.newInstance())
         }
         titleList = mutableListOf("Home", "Message", "Node")
         iconIdList = mutableListOf(R.id.Home, R.id.Message, R.id.Node)

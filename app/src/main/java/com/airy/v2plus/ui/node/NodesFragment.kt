@@ -1,21 +1,23 @@
 package com.airy.v2plus.ui.node
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.airy.v2plus.databinding.NodeFragmentBinding
+import com.airy.v2plus.model.official.Node
 import com.airy.v2plus.showToastShort
 import com.airy.v2plus.ui.base.BaseLazyFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NodeFragment : BaseLazyFragment() {
+class NodesFragment : BaseLazyFragment() {
 
     companion object {
-        fun newInstance() = NodeFragment()
+        fun newInstance() = NodesFragment()
     }
 
-    private val viewModel: NodeViewModel by viewModel()
+    private val viewModel: NodesViewModel by viewModel()
     private lateinit var binding: NodeFragmentBinding
     private lateinit var nodesAdapter: NodesAdapter
 
@@ -31,12 +33,10 @@ class NodeFragment : BaseLazyFragment() {
     override fun lazyLoad() {
         nodesAdapter = NodesAdapter(
             onClickCallback = {
-//                startActivity(Intent(requireActivity(), NodeActivity::class.java))
+                navToDetailActivity()
             },
-            onLongClickCallback = { node ->
-                node.title?.let {
-                    requireContext().showToastShort(it)
-                }
+            onLongClickCallback = {
+                showNodeNameByLongClick(it)
             })
         binding.list.apply {
             adapter = nodesAdapter
@@ -58,4 +58,14 @@ class NodeFragment : BaseLazyFragment() {
         })
     }
 
+    private fun showNodeNameByLongClick(node: Node) {
+        node.title?.let {
+            requireContext().showToastShort(it)
+        }
+    }
+
+    private fun navToDetailActivity() {
+        val i = Intent(requireActivity(), NodeActivity::class.java)
+        startActivity(i)
+    }
 }

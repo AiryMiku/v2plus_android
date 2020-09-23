@@ -1,11 +1,13 @@
 package com.airy.v2plus.ui.base
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.airy.v2plus.App
 import com.airy.v2plus.showToastShort
 import com.google.gson.JsonParseException
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.*
+import timber.log.Timber
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
@@ -50,7 +52,9 @@ open class BaseViewModel : ViewModel() {
 
     fun launchOnIO(
         tryBlock: suspend CoroutineScope.() -> Unit,
-        catchBlock: suspend CoroutineScope.(Throwable) -> Unit = { t -> handleException(t as Exception) },
+        catchBlock: suspend CoroutineScope.(Throwable) -> Unit = { t ->
+            handleException(t as Exception)
+        },
         finalBlock: suspend CoroutineScope.() -> Unit = {}
     ): Job {
         return viewModelScope.launch(Dispatchers.IO) {
@@ -68,9 +72,10 @@ open class BaseViewModel : ViewModel() {
         }
     }
 
-    private fun handleException(e: Exception) {
-        Logger.e(this.javaClass.simpleName, e.message, e)
-//        error.postValue(e)
+    open fun handleException(e: Exception) {
+//        Logger.e(e, createLogMessage(e))
+        Timber.e(e, createLogMessage(e))
+        error.postValue(e)
         when (e) {  //todo
             is ConnectException -> {
                 // 连接失败
@@ -94,4 +99,11 @@ open class BaseViewModel : ViewModel() {
         }
     }
 
+
+    private fun createLogMessage(
+        e: Throwable?
+    ): String {
+        return "Class: ${this.javaClass.simpleName}\n" +
+                "Trace: ${Log.getStackTraceString(e)}"
+    }
 }

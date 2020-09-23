@@ -35,7 +35,7 @@ class NotificationFragment : BaseLazyFragment() {
 
         binding.vm = viewModel
 
-        adapter = NotificationsAdapter(requireContext()) {
+        adapter = NotificationsAdapter {
             navToTopicActivity(it.topicId, if (it.isReply) it.replyNo else null)
         }
         binding.list.adapter = adapter

@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.airy.v2plus.R
+import com.airy.v2plus.databinding.ItemHeaderTopicBinding
 import com.airy.v2plus.model.official.Reply
 import com.airy.v2plus.model.official.Topic
-import com.airy.v2plus.databinding.ItemTopicDetailBinding
 import com.airy.v2plus.databinding.ItemTopicReplyBinding
 import com.airy.v2plus.loadAvatar
 import com.airy.v2plus.ui.topic.TopicDetailViewHolder.HeaderItemHolder
@@ -31,15 +31,17 @@ import java.lang.ref.WeakReference
  * Github: AiryMiku
  */
 
-internal class TopicDetailAdapter(private val context: Context,
-                                  private val viewOnClickListener: ViewOfItemOnClickListener):
+internal class TopicDetailAdapter(
+    private val context: Context,
+    private val viewOnClickListener: ViewOfItemOnClickListener
+) :
     ListAdapter<Any, TopicDetailViewHolder>(TopicDetailDiffCallback) {
 
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
         return when (item) {
             is Reply -> R.layout.item_topic_reply
-            is Topic -> R.layout.item_topic_detail
+            is Topic -> R.layout.item_header_topic
             else -> throw IllegalStateException("Unknown type: ${item::class.java.simpleName}")
         }
     }
@@ -51,13 +53,15 @@ internal class TopicDetailAdapter(private val context: Context,
                 ItemTopicReplyBinding.inflate(
                     inflater,
                     parent,
-                    false)
+                    false
+                )
             )
-            R.layout.item_topic_detail -> HeaderItemHolder(
-                ItemTopicDetailBinding.inflate(
+            R.layout.item_header_topic -> HeaderItemHolder(
+                ItemHeaderTopicBinding.inflate(
                     inflater,
                     parent,
-                    false)
+                    false
+                )
             )
             else -> throw IllegalArgumentException("Invalid viewType")
         }
@@ -72,9 +76,11 @@ internal class TopicDetailAdapter(private val context: Context,
                 holder.binding.createTime.text = DateUtil.formatTime(reply.created)
                 reply.contentHtml?.run {
                     holder.binding.replyContent.let {
-                        it.text = HtmlCompat.fromHtml(reply.contentHtml, FROM_HTML_MODE_LEGACY,
+                        it.text = HtmlCompat.fromHtml(
+                            reply.contentHtml, FROM_HTML_MODE_LEGACY,
                             GlideImageGetter(context, WeakReference(it)),
-                            TextViewTagHandler(context))
+                            TextViewTagHandler(context)
+                        )
                     }
                 }
                 holder.binding.replyContent.movementMethod = LinkMovementMethod.getInstance()
@@ -85,7 +91,7 @@ internal class TopicDetailAdapter(private val context: Context,
                     }
                 }
                 holder.binding.root.setOnLongClickListener {
-                    viewOnClickListener. onReplyLongClickListener(reply)
+                    viewOnClickListener.onReplyLongClickListener(reply)
                 }
             }
             is HeaderItemHolder -> {
@@ -112,18 +118,18 @@ internal class TopicDetailAdapter(private val context: Context,
     }
 
 
-
     interface ViewOfItemOnClickListener {
         fun onThankClickListener(reply: Reply)
         fun onReplyLongClickListener(reply: Reply): Boolean
     }
 }
 
-internal sealed class TopicDetailViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+internal sealed class TopicDetailViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    class ReplyItemHolder(val binding: ItemTopicReplyBinding): TopicDetailViewHolder(binding.root)
+    class ReplyItemHolder(val binding: ItemTopicReplyBinding) : TopicDetailViewHolder(binding.root)
 
-    class HeaderItemHolder(val binding: ItemTopicDetailBinding): TopicDetailViewHolder(binding.root)
+    class HeaderItemHolder(val binding: ItemHeaderTopicBinding) :
+        TopicDetailViewHolder(binding.root)
 
 }
 

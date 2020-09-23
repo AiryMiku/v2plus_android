@@ -1,35 +1,31 @@
 package com.airy.v2plus.ui.node
 
-import android.os.Bundle
-import com.airy.v2plus.App
+import androidx.activity.viewModels
+import androidx.databinding.DataBindingUtil
 import com.airy.v2plus.R
-import com.airy.v2plus.db.V2plusDb
-import com.airy.v2plus.showToastShort
+import com.airy.v2plus.databinding.ActivityNodeBinding
 import com.airy.v2plus.ui.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_node.*
-import kotlinx.coroutines.*
+import com.google.android.material.appbar.AppBarLayout
 
 class NodeActivity : BaseActivity() {
+
     override val toolbarLabel: CharSequence?
-        get() = "Node"
+        get() = ""
     override val displayHomeAsUpEnabled: Boolean?
         get() = true
 
+    private lateinit var binding: ActivityNodeBinding
+
+    private val viewModel by viewModels<NodeDetailViewModel>()
+
     override fun setContentView() {
-        setContentView(R.layout.activity_node)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_node)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        like_view?.setOnClickListener {
-            like_view.toggle()
-        }
-
-        test_notification?.setOnClickListener {
-            launch(Dispatchers.IO) {
-                val dao = V2plusDb.getDb(App.getAppContext()).notificationDao()
-                dao.getAllNotifications()
-            }
-        }
+    override fun initViews() {
+        binding.appBarLayout.addOnOffsetChangedListener(
+            AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+                binding.titleTextView.alpha = -verticalOffset.toFloat() / appBarLayout.totalScrollRange
+            })
     }
 }

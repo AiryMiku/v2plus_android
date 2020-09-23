@@ -3,9 +3,6 @@ package com.airy.v2plus.ui.main
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.airy.v2plus.ui.home.HomeFragment
-import com.airy.v2plus.ui.notification.NotificationFragment
-import com.airy.v2plus.ui.node.NodeFragment
 
 
 /**

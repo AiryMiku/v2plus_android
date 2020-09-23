@@ -18,7 +18,6 @@ import com.orhanobut.logger.Logger
  */
 
 class NotificationsAdapter(
-    private val context: Context,
     private val onClickCallback: ((Notification) -> Unit)? = null
 ) : PagedListAdapter<Notification, NotificationsAdapter.ViewHolder>(TaskDiffCallback()) {
 

@@ -78,17 +78,16 @@ class HomeFragment: BaseLazyFragment() {
         }
 
         subscribeUI()
-//        viewModel.getMainPageResponse()
     }
 
     private fun subscribeUI() {
-        viewModel.mainListItem.observe(viewLifecycleOwner, Observer {
+        viewModel.mainListItem.observe(viewLifecycleOwner) {
             binding.refresh.isRefreshing = false
             adapter.submitList(it)
-        })
-        viewModel.error.observe(viewLifecycleOwner, Observer {
+        }
+        viewModel.error.observe(viewLifecycleOwner) {
             binding.refresh.isRefreshing = false
-        })
+        }
     }
 
 }
