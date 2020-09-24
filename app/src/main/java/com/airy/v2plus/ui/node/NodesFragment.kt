@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.airy.v2plus.databinding.NodeFragmentBinding
+import com.airy.v2plus.databinding.FragmentNodesBinding
 import com.airy.v2plus.model.official.Node
 import com.airy.v2plus.showToastShort
 import com.airy.v2plus.ui.base.BaseLazyFragment
@@ -18,7 +18,7 @@ class NodesFragment : BaseLazyFragment() {
     }
 
     private val viewModel: NodesViewModel by viewModel()
-    private lateinit var binding: NodeFragmentBinding
+    private lateinit var binding: FragmentNodesBinding
     private lateinit var nodesAdapter: NodesAdapter
 
     override fun setContentView(
@@ -26,7 +26,7 @@ class NodesFragment : BaseLazyFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = NodeFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentNodesBinding.inflate(inflater, container, false)
         return binding.root
     }
 

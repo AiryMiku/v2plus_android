@@ -29,6 +29,7 @@
                     android:id="@+id/avatar"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
+                    imageUrl="@{cell.avatarUrl}"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

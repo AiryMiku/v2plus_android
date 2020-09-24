@@ -8,6 +8,7 @@ import com.airy.v2plus.R
 import com.airy.v2plus.databinding.ActivityHotestOrLatestBinding
 import com.airy.v2plus.navToTopicActivity
 import com.airy.v2plus.ui.base.BaseActivity
+import com.airy.v2plus.ui.topic.TopicsAdapter
 
 class HotOrLatestActivity : BaseActivity() {
     override val toolbarLabel: CharSequence? = "Hot"
@@ -16,7 +17,7 @@ class HotOrLatestActivity : BaseActivity() {
 
     private val viewModel: HotOrLatestViewModel by viewModels()
     private lateinit var binding: ActivityHotestOrLatestBinding
-    private lateinit var adapter: HotOrLatestAdapter
+    private lateinit var adapter: TopicsAdapter
 
     override fun setContentView() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_hotest_or_latest)
@@ -24,7 +25,7 @@ class HotOrLatestActivity : BaseActivity() {
 
     override fun initViews() {
         isLatest = intent.getBooleanExtra(Common.KEY_BOOLEAN.IS_LATEST, false)
-        adapter = HotOrLatestAdapter(this) {
+        adapter = TopicsAdapter() {
             navToTopicActivity(it.id)
         }
         binding.list.adapter = adapter

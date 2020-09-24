@@ -2,6 +2,7 @@ package com.airy.v2plus.ui.base
 
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
 import com.airy.v2plus.R
@@ -21,13 +22,29 @@ fun visible(view: View, visible: ObservableBoolean) {
 
 @BindingAdapter(value = ["imageUrl"], requireAll = false)
 fun loadImage(imageView: ImageView, imageUrl: String?) {
-    when {
-        !imageUrl.isNullOrEmpty() -> {
-            Glide.with(imageView.context)
-                .load(imageUrl)
-                .placeholder(R.color.color_control_light)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(imageView)
-        }
+    if (imageUrl != null) {
+        Glide.with(imageView.context)
+            .load(imageUrl)
+            .placeholder(R.color.color_control_light)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(imageView)
+    }
+}
+
+@BindingAdapter(value = ["topic_num"], requireAll = false)
+fun topicNumString(view: TextView, topics: Long?){
+    if (topics == null) {
+        view.text = ""
+    } else {
+        view.text = "Topics: ${topics}"
+    }
+}
+
+@BindingAdapter(value = ["star_num"], requireAll = false)
+fun starNumString(view: TextView, stars: Long?){
+    if (stars == null) {
+        view.text = ""
+    } else {
+        view.text = "Stars: ${stars}"
     }
 }

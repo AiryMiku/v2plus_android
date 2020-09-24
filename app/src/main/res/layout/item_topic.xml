@@ -31,12 +31,13 @@
                     android:id="@+id/avatar"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:src="@mipmap/ic_launcher_round"
+                    imageUrl="@{topic.member.avatarNormalUrl}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
                     android:contentDescription="@string/avatar"
-                    android:transitionName="avatarView"/>
+                    android:transitionName="avatarView"
+                    tools:src="@mipmap/ic_launcher_round"/>
 
             <TextView
                     android:layout_width="wrap_content"
@@ -66,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text="@{topic.node.name}"
+                    android:text="@{topic.node.title}"
                     android:gravity="center"
                     android:background="@drawable/borderless_round_rectangle"
                     android:textColor="@color/design_default_color_background"

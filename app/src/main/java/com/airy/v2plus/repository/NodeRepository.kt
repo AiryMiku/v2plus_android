@@ -21,6 +21,10 @@ private const val TAG = "NodeRepository"
 
 class NodeRepository(private val dao: NodeDao) {
 
+    suspend fun getNodeDetailByName(name: String): Node {
+        return V2exRetrofitService.getV2exApi().getNodeDetail(name)
+    }
+
     @MainThread
     fun fetchNodesPagedListAsLiveData(updateFromNetwork: Boolean = false): LiveData<PagedList<Node>> {
         if (updateFromNetwork) {

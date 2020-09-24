@@ -6,8 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import com.airy.v2plus.databinding.NotificationFragmentBinding
+import com.airy.v2plus.databinding.FragmentNotificationsBinding
 import com.airy.v2plus.navToTopicActivity
 import com.airy.v2plus.repository.util.NetworkState
 import com.airy.v2plus.ui.base.BaseLazyFragment
@@ -19,7 +18,7 @@ class NotificationFragment : BaseLazyFragment() {
     }
 
     private val viewModel: NotificationViewModel by viewModels()
-    private lateinit var binding: NotificationFragmentBinding
+    private lateinit var binding: FragmentNotificationsBinding
     private lateinit var adapter: NotificationsAdapter
 
     override fun setContentView(
@@ -27,7 +26,7 @@ class NotificationFragment : BaseLazyFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = NotificationFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         return binding.root
     }
 

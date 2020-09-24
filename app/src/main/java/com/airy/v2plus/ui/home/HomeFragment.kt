@@ -1,16 +1,13 @@
 package com.airy.v2plus.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.airy.v2plus.Config
-import com.airy.v2plus.databinding.HomeFragmentBinding
+import com.airy.v2plus.databinding.FragmentHomeBinding
 import com.airy.v2plus.navToTopicActivity
-import com.airy.v2plus.ui.base.BaseFragment
 import com.airy.v2plus.ui.base.BaseLazyFragment
 import com.airy.v2plus.ui.main.MainViewModel
 import com.bumptech.glide.Glide
@@ -29,7 +26,7 @@ class HomeFragment: BaseLazyFragment() {
     private val TAG = "HomeFragment"
 
     private val viewModel: MainViewModel by activityViewModels()
-    private lateinit var binding: HomeFragmentBinding
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var adapter: MainPageItemsAdapter
     private lateinit var preLoadSizeProvider: ViewPreloadSizeProvider<String>
     private lateinit var preLoadModelProvider: ListPreloader.PreloadModelProvider<String>
@@ -40,7 +37,7 @@ class HomeFragment: BaseLazyFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = HomeFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 

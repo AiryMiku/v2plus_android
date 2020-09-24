@@ -1,19 +1,16 @@
-package com.airy.v2plus.ui.hot_or_latest
+package com.airy.v2plus.ui.topic
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.airy.v2plus.model.official.Topic
 import com.airy.v2plus.databinding.ItemTopicBinding
-import com.airy.v2plus.loadAvatar
+import com.airy.v2plus.model.official.Topic
 
-class HotOrLatestAdapter(
-    private val context: Context,
-    private val onClickCallback: (Topic) -> Unit = {}
-) : ListAdapter<Topic, HotOrLatestAdapter.ViewHolder>(
+class TopicsAdapter(
+    private val onClickCallback:((Topic) -> Unit)?
+) : ListAdapter<Topic, TopicsAdapter.ViewHolder>(
     TaskDiffCallback()
 ) {
 
@@ -36,9 +33,8 @@ class HotOrLatestAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val t = getItem(position)
         holder.binding.topic = t
-        holder.binding.avatar.loadAvatar(context, t.member.avatarMiniUrl)
         holder.binding.root.setOnClickListener {
-            onClickCallback(t)
+            onClickCallback?.invoke(t)
         }
     }
 
