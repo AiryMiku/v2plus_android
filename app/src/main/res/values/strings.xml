@@ -32,4 +32,8 @@
     <string name="login_hint">Click the circle to Login</string>
     <string name="balance">Balance</string>
     <string name="after_login_hint">After login to use</string>
+
+
+    <!-- Test String -->
+    <string name="test_long_string">This is a real very long string for testing, in this string, its contains so many word that make this string show long enough for testing.</string>
 </resources>

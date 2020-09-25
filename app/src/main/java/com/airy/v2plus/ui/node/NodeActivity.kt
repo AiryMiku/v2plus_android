@@ -1,6 +1,7 @@
 package com.airy.v2plus.ui.node
 
 import androidx.databinding.DataBindingUtil
+import com.airy.v2plus.Common
 import com.airy.v2plus.R
 import com.airy.v2plus.databinding.ActivityNodeBinding
 import com.airy.v2plus.navToTopicActivity
@@ -21,11 +22,15 @@ class NodeActivity : BaseActivity() {
     private val viewModel by viewModel<NodeDetailViewModel>()
     private lateinit var adapter: TopicsAdapter
 
+    private var nodeName: String? = null
+
     override fun setContentView() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_node)
     }
 
     override fun initViews() {
+        nodeName = intent.getStringExtra(Common.KEY_ID.NODE_NAME)
+
         binding.appBarLayout.addOnOffsetChangedListener(
             AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                 binding.titleTextView.alpha = -verticalOffset.toFloat() / appBarLayout.totalScrollRange
@@ -39,8 +44,10 @@ class NodeActivity : BaseActivity() {
 
     override fun loadData() {
         super.loadData()
-        viewModel.getNodeDetail("v2ex")
-        viewModel.getTopicsByNodeName("v2ex")
+        nodeName?.let {
+            viewModel.getNodeDetail(it)
+            viewModel.getTopicsByNodeName(it)
+        }
     }
 
     private fun subscribeUI() {

@@ -4,18 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_MASK
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import com.airy.v2plus.ui.node.NodeActivity
 import com.airy.v2plus.ui.theme.Theme
 import com.airy.v2plus.ui.topic.TopicDetailActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.*
 import org.jetbrains.annotations.Nullable
@@ -26,29 +22,6 @@ import org.jetbrains.annotations.Nullable
  * Mail: a532710813@gmail.com
  * Github: AiryMiku
  */
-
-// glide
-fun ImageView.loadTopicImage(url: String?) {
-    url?.let {
-        Glide.with(context)
-            .load(it)
-            .format(DecodeFormat.PREFER_RGB_565)
-            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-            .downsample(DownsampleStrategy.AT_LEAST)
-            .dontAnimate()
-            .placeholder(R.color.color_control_light)
-            .into(this)
-    }
-}
-
-fun ImageView.loadAvatar(context: Context, url: String?) {
-    url?.let {
-        Glide.with(context)
-            .load(url)
-            .placeholder(R.color.color_control_light)
-            .override(Config.ViewSize.AVATAR).into(this)
-    }
-}
 
 fun Context.isNightMode(): Boolean {
     val mode = this.resources.configuration.uiMode and UI_MODE_NIGHT_MASK
@@ -77,6 +50,12 @@ fun AppCompatActivity.navToTopicActivity(topicId: Long, @Nullable replyNo: Long?
     val intent = Intent(this, TopicDetailActivity::class.java)
     intent.putExtra(Common.KEY_ID.TOPIC_ID, topicId)
     replyNo?.let { intent.putExtra(Common.KEY_ID.REPLY_NO, it) }
+    startActivity(intent)
+}
+
+fun Fragment.navToNodeDetailActivity(nodeName: String) {
+    val intent = Intent(this.requireActivity(), NodeActivity::class.java)
+    intent.putExtra(Common.KEY_ID.NODE_NAME, nodeName)
     startActivity(intent)
 }
 

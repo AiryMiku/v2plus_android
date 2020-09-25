@@ -59,7 +59,7 @@ class HomeFragment: BaseLazyFragment() {
         }
         preLoader = RecyclerViewPreloader(Glide.with(requireContext()), preLoadModelProvider, preLoadSizeProvider, 8)
         binding.list.addOnScrollListener(preLoader)
-        adapter = MainPageItemsAdapter(requireContext()) { item, _ ->
+        adapter = MainPageItemsAdapter() { item, _ ->
             navToTopicActivity(item.topicId)
             // Todo Add TransitionAnimation, need pass the avatar bitmap to topic activity
             // ActivityOptions.makeSceneTransitionAnimation(activity , holder.binding.avatar, "avatarView").toBundle()

@@ -24,7 +24,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="30dp"
+                android:padding="10dp"
                 android:background="@null">
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -34,13 +34,15 @@
                     imageUrl="@{topic.member.avatarNormalUrl}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/user_name"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
                     android:contentDescription="@string/avatar"
                     android:transitionName="avatarView"
                     tools:src="@mipmap/ic_launcher_round"/>
 
             <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/user_name"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:textColor="@color/color_accent"
@@ -49,18 +51,21 @@
                     app:layout_constraintStart_toEndOf="@id/avatar"
                     app:layout_constraintTop_toTopOf="@id/avatar"
                     app:layout_constraintBottom_toBottomOf="@id/avatar"
+                    app:layout_constraintEnd_toStartOf="@id/node"
                     tools:text="Airy"/>
 
             <TextView
                     android:id="@+id/title"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:text="@{topic.title}"
+                    android:textAlignment="viewStart"
                     android:singleLine="false"
                     app:layout_constraintTop_toBottomOf="@id/avatar"
-                    app:layout_constraintStart_toStartOf="@id/avatar"
-                    tools:text="tittitletitletitltitltletitletitltitletitltletitletitltitletitltletitletitltitletitltletitletitltitletitletitletitltitletitletitlletitletitletitle"/>
+                    app:layout_constraintStart_toStartOf="@id/user_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="@string/test_long_string"/>
 
             <TextView
                     android:id="@+id/node"
@@ -81,20 +86,22 @@
                     android:id="@+id/label_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="4dp"
                     android:text="Comment"
                     app:layout_constraintStart_toStartOf="@id/title"
-                    app:layout_constraintTop_toBottomOf="@id/title"/>
+                    app:layout_constraintTop_toBottomOf="@id/title"
+                    app:layout_constraintEnd_toStartOf="@id/comment_count"/>
 
             <TextView
                     android:id="@+id/comment_count"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text='@{String.valueOf(topic.replyNum)}'
                     android:textColor="@color/color_accent"
                     app:layout_constraintTop_toTopOf="@id/label_comment"
                     app:layout_constraintStart_toEndOf="@id/label_comment"
+                    app:layout_constraintEnd_toEndOf="parent"
                     tools:text="99"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

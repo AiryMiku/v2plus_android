@@ -19,17 +19,19 @@
                 style="@style/MaterialCardView.Base"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="8dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:padding="20dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/avatar"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
+                        imageUrl="@{topic.member.avatarNormalUrl}"
                         android:transitionName="avatarView"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -37,13 +39,14 @@
 
                 <TextView
                         android:id="@+id/user_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:text="@{topic.member.username}"
                         app:layout_constraintBottom_toBottomOf="@id/avatar"
                         app:layout_constraintStart_toEndOf="@id/avatar"
                         app:layout_constraintTop_toTopOf="@id/avatar"
+                        app:layout_constraintEnd_toStartOf="@id/node"
                         tools:text="Airy" />
 
                 <TextView
@@ -54,6 +57,7 @@
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@id/avatar"
                         app:layout_constraintTop_toBottomOf="@id/avatar"
+                        app:layout_constraintEnd_toStartOf="@id/label_comment"
                         tools:text="2019/01/01 00:00" />
 
                 <TextView
@@ -62,14 +66,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="Comment"
-                        android:textSize="10sp"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@id/create_time"
                         app:layout_constraintStart_toEndOf="@id/create_time"
-                        app:layout_constraintTop_toTopOf="@id/create_time" />
+                        app:layout_constraintTop_toTopOf="@id/create_time"
+                        app:layout_constraintEnd_toStartOf="@id/comment_count"/>
 
                 <TextView
                         android:id="@+id/comment_count"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:text="@{String.valueOf(topic.replyNum)}"
@@ -78,6 +83,7 @@
                         app:layout_constraintBottom_toBottomOf="@id/label_comment"
                         app:layout_constraintStart_toEndOf="@id/label_comment"
                         app:layout_constraintTop_toTopOf="@id/label_comment"
+                        app:layout_constraintEnd_toEndOf="parent"
                         tools:text="10" />
 
                 <TextView
@@ -96,35 +102,38 @@
 
                 <TextView
                         android:id="@+id/title"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         android:singleLine="false"
                         android:text="@{topic.title}"
                         android:textSize="16sp"
-                        app:layout_constraintHorizontal_bias="0"
+                        android:textAlignment="viewStart"
                         app:layout_constraintStart_toStartOf="@id/avatar"
                         app:layout_constraintTop_toBottomOf="@id/avatar"
+                        app:layout_constraintEnd_toEndOf="parent"
                         tools:text="This is a topic title~" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.circularreveal.CircularRevealFrameLayout
+        <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.Feed.Card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp">
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="8dp">
 
             <TextView
                     android:id="@+id/content_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_margin="16dp"
                     android:textIsSelectable="true"
                     tools:text="公司主页：\n公司坐标：北京市朝阳区大望路\n简历投递邮箱：\n\n" />
 
-        </com.google.android.material.circularreveal.CircularRevealFrameLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </layout>

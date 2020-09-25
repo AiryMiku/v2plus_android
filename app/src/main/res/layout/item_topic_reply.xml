@@ -4,88 +4,86 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
                 name="reply"
                 type="com.airy.v2plus.model.official.Reply" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/MaterialCardView.Base">
+            android:padding="5dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+        <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avatar"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                imageUrl="@{reply.member.avatarNormalUrl}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+        <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp">
+                android:layout_marginStart="10dp"
+                android:text="@{reply.member.userName}"
+                app:layout_constraintStart_toEndOf="@id/avatar"
+                app:layout_constraintTop_toTopOf="@id/avatar"
+                tools:text="Airy" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/avatar"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+        <TextView
+                android:id="@+id/create_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/avatar"
+                app:layout_constraintStart_toStartOf="@id/user_name"
+                app:layout_constraintTop_toBottomOf="@id/user_name"
+                tools:text="Today 14:30" />
+
+        <TextView
+                android:id="@+id/reply_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:singleLine="false"
+                app:layout_constraintEnd_toStartOf="@id/like_layout"
+                app:layout_constraintStart_toStartOf="@id/user_name"
+                app:layout_constraintTop_toBottomOf="@id/avatar"
+                tools:text="This is a reply content~This is a reply content~This is a reply content~" />
+
+        <LinearLayout
+                android:id="@+id/like_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            <com.airy.v2plus.widget.tweetlikeview.TweetLikeView
+                    android:id="@+id/like_view"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    app:cirRadius="7dp" />
 
             <TextView
-                    android:id="@+id/user_name"
+                    android:id="@+id/thank_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    app:layout_constraintTop_toTopOf="@id/avatar"
-                    app:layout_constraintStart_toEndOf="@id/avatar"
-                    android:text="@{reply.member.userName}"
-                    tools:text="Airy"/>
+                    android:layout_gravity="center"
+                    android:text="@{String.valueOf(reply.thanks)}"
+                    tools:text="99" />
+        </LinearLayout>
 
-            <TextView
-                    android:id="@+id/create_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/user_name"
-                    app:layout_constraintBottom_toBottomOf="@id/avatar"
-                    app:layout_constraintStart_toStartOf="@id/user_name"
-                    tools:text="Today 14:30"/>
-
-            <TextView
-                    android:id="@+id/reply_content"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintTop_toBottomOf="@id/avatar"
-                    app:layout_constraintStart_toStartOf="@id/user_name"
-                    app:layout_constraintEnd_toStartOf="@id/like_layout"
-                    android:singleLine="false"
-                    tools:text="This is a reply content~This is a reply content~This is a reply content~"/>
-
-            <LinearLayout
-                    android:id="@+id/like_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:orientation="horizontal"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-
-                <com.airy.v2plus.widget.tweetlikeview.TweetLikeView
-                        android:id="@+id/like_view"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        app:cirRadius="7dp"/>
-
-                <TextView
-                        android:id="@+id/thank_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@{String.valueOf(reply.thanks)}"
-                        tools:text="99"/>
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

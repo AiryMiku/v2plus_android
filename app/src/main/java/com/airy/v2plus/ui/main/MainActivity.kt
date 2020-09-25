@@ -149,7 +149,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         viewPage.offscreenPageLimit = fragmentList.size - 1
         fragmentAdapter = FragmentViewPagerAdapter(fragmentList, titleList, supportFragmentManager)
         viewPage.adapter = fragmentAdapter
-        viewPage.setPageTransformer(true, ZoomOutPageTransformer())
+//        viewPage.setPageTransformer(true, ZoomOutPageTransformer())
         viewPage.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 toolbar?.title = fragmentAdapter.getPageTitle(position)

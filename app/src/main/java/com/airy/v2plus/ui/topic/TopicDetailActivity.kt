@@ -7,6 +7,7 @@ import android.view.animation.RotateAnimation
 import android.view.animation.ScaleAnimation
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.airy.v2plus.Common
 import com.airy.v2plus.R
 import com.airy.v2plus.model.official.Reply
@@ -14,6 +15,7 @@ import com.airy.v2plus.databinding.ActivityTopicDetailBinding
 import com.airy.v2plus.showToastLong
 import com.airy.v2plus.showToastShort
 import com.airy.v2plus.ui.base.BaseActivity
+import com.airy.v2plus.widget.ReplyDividerItemDecoration
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -42,6 +44,7 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
 
         adapter = TopicDetailAdapter(this, this)
         binding.list.adapter = adapter
+        binding.list.addItemDecoration(ReplyDividerItemDecoration())
 
         subscribeUI()
     }

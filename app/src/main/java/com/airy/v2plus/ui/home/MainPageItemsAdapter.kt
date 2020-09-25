@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.airy.v2plus.model.custom.MainPageItem
 import com.airy.v2plus.databinding.ItemPageCellBinding
-import com.airy.v2plus.loadAvatar
 
 
 /**
@@ -17,7 +16,7 @@ import com.airy.v2plus.loadAvatar
  * Github: AiryMiku
  */
 
-class MainPageItemsAdapter(private val context: Context, private val onClickCallback: (MainPageItem, ViewHolder) -> Unit = { _, _ ->})
+class MainPageItemsAdapter(private val onClickCallback: (MainPageItem, ViewHolder) -> Unit = { _, _ ->})
     : ListAdapter<MainPageItem, MainPageItemsAdapter.ViewHolder>(
     TaskDiffCallback()
 ){
@@ -41,7 +40,6 @@ class MainPageItemsAdapter(private val context: Context, private val onClickCall
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cell = getItem(position)
         holder.binding.cell = cell
-        holder.binding.avatar.loadAvatar(context, cell.avatarUrl)
         holder.binding.root.setOnClickListener {
             onClickCallback(cell, holder)
         }
