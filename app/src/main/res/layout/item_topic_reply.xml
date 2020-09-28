@@ -14,14 +14,20 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp">
+            android:minHeight="?listPreferredItemHeight"
+            android:paddingEnd="?listPreferredItemPaddingEnd"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            tools:ignore="RtlSymmetry">
 
         <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/avatar"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
+                android:layout_marginStart="?listPreferredItemPaddingStart"
                 imageUrl="@{reply.member.avatarNormalUrl}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -41,6 +47,7 @@
                 android:id="@+id/create_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                format_time="@{reply.created}"
                 app:layout_constraintBottom_toBottomOf="@id/avatar"
                 app:layout_constraintStart_toStartOf="@id/user_name"
                 app:layout_constraintTop_toBottomOf="@id/user_name"

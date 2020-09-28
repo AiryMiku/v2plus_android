@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
 import com.airy.v2plus.R
+import com.airy.v2plus.util.DateUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 
@@ -46,5 +47,14 @@ fun starNumString(view: TextView, stars: Long?){
         view.text = ""
     } else {
         view.text = "Stars: ${stars}"
+    }
+}
+
+@BindingAdapter(value = ["format_time"], requireAll = false)
+fun formatTime(view: TextView, timeStamp: Long?) {
+    if (timeStamp == null) {
+        view.text = ""
+    } else {
+        view.text = DateUtil.formatTime(timeStamp)
     }
 }

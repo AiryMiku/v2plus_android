@@ -55,6 +55,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:textSize="12sp"
+                        format_time="@{topic.created}"
                         app:layout_constraintStart_toStartOf="@id/avatar"
                         app:layout_constraintTop_toBottomOf="@id/avatar"
                         app:layout_constraintEnd_toStartOf="@id/label_comment"

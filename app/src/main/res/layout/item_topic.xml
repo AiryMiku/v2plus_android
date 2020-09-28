@@ -81,25 +81,37 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:text="Node"/>
 
+            <TextView
+                    android:id="@+id/create_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    format_time="@{topic.created}"
+                    app:layout_constraintStart_toStartOf="@id/title"
+                    app:layout_constraintTop_toBottomOf="@id/title"
+                    app:layout_constraintEnd_toStartOf="@id/label_comment"
+                    tools:text="2019/01/01 00:00"/>
 
             <TextView
                     android:id="@+id/label_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginStart="4dp"
                     android:text="Comment"
-                    app:layout_constraintStart_toStartOf="@id/title"
-                    app:layout_constraintTop_toBottomOf="@id/title"
+                    app:layout_constraintStart_toEndOf="@id/create_time"
+                    app:layout_constraintTop_toTopOf="@id/create_time"
+                    app:layout_constraintBottom_toBottomOf="@id/create_time"
                     app:layout_constraintEnd_toStartOf="@id/comment_count"/>
 
             <TextView
                     android:id="@+id/comment_count"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:text='@{String.valueOf(topic.replyNum)}'
                     android:textColor="@color/color_accent"
                     app:layout_constraintTop_toTopOf="@id/label_comment"
+                    app:layout_constraintBottom_toBottomOf="@id/label_comment"
                     app:layout_constraintStart_toEndOf="@id/label_comment"
                     app:layout_constraintEnd_toEndOf="parent"
                     tools:text="99"/>

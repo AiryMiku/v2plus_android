@@ -19,7 +19,7 @@ import com.orhanobut.logger.Logger
  */
 private const val TAG = "NodeRepository"
 
-class NodeRepository(private val dao: NodeDao) {
+class NodeRepository(private val dao: NodeDao) : Repository {
 
     suspend fun getNodeDetailByName(name: String): Node {
         return V2exRetrofitService.getV2exApi().getNodeDetail(name)

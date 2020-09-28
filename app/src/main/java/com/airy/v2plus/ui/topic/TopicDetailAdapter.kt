@@ -71,7 +71,6 @@ internal class TopicDetailAdapter(
             is ReplyItemHolder -> {
                 val reply = getItem(position) as Reply
                 holder.binding.reply = reply
-                holder.binding.createTime.text = DateUtil.formatTime(reply.created)
                 reply.contentHtml?.run {
                     holder.binding.replyContent.let {
                         it.text = HtmlCompat.fromHtml(
@@ -109,7 +108,6 @@ internal class TopicDetailAdapter(
                     }
                 }
                 holder.binding.contentText.movementMethod = LinkMovementMethod.getInstance()
-                holder.binding.createTime.text = DateUtil.formatTime(topic.created)
             }
         }
     }
