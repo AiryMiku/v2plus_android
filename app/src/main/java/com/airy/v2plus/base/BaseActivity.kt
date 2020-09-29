@@ -1,4 +1,4 @@
-package com.airy.v2plus.ui.base
+package com.airy.v2plus.base
 
 import android.content.Context
 import android.content.Intent

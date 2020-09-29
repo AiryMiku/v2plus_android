@@ -3,7 +3,7 @@ package com.airy.v2plus.ui.notification
 import androidx.databinding.ObservableBoolean
 import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.repository.NotificationRepository
-import com.airy.v2plus.ui.base.BaseViewModel
+import com.airy.v2plus.base.BaseViewModel
 
 class NotificationViewModel : BaseViewModel() {
 

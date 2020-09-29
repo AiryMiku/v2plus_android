@@ -18,20 +18,7 @@ import com.airy.v2plus.databinding.ItemNodeBinding
 class NodesAdapter(
     private val onClickCallback: ((Node) -> Unit)? = null,
     private val onLongClickCallback: ((Node) -> Unit)? = null
-) : PagedListAdapter<Node, NodesAdapter.ViewHolder>(diffCallback) {
-
-    companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<Node>() {
-            override fun areItemsTheSame(oldItem: Node, newItem: Node): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: Node, newItem: Node): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
-
+) : PagedListAdapter<Node, NodesAdapter.ViewHolder>(NodeDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -59,4 +46,14 @@ class NodesAdapter(
     }
 
     class ViewHolder(val binding: ItemNodeBinding) : RecyclerView.ViewHolder(binding.root)
+}
+
+internal object NodeDiffCallback : DiffUtil.ItemCallback<Node>() {
+    override fun areItemsTheSame(oldItem: Node, newItem: Node): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Node, newItem: Node): Boolean {
+        return oldItem == newItem
+    }
 }

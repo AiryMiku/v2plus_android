@@ -9,7 +9,7 @@ import androidx.preference.SwitchPreferenceCompat
 import com.airy.v2plus.R
 import com.airy.v2plus.event.LogoutEvent
 import com.airy.v2plus.network.RequestHelper
-import com.airy.v2plus.ui.base.BaseActivity
+import com.airy.v2plus.base.BaseActivity
 import com.airy.v2plus.ui.login.LoginActivity
 import com.airy.v2plus.util.UserCenter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

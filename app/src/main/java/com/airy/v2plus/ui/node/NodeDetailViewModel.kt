@@ -1,13 +1,11 @@
 package com.airy.v2plus.ui.node
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
-import androidx.lifecycle.switchMap
 import com.airy.v2plus.model.official.Node
 import com.airy.v2plus.model.official.Topic
 import com.airy.v2plus.network.V2exRetrofitService
 import com.airy.v2plus.repository.NodeRepository
-import com.airy.v2plus.ui.base.BaseViewModel
+import com.airy.v2plus.base.BaseViewModel
 
 /**
  * Created by Airy on 2020/9/22

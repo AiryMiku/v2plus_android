@@ -9,20 +9,10 @@ import com.airy.v2plus.databinding.ItemTopicBinding
 import com.airy.v2plus.model.official.Topic
 
 class TopicsAdapter(
-    private val onClickCallback:((Topic) -> Unit)?
+    private val onClickCallback: ((Topic) -> Unit)?
 ) : ListAdapter<Topic, TopicsAdapter.ViewHolder>(
-    TaskDiffCallback()
+    TopicDiffCallback
 ) {
-
-    class TaskDiffCallback : DiffUtil.ItemCallback<Topic>() {
-        override fun areItemsTheSame(oldItem: Topic, newItem: Topic): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Topic, newItem: Topic): Boolean {
-            return oldItem == newItem
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -39,4 +29,14 @@ class TopicsAdapter(
     }
 
     class ViewHolder(val binding: ItemTopicBinding) : RecyclerView.ViewHolder(binding.root)
+}
+
+internal object TopicDiffCallback : DiffUtil.ItemCallback<Topic>() {
+    override fun areItemsTheSame(oldItem: Topic, newItem: Topic): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Topic, newItem: Topic): Boolean {
+        return oldItem == newItem
+    }
 }

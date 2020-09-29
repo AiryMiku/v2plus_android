@@ -10,7 +10,7 @@ import com.airy.v2plus.model.custom.MainPageItem
 import com.airy.v2plus.model.official.User
 import com.airy.v2plus.repository.MainRepository
 import com.airy.v2plus.repository.UserRepository
-import com.airy.v2plus.ui.base.BaseViewModel
+import com.airy.v2plus.base.BaseViewModel
 import com.airy.v2plus.util.UserCenter
 import com.airy.v2plus.util.V2exHtmlUtil
 

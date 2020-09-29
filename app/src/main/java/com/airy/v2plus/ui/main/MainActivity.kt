@@ -18,7 +18,7 @@ import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.remote.Broadcasts
 import com.airy.v2plus.remote.ShortcutHelper
 import com.airy.v2plus.service.RedeemService
-import com.airy.v2plus.ui.base.BaseActivity
+import com.airy.v2plus.base.BaseActivity
 import com.airy.v2plus.ui.home.HomeFragment
 import com.airy.v2plus.ui.hot_or_latest.HotOrLatestActivity
 import com.airy.v2plus.ui.launch.LaunchActivity
@@ -30,7 +30,6 @@ import com.airy.v2plus.ui.theme.Theme
 import com.airy.v2plus.util.SharedPreferencesUtil
 import com.airy.v2plus.util.UserCenter
 import com.airy.v2plus.util.setDarkModeStorage
-import com.airy.v2plus.widget.ZoomOutPageTransformer
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView

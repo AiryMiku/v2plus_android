@@ -10,7 +10,7 @@ import com.airy.v2plus.event.LoginEvent
 import com.airy.v2plus.network.RequestHelper
 import com.airy.v2plus.showToastLong
 import com.airy.v2plus.showToastShort
-import com.airy.v2plus.ui.base.BaseActivity
+import com.airy.v2plus.base.BaseActivity
 import com.airy.v2plus.util.UserCenter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource

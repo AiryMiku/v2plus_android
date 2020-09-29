@@ -9,7 +9,7 @@ import com.airy.v2plus.databinding.FragmentNodesBinding
 import com.airy.v2plus.model.official.Node
 import com.airy.v2plus.navToNodeDetailActivity
 import com.airy.v2plus.showToastShort
-import com.airy.v2plus.ui.base.BaseLazyFragment
+import com.airy.v2plus.base.BaseLazyFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NodesFragment : BaseLazyFragment() {

@@ -16,20 +16,11 @@ import com.airy.v2plus.databinding.ItemPageCellBinding
  * Github: AiryMiku
  */
 
-class MainPageItemsAdapter(private val onClickCallback: (MainPageItem, ViewHolder) -> Unit = { _, _ ->})
-    : ListAdapter<MainPageItem, MainPageItemsAdapter.ViewHolder>(
-    TaskDiffCallback()
-){
-
-    class TaskDiffCallback: DiffUtil.ItemCallback<MainPageItem>() {
-        override fun areItemsTheSame(oldItem: MainPageItem, newItem: MainPageItem): Boolean {
-            return oldItem.title == newItem.title
-        }
-
-        override fun areContentsTheSame(oldItem: MainPageItem, newItem: MainPageItem): Boolean {
-            return oldItem == newItem
-        }
-    }
+class MainPageItemsAdapter(
+    private val onClickCallback: (MainPageItem, ViewHolder) -> Unit = { _, _ -> }
+) : ListAdapter<MainPageItem, MainPageItemsAdapter.ViewHolder>(
+    PageItemDiffCallback
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -46,5 +37,15 @@ class MainPageItemsAdapter(private val onClickCallback: (MainPageItem, ViewHolde
 //        holder.binding.executePendingBindings()   todo 由于data binding的资源节省机制,如需要保证item的实时更新,需要调用此方法
     }
 
-    class ViewHolder(val binding: ItemPageCellBinding): RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ItemPageCellBinding) : RecyclerView.ViewHolder(binding.root)
+}
+
+internal object PageItemDiffCallback : DiffUtil.ItemCallback<MainPageItem>() {
+    override fun areItemsTheSame(oldItem: MainPageItem, newItem: MainPageItem): Boolean {
+        return oldItem.title == newItem.title
+    }
+
+    override fun areContentsTheSame(oldItem: MainPageItem, newItem: MainPageItem): Boolean {
+        return oldItem == newItem
+    }
 }

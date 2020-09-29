@@ -3,7 +3,7 @@ package com.airy.v2plus.ui.login
 import androidx.lifecycle.MutableLiveData
 import com.airy.v2plus.model.custom.LoginResult
 import com.airy.v2plus.repository.UserRepository
-import com.airy.v2plus.ui.base.BaseViewModel
+import com.airy.v2plus.base.BaseViewModel
 
 
 /**
@@ -12,7 +12,7 @@ import com.airy.v2plus.ui.base.BaseViewModel
  * Github: AiryMiku
  */
 
-class LoginViewModel: BaseViewModel() {
+class LoginViewModel : BaseViewModel() {
 
     private val userRepository = UserRepository.getInstance()
 
@@ -29,7 +29,6 @@ class LoginViewModel: BaseViewModel() {
             loginKey.postValue(r)
         })
     }
-
 
     fun doLogin(userName: String, password: String, verifyCode: String) {
         launchOnIO({

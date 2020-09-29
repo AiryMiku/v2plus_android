@@ -14,7 +14,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 class FragmentViewPagerAdapter(
     private val fragmentList: MutableList<Fragment>,
     private val titleList: MutableList<String>,
-    fm: FragmentManager): FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    fm: FragmentManager
+) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
         return fragmentList[position]

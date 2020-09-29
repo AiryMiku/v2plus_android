@@ -132,6 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
+                    html_content="@{topic.contentHtml}"
                     android:textIsSelectable="true"
                     tools:text="公司主页：\n公司坐标：北京市朝阳区大望路\n简历投递邮箱：\n\n" />
 

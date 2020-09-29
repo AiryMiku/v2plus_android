@@ -31,7 +31,6 @@ import java.lang.ref.WeakReference
  */
 
 internal class TopicDetailAdapter(
-    private val context: Context,
     private val viewOnClickListener: ViewOfItemOnClickListener
 ) :
     ListAdapter<Any, TopicDetailViewHolder>(TopicDetailDiffCallback) {
@@ -68,19 +67,13 @@ internal class TopicDetailAdapter(
 
     override fun onBindViewHolder(holder: TopicDetailViewHolder, position: Int) {
         when (holder) {
+            is HeaderItemHolder -> {
+                val topic = getItem(position) as Topic
+                holder.binding.topic = topic
+            }
             is ReplyItemHolder -> {
                 val reply = getItem(position) as Reply
                 holder.binding.reply = reply
-                reply.contentHtml?.run {
-                    holder.binding.replyContent.let {
-                        it.text = HtmlCompat.fromHtml(
-                            reply.contentHtml, FROM_HTML_MODE_LEGACY,
-                            GlideImageGetter(context, WeakReference(it)),
-                            TextViewTagHandler(context)
-                        )
-                    }
-                }
-                holder.binding.replyContent.movementMethod = LinkMovementMethod.getInstance()
                 holder.binding.likeLayout.let { ll ->
                     ll.setOnClickListener {
                         holder.binding.likeView.toggle()
@@ -90,24 +83,6 @@ internal class TopicDetailAdapter(
                 holder.binding.root.setOnLongClickListener {
                     viewOnClickListener.onReplyLongClickListener(reply)
                 }
-            }
-            is HeaderItemHolder -> {
-                val topic = getItem(position) as Topic
-                holder.binding.topic = topic
-                topic.contentHtml?.run {
-                    var content = this
-                    if (trim().isBlank()) {
-                        content = "---No content---\n"
-                    }
-                    holder.binding.contentText.let {
-                        it.text = HtmlCompat.fromHtml(
-                            content, FROM_HTML_MODE_LEGACY,
-                            GlideImageGetter(context, WeakReference(it)),
-                            TextViewTagHandler(context)
-                        )
-                    }
-                }
-                holder.binding.contentText.movementMethod = LinkMovementMethod.getInstance()
             }
         }
     }
@@ -129,7 +104,6 @@ internal sealed class TopicDetailViewHolder(itemView: View) : RecyclerView.ViewH
 }
 
 internal object TopicDetailDiffCallback : DiffUtil.ItemCallback<Any>() {
-
     override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
         return when {
             oldItem is Topic && newItem is Topic -> oldItem.id == newItem.id

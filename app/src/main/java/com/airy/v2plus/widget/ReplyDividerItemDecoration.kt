@@ -42,9 +42,9 @@ class ReplyDividerItemDecoration : RecyclerView.ItemDecoration() {
         val itemCount = parent.adapter?.itemCount
         for (i in 0..parent.childCount) {
             val child = parent.getChildAt(i)
-            val index = parent.getChildAdapterPosition(child)
-            //                    c.drawText(index.toString(), child.left.toFloat(), child.top.toFloat(), paint)
+            //  c.drawText(index.toString(), child.left.toFloat(), child.top.toFloat(), paint)
             if (child != null) {
+                val index = parent.getChildAdapterPosition(child)
                 val userName = child.findViewById<TextView>(R.id.user_name)
                 if (userName != null) {
                     if (index != 0 && itemCount != null && index != itemCount - 1) {

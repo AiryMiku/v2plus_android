@@ -59,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:singleLine="false"
+                html_content="@{reply.contentHtml}"
                 app:layout_constraintEnd_toStartOf="@id/like_layout"
                 app:layout_constraintStart_toStartOf="@id/user_name"
                 app:layout_constraintTop_toBottomOf="@id/avatar"

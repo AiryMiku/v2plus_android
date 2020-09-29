@@ -2,7 +2,7 @@ package com.airy.v2plus.ui.topic
 
 import androidx.lifecycle.MutableLiveData
 import com.airy.v2plus.repository.TopicRepository
-import com.airy.v2plus.ui.base.BaseViewModel
+import com.airy.v2plus.base.BaseViewModel
 
 
 /**

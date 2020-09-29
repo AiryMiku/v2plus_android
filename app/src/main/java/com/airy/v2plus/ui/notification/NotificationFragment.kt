@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import com.airy.v2plus.databinding.FragmentNotificationsBinding
 import com.airy.v2plus.navToTopicActivity
 import com.airy.v2plus.repository.util.NetworkState
-import com.airy.v2plus.ui.base.BaseLazyFragment
+import com.airy.v2plus.base.BaseLazyFragment
 
 class NotificationFragment : BaseLazyFragment() {
 

@@ -1,11 +1,10 @@
-package com.airy.v2plus.ui.base
+package com.airy.v2plus.base
 
 import android.util.Log
 import androidx.lifecycle.*
 import com.airy.v2plus.App
 import com.airy.v2plus.showToastShort
 import com.google.gson.JsonParseException
-import com.orhanobut.logger.Logger
 import kotlinx.coroutines.*
 import timber.log.Timber
 import java.net.ConnectException

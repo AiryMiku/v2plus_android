@@ -5,7 +5,7 @@ import com.airy.v2plus.Common
 import com.airy.v2plus.R
 import com.airy.v2plus.databinding.ActivityNodeBinding
 import com.airy.v2plus.navToTopicActivity
-import com.airy.v2plus.ui.base.BaseActivity
+import com.airy.v2plus.base.BaseActivity
 import com.airy.v2plus.ui.topic.TopicsAdapter
 import com.google.android.material.appbar.AppBarLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel

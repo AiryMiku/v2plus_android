@@ -19,18 +19,7 @@ import com.orhanobut.logger.Logger
 
 class NotificationsAdapter(
     private val onClickCallback: ((Notification) -> Unit)? = null
-) : PagedListAdapter<Notification, NotificationsAdapter.ViewHolder>(TaskDiffCallback()) {
-
-
-    class TaskDiffCallback : DiffUtil.ItemCallback<Notification>() {
-        override fun areItemsTheSame(oldItem: Notification, newItem: Notification): Boolean {
-            return oldItem.title == newItem.title
-        }
-
-        override fun areContentsTheSame(oldItem: Notification, newItem: Notification): Boolean {
-            return oldItem == newItem
-        }
-    }
+) : PagedListAdapter<Notification, NotificationsAdapter.ViewHolder>(NotificationDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -52,4 +41,14 @@ class NotificationsAdapter(
     }
 
     class ViewHolder(val binding: ItemNotificationBinding) : RecyclerView.ViewHolder(binding.root)
+}
+
+internal object NotificationDiffCallback : DiffUtil.ItemCallback<Notification>() {
+    override fun areItemsTheSame(oldItem: Notification, newItem: Notification): Boolean {
+        return oldItem.title == newItem.title
+    }
+
+    override fun areContentsTheSame(oldItem: Notification, newItem: Notification): Boolean {
+        return oldItem == newItem
+    }
 }

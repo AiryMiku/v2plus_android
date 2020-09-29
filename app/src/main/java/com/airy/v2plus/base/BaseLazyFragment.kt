@@ -1,4 +1,4 @@
-package com.airy.v2plus.ui.base
+package com.airy.v2plus.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

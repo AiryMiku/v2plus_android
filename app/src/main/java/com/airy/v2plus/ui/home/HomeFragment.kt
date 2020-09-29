@@ -8,7 +8,7 @@ import androidx.fragment.app.activityViewModels
 import com.airy.v2plus.Config
 import com.airy.v2plus.databinding.FragmentHomeBinding
 import com.airy.v2plus.navToTopicActivity
-import com.airy.v2plus.ui.base.BaseLazyFragment
+import com.airy.v2plus.base.BaseLazyFragment
 import com.airy.v2plus.ui.main.MainViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.ListPreloader
