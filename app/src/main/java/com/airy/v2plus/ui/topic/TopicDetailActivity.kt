@@ -93,8 +93,7 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
 
     override fun onReplyLongClickListener(reply: Reply): Boolean {
         val listDialog = MaterialAlertDialogBuilder(this)
-        listDialog.setItems(R.array.reply_items) {
-                _, which ->
+        listDialog.setItems(R.array.reply_items) { _, which ->
             when (which) {
                 0 -> showToastShort("Dev~")
                 1 -> showToastShort("Dev~")
@@ -111,14 +110,21 @@ class TopicDetailActivity : BaseActivity(), TopicDetailAdapter.ViewOfItemOnClick
             val scaleLarge = 1.1f
             val shakeDegrees = 3f
             val duration = 100L
-            val scaleAnim = ScaleAnimation(scaleSmall, scaleLarge, scaleSmall , scaleLarge)
-            val rotateAnim = RotateAnimation(-shakeDegrees, shakeDegrees, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+            val scaleAnim = ScaleAnimation(scaleSmall, scaleLarge, scaleSmall, scaleLarge)
+            val rotateAnim = RotateAnimation(
+                -shakeDegrees,
+                shakeDegrees,
+                Animation.RELATIVE_TO_SELF,
+                0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f
+            )
 
             scaleAnim.duration = duration
             rotateAnim.duration = duration
             rotateAnim.repeatMode = Animation.REVERSE
             rotateAnim.repeatCount = 3
-            
+
             val animSet = AnimationSet(false)
 //            animSet.addAnimation(scaleAnim)
             animSet.addAnimation(rotateAnim)

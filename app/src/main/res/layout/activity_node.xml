@@ -5,15 +5,16 @@
         tools:context="com.airy.v2plus.ui.node.NodeActivity">
 
     <data>
+
         <variable
                 name="node"
                 type="com.airy.v2plus.model.official.Node" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:fitsSystemWindows="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/app_bar_layout"
@@ -34,8 +35,8 @@
                         app:layout_collapseMode="parallax">
 
                     <com.google.android.material.imageview.ShapeableImageView
-                            imageUrl="@{node.avatarNormalUrl}"
                             android:id="@+id/node_image"
+                            imageUrl="@{node.avatarNormalUrl}"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_margin="20dp"
@@ -51,55 +52,55 @@
                             android:layout_margin="10dp"
                             android:text="@{node.title}"
                             android:textAlignment="viewStart"
-                            app:layout_constraintStart_toEndOf="@id/node_image"
-                            app:layout_constraintTop_toTopOf="@id/node_image"
                             app:layout_constraintBottom_toBottomOf="@id/node_image"
                             app:layout_constraintEnd_toStartOf="@id/follow"
+                            app:layout_constraintStart_toEndOf="@id/node_image"
+                            app:layout_constraintTop_toTopOf="@id/node_image"
                             tools:text="Node title" />
 
                     <TextView
                             android:id="@+id/node_header"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="@{node.header}"
                             android:layout_marginTop="5dp"
+                            android:text="@{node.header}"
                             android:textAlignment="viewStart"
-                            app:layout_constraintTop_toBottomOf="@id/topics_num"
-                            app:layout_constraintStart_toStartOf="@id/topics_num"
                             app:layout_constraintEnd_toStartOf="@id/follow"
-                            tools:text="This is a long Header"/>
+                            app:layout_constraintStart_toStartOf="@id/topics_num"
+                            app:layout_constraintTop_toBottomOf="@id/topics_num"
+                            tools:text="This is a long Header" />
 
                     <com.google.android.material.button.MaterialButton
-                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:id="@+id/follow"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="20dp"
                             android:text="Follow"
-                            app:layout_constraintTop_toTopOf="@id/node_title"
                             app:layout_constraintBottom_toBottomOf="@id/node_title"
-                            app:layout_constraintEnd_toEndOf="parent"/>
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/node_title" />
 
                     <TextView
                             android:id="@+id/topics_num"
+                            topic_num="@{node.topics}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            topic_num="@{node.topics}"
-                            app:layout_constraintTop_toBottomOf="@id/node_image"
                             app:layout_constraintStart_toStartOf="@id/node_image"
-                            tools:text="Topics: 123"/>
+                            app:layout_constraintTop_toBottomOf="@id/node_image"
+                            tools:text="Topics: 123" />
 
                     <TextView
                             android:id="@+id/stars_num"
+                            star_num="@{node.starts}"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
+                            app:layout_constraintBottom_toBottomOf="@id/topics_num"
                             app:layout_constraintStart_toEndOf="@id/topics_num"
                             app:layout_constraintTop_toTopOf="@id/topics_num"
-                            app:layout_constraintBottom_toBottomOf="@id/topics_num"
-                            star_num="@{node.starts}"
-                            tools:text="Stars: 123"/>
+                            tools:text="Stars: 123" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -108,16 +109,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         android:background="@color/color_primary_dark"
-                        app:layout_scrollFlags="scroll|enterAlways"
-                        app:layout_collapseMode="pin" >
+                        app:layout_collapseMode="pin"
+                        app:layout_scrollFlags="scroll|enterAlways">
 
                     <com.google.android.material.textview.MaterialTextView
-                            style="@style/TextAppearance.ToolbarTitle"
                             android:id="@+id/title_text_view"
+                            style="@style/TextAppearance.ToolbarTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{node.title}"
-                            tools:text="Node"/>
+                            tools:text="Node" />
 
                 </com.google.android.material.appbar.MaterialToolbar>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -134,7 +135,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_topic"/>
+                    tools:listitem="@layout/item_topic" />
 
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
