@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableBoolean
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.airy.v2plus.R
 import com.airy.v2plus.util.DateUtil
 import com.airy.v2plus.util.GlideImageGetter
@@ -79,4 +80,12 @@ fun setHtmlContent(view: TextView, htmlContent: String?) {
             view.movementMethod = LinkMovementMethod.getInstance()
         }
     }
+}
+
+/**
+ * Sets the colors of the [CustomSwipeRefreshLayout] loading indicator.
+ */
+@BindingAdapter("swipeRefreshColors")
+fun setSwipeRefreshColors(swipeRefreshLayout: SwipeRefreshLayout, colorResIds: IntArray) {
+    swipeRefreshLayout.setColorSchemeColors(*colorResIds)
 }
