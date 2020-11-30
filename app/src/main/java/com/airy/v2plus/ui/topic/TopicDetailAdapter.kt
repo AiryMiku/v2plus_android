@@ -74,6 +74,7 @@ internal class TopicDetailAdapter(
             is ReplyItemHolder -> {
                 val reply = getItem(position) as Reply
                 holder.binding.reply = reply
+                holder.binding.likeView.isChecked = false
                 holder.binding.likeLayout.let { ll ->
                     ll.setOnClickListener {
                         holder.binding.likeView.toggle()

@@ -9,6 +9,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.airy.v2plus.ui.node.NodeActivity
 import com.airy.v2plus.ui.theme.Theme
 import com.airy.v2plus.ui.topic.TopicDetailActivity
@@ -77,7 +78,8 @@ fun Context.showToastLong(@StringRes message: Int) {
 }
 
 fun Context.sendBroadcastBySelf(intent: Intent) {
-    this.sendBroadcast(intent.setPackage(this.packageName))
+    LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+//    this.sendBroadcast(intent.setPackage(this.packageName))
 }
 
 const val TAG = "Extensions"

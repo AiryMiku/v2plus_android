@@ -5,9 +5,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.util.Log
+import androidx.core.location.LocationManagerCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.airy.v2plus.Intents
 import com.airy.v2plus.model.custom.Balance
 
@@ -17,19 +20,22 @@ import com.airy.v2plus.model.custom.Balance
  * Github: AiryMiku
  */
 object Broadcasts {
+
+    val TAG = "Broadcasts"
+
     interface Receiver {
         fun onRedeemSuccess(balance: Balance?)
     }
 
     private val receivers = mutableListOf<Receiver>()
 
-    private val broadcastReceiver = object: BroadcastReceiver() {
+    private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.`package` != context?.packageName) {
-                return
-            }
+//            if (intent?.`package` != context?.packageName) {
+//                return
+//            }
 
-            when(intent?.action) {
+            when (intent?.action) {
                 Intents.REDEEM_SUCCESS -> {
                     receivers.forEach {
                         val balance = intent.getParcelableExtra<Balance?>("balance")
@@ -50,15 +56,16 @@ object Broadcasts {
     }
 
     fun init(application: Application) {
-        ProcessLifecycleOwner.get().lifecycle.addObserver(object: DefaultLifecycleObserver{
+        ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onStart(owner: LifecycleOwner) {
-                application.registerReceiver(broadcastReceiver, IntentFilter().apply {
-                    addAction(Intents.REDEEM_SUCCESS)
-                })
+                LocalBroadcastManager.getInstance(application)
+                    .registerReceiver(broadcastReceiver, IntentFilter().apply {
+                        addAction(Intents.REDEEM_SUCCESS)
+                    })
             }
 
             override fun onStop(owner: LifecycleOwner) {
-                application.unregisterReceiver(broadcastReceiver)
+                LocalBroadcastManager.getInstance(application).unregisterReceiver(broadcastReceiver)
             }
         })
     }

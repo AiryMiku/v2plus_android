@@ -48,6 +48,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var fragmentAdapter: FragmentViewPagerAdapter
     private lateinit var navigation: BottomNavigationView
     private var navHeaderBinding: NavHeaderBinding? = null
+    private lateinit var nightModeMenuItem: MenuItem
     private lateinit var nightModeSwitch: SwitchMaterial
 
     private val receiver = object : Broadcasts.Receiver {
@@ -63,7 +64,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var titleList: MutableList<String>
     private lateinit var iconIdList: MutableList<Int>
 
-    override val toolbarLabel: CharSequence? = "Home"
+    override val toolbarLabel: CharSequence = "Home"
     override var displayHomeAsUpEnabled: Boolean? = null
 
     override fun setContentView() {
@@ -99,7 +100,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 navToActivity(this, LoginActivity::class.java)
             }
 
-            if (!UserCenter.getUserName().isBlank()) {
+            if (UserCenter.getUserName().isNotBlank()) {
                 header.userName.text = UserCenter.getUserName()
             }
 
@@ -121,17 +122,24 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
         }
 
-        // night switch
-        nightModeSwitch =
-            contentBinding.navigationView.menu.findItem(R.id.night_mode).actionView as SwitchMaterial
-        nightModeSwitch.isChecked = this.isNightMode()
-        nightModeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                shareViewModel?.theme?.postValue(Theme.DARK)
-            } else {
+        // night switch and menu item
+        nightModeMenuItem = contentBinding.navigationView.menu.findItem(R.id.night_mode)
+        nightModeSwitch = nightModeMenuItem.actionView as SwitchMaterial
+//        nightModeSwitch.isChecked = this.isNightMode()
+        val change = {
+            if (this.isNightMode()) {
                 shareViewModel?.theme?.postValue(Theme.LIGHT)
+            } else {
+                shareViewModel?.theme?.postValue(Theme.DARK)
             }
-            setDarkModeStorage(isChecked)
+            setDarkModeStorage(!this.isNightMode())
+        }
+        nightModeMenuItem.setOnMenuItemClickListener {
+            change()
+            false
+        }
+        nightModeSwitch.setOnClickListener {
+            change()
         }
 
         // init fragments
@@ -211,7 +219,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         EventBus.getDefault().unregister(this)
     }
 
+    /**
+     * if must call at the end of the function initViews()
+     */
     private fun subscribeUI() {
+
+        shareViewModel?.theme?.observe(this) {
+            nightModeSwitch.isChecked = it == Theme.DARK || it == Theme.BATTERY_SAVER
+        }
 
         viewModel.user.observe(this, { u ->
             navHeaderBinding?.let {
