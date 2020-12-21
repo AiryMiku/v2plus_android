@@ -11,8 +11,10 @@ import com.airy.v2plus.model.official.User
 import com.airy.v2plus.repository.MainRepository
 import com.airy.v2plus.repository.UserRepository
 import com.airy.v2plus.base.BaseViewModel
+import com.airy.v2plus.coroutineLiveData
 import com.airy.v2plus.util.UserCenter
 import com.airy.v2plus.util.V2exHtmlUtil
+import kotlinx.coroutines.channels.Channel
 
 
 /**
@@ -21,16 +23,37 @@ import com.airy.v2plus.util.V2exHtmlUtil
  * Github: AiryMiku
  */
 
+interface MainViewModelDelegate {
+    val userRepository: UserRepository
+    val mainRepository: MainRepository
+
+    val mainPageResponse: MutableLiveData<String>
+
+    val user: MutableLiveData<User>
+
+    val mainListItem: LiveData<List<MainPageItem>>
+
+    val pageUserInfo: LiveData<List<String>>
+
+    val balance: MediatorLiveData<Balance>
+
+    val isRedeemed: ObservableBoolean
+}
+
 class MainViewModel : BaseViewModel() {
+
+    /**
+     * internal var
+     */
+    private val mainPageChannel = Channel<String>(1)
+    private var _mainPageResponse = mainPageChannel.coroutineLiveData
 
     private val userRepository by lazy { UserRepository.getInstance() }
     private val mainRepository by lazy { MainRepository.getInstance() }
 
-    private val mainPageResponse: MutableLiveData<String> = MutableLiveData()
-
     val user: MutableLiveData<User> = MutableLiveData()
 
-    val mainListItem: LiveData<List<MainPageItem>> = mainPageResponse.switchMap {
+    val mainListItem: LiveData<List<MainPageItem>> = _mainPageResponse.switchMap {
         launchOnViewModelScope {
             MutableLiveData<List<MainPageItem>>().apply {
                 postValue(V2exHtmlUtil.getMainPageItems(it))
@@ -38,7 +61,7 @@ class MainViewModel : BaseViewModel() {
         }
     }
 
-    val pageUserInfo: LiveData<List<String>> = mainPageResponse.switchMap {
+    val pageUserInfo: LiveData<List<String>> = _mainPageResponse.switchMap {
         MutableLiveData<List<String>>().apply {
             value = V2exHtmlUtil.getTopUserInfo(it)
         }
@@ -50,7 +73,7 @@ class MainViewModel : BaseViewModel() {
 
     init {
         balance.postValue(UserCenter.getLastBalance())
-        balance.addSource(mainPageResponse) {
+        balance.addSource(_mainPageResponse) {
             launchOnIO({
                 balance.postValue(parseBalance(it))
             })
@@ -62,7 +85,8 @@ class MainViewModel : BaseViewModel() {
 
     fun getMainPageResponse() {
         launchOnIO({
-            mainRepository.fetchMainPageResponse().let { mainPageResponse.postValue(it.value) }
+            val result = mainRepository.fetchMainPageResponse()
+            mainPageChannel.send(result)
         })
     }
 

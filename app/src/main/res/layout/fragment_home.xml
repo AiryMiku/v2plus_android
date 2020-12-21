@@ -6,7 +6,7 @@
 
     <data />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <com.airy.v2plus.widget.CustomSwipeRefreshLayout
             android:id="@+id/refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -20,5 +20,5 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_page_cell" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.airy.v2plus.widget.CustomSwipeRefreshLayout>
 </layout>

@@ -72,6 +72,45 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun initViews() {
+        createNavigationViewAndDrawerView()
+        createFragmentPagers()
+        subscribeUI()
+        EventBus.getDefault().register(this)
+        Broadcasts.register(receiver)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLoginEvent(e: LoginEvent) {
+        viewModel.getUserInfoByName()
+        viewModel.getMainPageResponse()
+        navHeaderBinding?.let { header ->
+            header.balanceLayout.visibility = View.VISIBLE
+        }
+        ShortcutHelper.addRedeemShortcut()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLogoutEvent(e: LogoutEvent) {
+        startActivity(Intent(this, LaunchActivity::class.java))
+        finish()
+    }
+
+    override fun loadData() {
+        if (!RequestHelper.isCookieExpired()) {
+            ShortcutHelper.addRedeemShortcut()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Broadcasts.unregister(receiver)
+        EventBus.getDefault().unregister(this)
+    }
+
+    /**
+     * call in initViews()
+     */
+    private fun createNavigationViewAndDrawerView() {
         // init listener
         contentBinding.navigationView.setNavigationItemSelectedListener(this)
 
@@ -141,7 +180,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         nightModeSwitch.setOnClickListener {
             change()
         }
+    }
 
+    /**
+     * call it in initViews()
+     */
+    private fun createFragmentPagers() {
         // init fragments
         fragmentList = mutableListOf<Fragment>().apply {
             add(HomeFragment.newInstance())
@@ -184,39 +228,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 else -> false
             }
         }
-
-        subscribeUI()
-
-        EventBus.getDefault().register(this)
-        Broadcasts.register(receiver)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onLoginEvent(e: LoginEvent) {
-        viewModel.getUserInfoByName()
-        viewModel.getMainPageResponse()
-        navHeaderBinding?.let { header ->
-            header.balanceLayout.visibility = View.VISIBLE
-        }
-        ShortcutHelper.addRedeemShortcut()
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onLogoutEvent(e: LogoutEvent) {
-        startActivity(Intent(this, LaunchActivity::class.java))
-        finish()
-    }
-
-    override fun loadData() {
-        if (!RequestHelper.isCookieExpired()) {
-            ShortcutHelper.addRedeemShortcut()
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Broadcasts.unregister(receiver)
-        EventBus.getDefault().unregister(this)
     }
 
     /**

@@ -6,6 +6,7 @@ import com.airy.v2plus.model.official.Topic
 import com.airy.v2plus.network.V2exRetrofitService
 import com.airy.v2plus.repository.NodeRepository
 import com.airy.v2plus.base.BaseViewModel
+import kotlinx.coroutines.channels.Channel
 
 /**
  * Created by Airy on 2020/9/22

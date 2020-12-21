@@ -9,12 +9,14 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.*
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.airy.v2plus.ui.node.NodeActivity
 import com.airy.v2plus.ui.theme.Theme
 import com.airy.v2plus.ui.topic.TopicDetailActivity
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.Channel
 import org.jetbrains.annotations.Nullable
 
 
@@ -91,7 +93,7 @@ fun launchOnIOInGlobal(
     },
     finalBlock: suspend CoroutineScope.() -> Unit = {}
 ): Job {
-    return GlobalScope.launch(Dispatchers.IO) {
+    return GlobalScope.launch(Dispatchers.IO) { // it not a good way to use global, follow components life cycle
         try {
             tryBlock()
         } catch (e: Exception) {
@@ -119,3 +121,20 @@ fun launchOnMainInGlobal(
         }
     }
 }
+
+
+// ViewModel
+
+inline fun <reified T : ViewModel> getViewModel(
+    owner: ViewModelStoreOwner,
+    configLiveData: T.() -> Unit = {}
+): T = ViewModelProvider(owner)[T::class.java].apply { configLiveData() }
+
+inline fun <reified T : ViewModel> ViewModelStoreOwner.getSelfViewModel(configLiveData: T.() -> Unit = {}): T =
+    getViewModel(this, configLiveData)
+
+inline val <T> Channel<T>.coroutineLiveData: LiveData<T>
+    get() = liveData {
+        for (entry in this@coroutineLiveData)
+            emit(entry)
+    }

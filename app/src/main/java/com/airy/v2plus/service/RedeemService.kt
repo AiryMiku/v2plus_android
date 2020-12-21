@@ -18,8 +18,7 @@ import com.airy.v2plus.sendBroadcastBySelf
 import com.airy.v2plus.util.UserCenter
 import com.airy.v2plus.util.V2exHtmlUtil
 import com.orhanobut.logger.Logger
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 /**
  * Created by Airy on 2020/8/29
@@ -36,12 +35,18 @@ class RedeemService: IntentService("RedeemService") {
 
     private val TAG = "RedeemService"
 
-    private val networkScope = RequestHelper.networkScope
     private val repository = UserRepository.getInstance()
+
+    private val redeemScope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        redeemScope.cancel("$TAG onDestroy")  // run in coroutines will end immediately in handleIntent
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -49,35 +54,40 @@ class RedeemService: IntentService("RedeemService") {
         return super.onStartCommand(intent, flags, startId)
     }
 
+    // this func is working on work thread, so we just run coroutines blocking
     override fun onHandleIntent(intent: Intent?) {
-        networkScope.launch {
-            try {
-                if (RequestHelper.isCookieExpired() && UserCenter.getUserId() != 0L) {
-                    showFailedNotification("Session Timeout, please re-login.")
-                }
+        runBlocking(redeemScope.coroutineContext) {
+            getRedeem()
+        }
+    }
 
-                var response = repository.getDailyMissionResponse()
-                val param = V2exHtmlUtil.getDailyMissionParam(response)
-                delay(2000L)
-                if (param.isNotBlank()) {
-                    response = repository.getDailyMissionRedeemResponse(param)
-                }
-                val message = V2exHtmlUtil.getDailyMissionRedeemResult(response)
-                showFinishNotification("${message.getOrNull(1)}\n${message.getOrNull(2)}")
-
-                @Suppress("NAME_SHADOWING")
-                val intent = Intent(Intents.REDEEM_SUCCESS).apply {
-                    val balance = parseBalance(response)
-                    val bundle = Bundle()
-                    bundle.putParcelable("balance", balance)
-                    putExtras(bundle)
-                }
-                sendBroadcastBySelf(intent)
-                // todo need refactor by checking process
-            } catch (e: Exception) {
-                Logger.e(TAG, e.message, e)
-                showFailedNotification()
+    private suspend fun getRedeem() {
+        try {
+            if (RequestHelper.isCookieExpired() && UserCenter.getUserId() != 0L) {
+                showFailedNotification("Session Timeout, please re-login.")
             }
+
+            var response = repository.getDailyMissionResponse()
+            val param = V2exHtmlUtil.getDailyMissionParam(response)
+
+            if (param.isNotBlank()) {
+                response = repository.getDailyMissionRedeemResponse(param)
+            }
+            val message = V2exHtmlUtil.getDailyMissionRedeemResult(response)
+            showFinishNotification("${message.getOrNull(1)}\n${message.getOrNull(2)}")
+
+            @Suppress("NAME_SHADOWING")
+            val intent = Intent(Intents.REDEEM_SUCCESS).apply {
+                val balance = parseBalance(response)
+                val bundle = Bundle()
+                bundle.putParcelable("balance", balance)
+                putExtras(bundle)
+            }
+            sendBroadcastBySelf(intent)
+            // todo need refactor by checking process
+        } catch (e: Exception) {
+            Logger.e(TAG, e.message, e)
+            showFailedNotification()
         }
     }
 

@@ -3,6 +3,7 @@ package com.airy.v2plus
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -66,9 +67,7 @@ class App: Application(), ViewModelStoreOwner {
                 return BuildConfig.DEBUG
             }
         })
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+        enableDebugComponents()
     }
 
     private fun initThemeMode() {
@@ -76,6 +75,24 @@ class App: Application(), ViewModelStoreOwner {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
+
+    private fun enableStrictMode() {
+        StrictMode.setThreadPolicy(
+            StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork()
+                .penaltyLog()
+                .build()
+        )
+    }
+
+    private fun enableDebugComponents() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+            enableStrictMode()
         }
     }
 

@@ -24,12 +24,8 @@ class MainRepository: Repository {
         }
     }
 
-    suspend fun fetchMainPageResponse(): LiveData<String> = withContext(Dispatchers.IO) {
-        val liveData = MutableLiveData<String>()
-        val responseString = V2plusRetrofitService.getV2plusApi().getMainPageResponse()
-
-        liveData.apply { postValue(responseString) }
+    suspend fun fetchMainPageResponse(): String {
+        return V2plusRetrofitService.getV2plusApi().getMainPageResponse()
     }
-
 
 }
