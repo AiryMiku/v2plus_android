@@ -87,7 +87,7 @@ class RedeemService: IntentService("RedeemService") {
             // todo need refactor by checking process
         } catch (e: Exception) {
             Logger.e(TAG, e.message, e)
-            showFailedNotification()
+            showFailedNotification(e.message)
         }
     }
 
@@ -136,7 +136,7 @@ class RedeemService: IntentService("RedeemService") {
         }
     }
 
-    private fun showFailedNotification(cause: String = "Failed to get your redeem") {
+    private fun showFailedNotification(cause: String? = "Failed to get your redeem") {
         val builder = createBaseNotificationBuilder(
             subText = "Redeem Failed",
             contentText = cause

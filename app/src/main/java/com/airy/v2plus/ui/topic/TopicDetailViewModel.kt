@@ -3,6 +3,8 @@ package com.airy.v2plus.ui.topic
 import androidx.lifecycle.MutableLiveData
 import com.airy.v2plus.repository.TopicRepository
 import com.airy.v2plus.base.BaseViewModel
+import com.airy.v2plus.coroutineLiveData
+import kotlinx.coroutines.channels.Channel
 
 
 /**
@@ -15,7 +17,8 @@ class TopicDetailViewModel: BaseViewModel() {
 
     private val topicRepository by lazy { TopicRepository.getInstance() }
 
-    val topicDetails: MutableLiveData<List<Any>> = MutableLiveData()
+    private val topicDetailChannel = Channel<List<Any>>(1)
+    val topicDetails = topicDetailChannel.coroutineLiveData
 
     fun getTopicDetails(id: Long) {
         launchOnIO({
@@ -24,7 +27,7 @@ class TopicDetailViewModel: BaseViewModel() {
             val rs = topicRepository.getRepliesByTopicId(id)
             items.add(t)
             items.addAll(rs)
-            topicDetails.postValue(items)
+            topicDetailChannel.send(items)
         })
     }
 

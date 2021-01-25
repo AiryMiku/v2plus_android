@@ -5,6 +5,7 @@ import com.airy.v2plus.base.BaseViewModel
 
 class NodesViewModel(val repository: NodeRepository) : BaseViewModel() {
 
-    val nodes = repository.fetchNodesPagedListAsLiveData()
+    private val _nodes = repository.fetchNodesPagedListAsLiveData()
+    val nodes = _nodes
 
 }
