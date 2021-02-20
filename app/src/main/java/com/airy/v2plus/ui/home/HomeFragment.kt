@@ -36,7 +36,7 @@ class HomeFragment: BaseLazyFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
