@@ -32,7 +32,8 @@
         </activity>
         <activity
                 android:name=".service.ServiceActivity"
-                android:theme="@style/AppTheme.Transparent" />
+                android:theme="@style/AppTheme.Transparent"
+                android:excludeFromRecents="true" />
 
         <activity android:name=".ui.node.NodeActivity" />
 
