@@ -19,6 +19,7 @@ import com.airy.v2plus.remote.Broadcasts
 import com.airy.v2plus.remote.ShortcutHelper
 import com.airy.v2plus.service.RedeemService
 import com.airy.v2plus.base.BaseActivity
+import com.airy.v2plus.ui.about.AboutActivity
 import com.airy.v2plus.ui.home.HomeFragment
 import com.airy.v2plus.ui.hot_or_latest.HotOrLatestActivity
 import com.airy.v2plus.ui.launch.LaunchActivity
@@ -293,7 +294,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 navToActivity(this, SettingsActivity::class.java)
             }
             R.id.about -> {
-                showToastShort("Developing~")
+                navToActivity(this, AboutActivity::class.java)
             }
         }
         return true

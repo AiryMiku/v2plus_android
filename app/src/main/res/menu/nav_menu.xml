@@ -26,8 +26,9 @@
         </item>
     </group>
 
-    <group android:id="@+id/about">
-        <item android:title="About"/>
+    <group android:id="@+id/about_group">
+        <item android:id="@+id/about"
+                android:title="About"/>
     </group>
 
 
